@@ -12,6 +12,7 @@ import {
 } from 'three'
 import { SCENES, THREE_CONFIG } from '../config.js'
 import { ScrollTracker } from './ScrollTracker.js'
+import { publishAtmosphere } from '../../lib/atmosphere.js'
 import { clamp, damp, noise1 } from '../utils/noise.js'
 import { FpsMonitor, isSoftwareRenderer, lowerQuality, pixelRatioFor } from '../utils/performance.js'
 
@@ -181,6 +182,8 @@ export class Engine {
   stop() {
     this.running = false
     cancelAnimationFrame(this.raf)
+    // tab ẩn / mất WebGL: nhường việc theo dõi section cho IntersectionObserver của âm thanh
+    publishAtmosphere({ source: null })
   }
 
   frame = (now) => {
@@ -195,6 +198,7 @@ export class Engine {
     this.scroll.update(dt, this.H)
     this.updateMood(dt)
     this.updateWind(dt)
+    this.publish(dt)
     this.updateBackground()
     this.updateCamera(dt)
 
@@ -240,6 +244,17 @@ export class Engine {
     w.offsetY += w.y * speed * dt
     this.uniforms.uWind.value.set(w.x, w.y, w.strength)
     this.uniforms.uWindOffset.value.set(w.offsetX, w.offsetY)
+  }
+
+  /** Báo section + gió cho phần còn lại của trang (âm thanh nền nghe theo) — không cần listener cuộn riêng. */
+  publish(dt) {
+    this.publishAcc = (this.publishAcc || 0) + dt
+    const scene = this.scroll.active
+    if (scene !== this.publishedScene || this.publishAcc > 0.1) {
+      this.publishAcc = 0
+      this.publishedScene = scene
+      publishAtmosphere({ scene, wind: this.wind.strength, source: 'three' })
+    }
   }
 
   /** Ghi dải sáng/tối dưới canvas — shader dùng để chọn màu hạt hợp với nền. */
@@ -300,6 +315,7 @@ export class Engine {
 
   dispose() {
     this.stop()
+    publishAtmosphere({ source: null })
     for (const off of this.listeners) off()
     this.listeners = []
     for (const e of this.effects) e.dispose()

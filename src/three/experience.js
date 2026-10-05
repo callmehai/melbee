@@ -8,14 +8,15 @@ import { MountainAtmosphere } from './effects/MountainAtmosphere.js'
 import { FlowerField } from './effects/FlowerField.js'
 import { BeeSwarm } from './effects/BeeSwarm.js'
 import { HoneyDrop } from './effects/HoneyDrop.js'
+import { Honeycomb } from './effects/Honeycomb.js'
 import { HoneyFlow } from './effects/HoneyFlow.js'
 import { HoneyParticles } from './effects/HoneyParticles.js'
 
 /**
  * Hành trình kể chuyện bằng hình: HOA → PHẤN → ONG → MẬT → SẢN PHẨM.
  *
- *   Hero          tia nắng + sương ấm + phấn hoa + giọt mật lơ lửng, đàn ong lượn quanh
- *   Mật ong       giọt mật rơi xuống cạnh khung ảnh khi cuộn tới
+ *   Hero          tia nắng + sương ấm + phấn hoa + tổ ong 3D (giọt mật nhỏ từ đáy), đàn ong lượn quanh
+ *   Mật ong       giọt mật hình thành ở đầu dòng mật trong tranh tổ ong rồi nhỏ xuống
  *   Sản phẩm      gần như tĩnh (sản phẩm là chính) — hạt phấn khi rê chuột lên thẻ
  *   Câu chuyện    bụi nắng dày + tia sáng chậm
  *   Nguồn gốc     núi xa + sương + cánh đồng hoa lay theo gió + vệt gió + đàn ong bay tới
@@ -61,9 +62,11 @@ export function createExperience(canvas, options) {
   if (fx.honeyFlow) engine.add(new HoneyFlow(engine, P, { timeline: anchors.timeline }))
 
   // ── chủ thể: giọt mật & ong ───────────────────────────────
+  if (fx.honeycomb) engine.add(new Honeycomb(engine, P, { anchor: anchors.heroSubject }))
   if (fx.honeyDrop) {
-    engine.add(new HoneyDrop(engine, P, { name: 'Giọt mật · Hero', anchor: anchors.heroSubject }))
-    engine.add(new HoneyDrop(engine, P, { name: 'Giọt mật · Mật ong', anchor: anchors.introDrop, mode: 'reveal' }))
+    // màu theo dòng mật trong tranh (gradient #9A6514 → #F2BE5C → #C88A24 dưới lớp phủ mờ)
+    const tone = { deep: '#b98235', mid: '#dbb267', light: '#f3d48f', glow: 0.4 }
+    engine.add(new HoneyDrop(engine, P, { name: 'Giọt mật · Mật ong', anchor: anchors.introDrip, tone }))
   }
   if (fx.bees) {
     engine.add(
@@ -72,7 +75,7 @@ export function createExperience(canvas, options) {
           {
             get: () => {
               const a = anchors.heroSubject()
-              return a && { ...a, rx: Math.max(90, a.r * 3.6), ry: Math.max(60, a.r * 2.4) }
+              return a && { ...a, rx: Math.max(110, a.r * 4.2), ry: Math.max(80, a.r * 3.2) }
             },
           },
           {

@@ -38,7 +38,8 @@ export const THREE_CONFIG = {
     atmosphere: true, // sương + dãy núi xa
     flowers: true,
     bees: true,
-    honeyDrop: true,
+    honeycomb: true, // tổ ong 3D ở Hero (có giọt mật nhỏ xuống từ đáy)
+    honeyDrop: true, // giọt mật ở section "Mật ong là gì"
     honeyFlow: true,
     goldenParticles: true,
   },
@@ -82,6 +83,9 @@ export const PALETTE = {
   stemDark: '#26402c',
   stemLight: '#5f7d4c',
   flowerCenter: '#e0a22e',
+  wax: ['#d99a32', '#e3a83c', '#cf8e2a', '#e8b448'], // sáp ong (thành ô)
+  waxCap: '#f1d38a', // nắp sáp
+  combBack: '#7a4310', // đáy ô trống
   petals: ['#f4efe4', '#f3c6cf', '#e8a7b8', '#eac25a', '#cdb6e2', '#f7e4b0'],
   grass: ['#2f4b33', '#3b5a3a', '#4c6b43', '#5a7748'],
 }

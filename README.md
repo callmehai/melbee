@@ -158,8 +158,25 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
   Chỉ bật trên máy có chuột, tự tắt trên điện thoại. Không muốn dùng: xoá `<Cursor />` trong `src/App.jsx`.
 - Người dùng bật *Reduce motion* trong hệ điều hành → hiệu ứng phức tạp tự tắt.
 - Tiêu đề tab tự chạy chữ khi dài: `src/lib/titleMarquee.js` (tốc độ `step`, nghỉ đầu vòng `pause`).
-- Nút "Âm thanh" góc trái dưới: tiếng gió núi tổng hợp, **mặc định tắt**. Muốn dùng file thật: chép
-  `public/assets/audio/ambient.mp3` (tự dùng file đó thay tiếng tổng hợp). Bỏ nút: xoá `<SoundToggle />` trong `src/App.jsx`.
+- Nút "Âm thanh" góc trái dưới — xem mục **Âm thanh nền** bên dưới. Bỏ nút: xoá `<SoundToggle />` trong `src/App.jsx`.
+
+---
+
+## Âm thanh nền
+
+Tiếng rừng + gió + suối thật (Mixkit, giấy phép miễn phí, dùng thương mại được, không cần ghi nguồn), rất nhẹ.
+**Mặc định tắt** — chỉ tải và phát khi người xem bấm nút "Âm thanh".
+
+| File (`public/assets/audio/`) | Nguồn Mixkit | Dài |
+|---|---|---|
+| `ambient-forest.mp3` | Quiet forest ambience (#1220) | 40 giây, lặp liền |
+| `wind.mp3` | Wind blowing ambience (#2658) | 30 giây, lặp liền |
+| `river.mp3` | River water flow and surroundings (#2452) | 30 giây, lặp liền |
+
+- Âm lượng từng lớp, mức theo từng section: `src/audio/config.js` (`AUDIO_LAYERS`, `AUDIO_SCENES`, `AUDIO_CONFIG`).
+- Đổi section → tự crossfade ~1,5 giây. Cuộn nhanh (gió Three.js mạnh lên) → tiếng gió to lên nhẹ.
+- Thay file: giữ đúng tên, nên là đoạn lặp liền, MP3 48–64kbps. Thiếu file nào → lớp đó im, trang vẫn chạy.
+- Mã: `src/audio/AudioManager.js` (một AudioContext, 3 lớp), nút: `src/components/SoundToggle/`.
 
 ---
 
@@ -210,6 +227,7 @@ src/
 │   ├── Gallery/  Lightbox/  Testimonials/  CTA/  Footer/  Cursor/  SoundToggle/
 │   ├── Art/                 hình minh hoạ SVG (dùng khi chưa có ảnh thật)
 │   └── common/              nút, ảnh, menu đặt hàng, tiêu đề section…
+├── audio/                   âm thanh nền: AudioManager + config
 ├── three/                   lớp Three.js (xem mục "Lớp Three.js")
 │   ├── config.js            bật/tắt hiệu ứng, số lượng, màu, tâm trạng section
 │   ├── ThreeCanvas.jsx      điểm vào: kiểm tra WebGL, tải lazy

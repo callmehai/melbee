@@ -28,6 +28,21 @@
   border-color: rgba(228, 178, 90, 0.6);
 }
 
+.sound-toggle__label i {
+  font-style: normal;
+  opacity: 0.55;
+}
+
+.sound-toggle.is-loading svg {
+  animation: sound-wait 1.2s ease-in-out infinite;
+}
+
+@keyframes sound-wait {
+  50% {
+    opacity: 0.35;
+  }
+}
+
 .sound-toggle__bars {
   display: inline-flex;
   align-items: flex-end;

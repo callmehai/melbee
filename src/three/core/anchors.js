@@ -14,7 +14,7 @@ export function createAnchors(engine) {
   return {
     section: (name) => engine.scroll.get(name),
 
-    /** Chủ thể Hero: giọt mật + đàn ong lượn quanh, ở khoảng trống bên phải chữ. */
+    /** Chủ thể Hero: tổ ong + đàn ong lượn quanh, ở khoảng trống bên phải chữ. */
     heroSubject() {
       const s = engine.scroll.get('hero')
       if (!s) return null
@@ -28,18 +28,13 @@ export function createAnchors(engine) {
       }
     },
 
-    /** Mép trái khung ảnh vòm ở section "Mật ong là gì". */
-    introDrop() {
-      const el = els.introFrame
-      if (!el) return null
-      const r = el.getBoundingClientRect()
-      return {
-        sx: r.left + r.width * 0.06,
-        sy: r.top + r.height * 0.3,
-        r: Math.max(26, r.width * 0.12),
-        top: r.top,
-        bottom: r.bottom,
-      }
+    /** Đầu dòng mật trong tranh tổ ong (mốc data-drip-tip trong SVG). */
+    introDrip() {
+      const tip = els.introFrame?.querySelector('[data-drip-tip]')
+      if (!tip) return null
+      const r = tip.getBoundingClientRect()
+      if (!r.width) return null
+      return { x: r.left + r.width / 2, y: r.top, width: r.width, inView: r.bottom > -80 && r.top < engine.H + 80 }
     },
 
     /** Dải đồng cỏ: từ đáy ảnh "Nguồn gốc" tới đáy section — chỗ cho hoa, cỏ, núi xa, sương. */

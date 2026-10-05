@@ -208,6 +208,8 @@ export const Honeycomb = memo(function Honeycomb({ className, label = 'Cận c�
           ))}
           <path d="M-20 -20 L820 -20 L820 90 C 700 110, 640 70, 560 120 C 520 145, 520 260, 498 300 C 486 322, 470 322, 462 300 C 448 250, 455 150, 400 130 C 300 95, 120 140, -20 100 Z" fill={`url(#d${id})`} opacity="0.95" />
           <ellipse cx="480" cy="295" rx="6" ry="10" fill="#FFF3D0" opacity="0.6" />
+          {/* mốc vô hình ở đầu dòng mật — lớp Three.js cho giọt mật 3D nhỏ xuống đúng chỗ này */}
+          <rect data-drip-tip x="462" y="300" width="36" height="22" fill="none" />
           <rect width="800" height="800" fill={`url(#v${id})`} />
         </>
       )}

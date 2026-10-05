@@ -1,8 +1,8 @@
-import { LatheGeometry, Mesh, MeshPhysicalMaterial, PlaneGeometry, ShaderMaterial, Vector2, Color } from 'three'
+import { Color, LatheGeometry, Mesh, MeshPhysicalMaterial, ShaderMaterial, Vector2 } from 'three'
 import { Effect } from '../core/Effect.js'
 import { THREE_CONFIG } from '../config.js'
 import { DISTORTION, HONEY_FRAG, NOISE, rawColor } from '../shaders/index.js'
-import { clamp, damp } from '../utils/noise.js'
+import { damp, smoothstep } from '../utils/noise.js'
 
 const VERT = /* glsl */ `
 ${NOISE}
@@ -22,26 +22,6 @@ void main() {
 }
 `
 
-const HALO_VERT = /* glsl */ `
-varying vec2 vUv;
-void main() {
-  vUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`
-
-const HALO_FRAG = /* glsl */ `
-uniform vec3 uColor;
-uniform float uOpacity;
-varying vec2 vUv;
-void main() {
-  float r = length(vUv - 0.5) * 2.0;
-  float a = pow(max(0.0, 1.0 - r), 2.4) * uOpacity;
-  if (a < 0.002) discard;
-  gl_FragColor = vec4(uColor, a);
-}
-`
-
 /** Biên dạng giọt nước: đáy tròn, đỉnh nhọn — xoay quanh trục Y (LatheGeometry). */
 function dropGeometry() {
   const pts = []
@@ -58,133 +38,110 @@ function dropGeometry() {
 let sharedGeometry = null
 let geometryUsers = 0
 
+/** Hình giọt mật dùng chung (giọt ở "Mật ong", giọt nhỏ từ tổ ong). Nhớ gọi releaseDropGeometry khi dọn. */
+export function acquireDropGeometry() {
+  sharedGeometry ||= dropGeometry()
+  geometryUsers++
+  return sharedGeometry
+}
+
+export function releaseDropGeometry() {
+  if (--geometryUsers === 0) {
+    sharedGeometry.dispose()
+    sharedGeometry = null
+  }
+}
+
 /**
- * Giọt mật 3D. Mặc định dùng shader mật ong tự viết (honey.glsl) — vì canvas trong suốt
- * nằm trên trang web, transmission của MeshPhysicalMaterial không "nhìn" được nội dung DOM
- * phía sau nên trông tối và đục. honeyShader: false → dùng MeshPhysicalMaterial (clearcoat).
- *
- * mode 'hero': lơ lửng ở Hero, đàn ong lượn quanh.
- * mode 'reveal': rơi từ trên xuống khi cuộn tới section "Mật ong" (scale 0→1, mờ → rõ, xoay nhẹ),
- * bay đi khi cuộn qua. Không tạo/huỷ object — chỉ đổi giá trị.
+ * Vật liệu mật ong. Mặc định là shader tự viết (honey.glsl) — vì canvas trong suốt nằm trên
+ * trang web, transmission của MeshPhysicalMaterial không "nhìn" được nội dung DOM phía sau
+ * nên trông tối và đục. honeyShader: false → MeshPhysicalMaterial (clearcoat).
+ */
+export function createHoneyMaterial(engine, palette, tone = {}) {
+  if (THREE_CONFIG.honeyShader) {
+    return new ShaderMaterial({
+      vertexShader: VERT,
+      fragmentShader: `${NOISE}\n${HONEY_FRAG}`,
+      transparent: true,
+      uniforms: {
+        uTime: engine.uniforms.uTime,
+        uOpacity: { value: 0 },
+        uGlow: { value: (THREE_CONFIG.bloom ? 1 : 0.4) * (tone.glow ?? 1) },
+        uDistort: { value: engine.reduced ? 0.3 : 1 },
+        uDeep: { value: rawColor(tone.deep || palette.honeyDeep) },
+        uMid: { value: rawColor(tone.mid || palette.honeyMid) },
+        uLight: { value: rawColor(tone.light || palette.honeyLight) },
+      },
+    })
+  }
+  engine.ensureLights()
+  return new MeshPhysicalMaterial({
+    color: new Color(palette.honeyMid),
+    emissive: new Color(palette.honeyDeep),
+    emissiveIntensity: 0.35,
+    roughness: 0.12,
+    metalness: 0,
+    clearcoat: 1,
+    clearcoatRoughness: 0.08,
+    ior: 1.49,
+    sheen: 0.4,
+    sheenColor: new Color(palette.honeyLight),
+    transparent: true,
+    opacity: 0,
+  })
+}
+
+export function setHoneyOpacity(material, v) {
+  if (material.isShaderMaterial) material.uniforms.uOpacity.value = v
+  else material.opacity = v * 0.92
+}
+
+/**
+ * Giọt mật nhỏ xuống từ đầu dòng mật trong tranh tổ ong (section "Mật ong là gì"):
+ * hình thành ở đầu dòng, kéo dài cổ, rơi rồi tan — lặp lại. Vị trí lấy từ mốc vô hình
+ * data-drip-tip trong SVG nên luôn khớp tranh dù ảnh co giãn; màu lấy theo gradient của tranh.
+ * Có ảnh thật thay tranh (không còn mốc) → giọt tự ẩn.
  */
 export class HoneyDrop extends Effect {
-  constructor(engine, palette, { name, anchor, mode = 'hero', renderOrder = 8 }) {
+  constructor(engine, palette, { name, anchor, tone, period = 5.5, renderOrder = 8 }) {
     super(engine, name)
     this.anchor = anchor
-    this.mode = mode
-    this.enter = 0
-    this.leave = 0
-    sharedGeometry ||= dropGeometry()
-    geometryUsers++
-    this.geometry = sharedGeometry
-
-    if (THREE_CONFIG.honeyShader) {
-      this.material = new ShaderMaterial({
-        vertexShader: VERT,
-        fragmentShader: `${NOISE}\n${HONEY_FRAG}`,
-        transparent: true,
-        uniforms: {
-          uTime: engine.uniforms.uTime,
-          uOpacity: { value: 0 },
-          uGlow: { value: THREE_CONFIG.bloom ? 1 : 0.4 },
-          uDistort: { value: engine.reduced ? 0.3 : 1 },
-          uDeep: { value: rawColor(palette.honeyDeep) },
-          uMid: { value: rawColor(palette.honeyMid) },
-          uLight: { value: rawColor(palette.honeyLight) },
-        },
-      })
-    } else {
-      this.material = new MeshPhysicalMaterial({
-        color: new Color(palette.honeyMid),
-        emissive: new Color(palette.honeyDeep),
-        emissiveIntensity: 0.35,
-        roughness: 0.12,
-        metalness: 0,
-        clearcoat: 1,
-        clearcoatRoughness: 0.08,
-        ior: 1.49,
-        sheen: 0.4,
-        sheenColor: new Color(palette.honeyLight),
-        transparent: true,
-        opacity: 0,
-      })
-      engine.ensureLights()
-    }
+    this.period = period
+    this.geometry = acquireDropGeometry()
+    this.material = createHoneyMaterial(engine, palette, tone)
     this.mesh = new Mesh(this.geometry, this.material)
     this.mesh.frustumCulled = false
     this.mesh.renderOrder = renderOrder
-
-    this.halo = new Mesh(
-      new PlaneGeometry(1, 1),
-      new ShaderMaterial({
-        vertexShader: HALO_VERT,
-        fragmentShader: HALO_FRAG,
-        transparent: true,
-        depthWrite: false,
-        depthTest: false,
-        uniforms: { uColor: { value: rawColor(palette.honeyLight) }, uOpacity: { value: 0 } },
-      })
-    )
-    this.halo.frustumCulled = false
-    this.halo.renderOrder = renderOrder - 1
-    this.group.add(this.halo, this.mesh)
+    this.group.add(this.mesh)
     this.count = 1
   }
 
   update(dt, engine) {
     const a = THREE_CONFIG.effects.honeyDrop ? this.anchor() : null
-    const H = engine.H
-    let show = 0
-    let offsetY = 0
-    let spin = 0
-    let scale = 1
-
-    if (a && this.mode === 'reveal') {
-      // vào: mép trên khung ảnh đi từ 95% → 45% chiều cao màn hình
-      const e = clamp((H * 0.95 - a.top) / (H * 0.5), 0, 1)
-      // ra: mép dưới khung ảnh đi lên quá 35% màn hình
-      const l = clamp((H * 0.35 - a.bottom) / (H * 0.35), 0, 1)
-      const speed = engine.reduced ? 20 : 3
-      this.enter = damp(this.enter, e, speed, dt)
-      this.leave = damp(this.leave, l, speed, dt)
-      const back = (x) => 1 + 2.2 * Math.pow(x - 1, 3) + 1.2 * Math.pow(x - 1, 2) // easeOutBack
-      scale = back(this.enter) * (1 - this.leave * 0.3)
-      show = this.enter * (1 - this.leave)
-      offsetY = -(1 - this.enter) * 180 - this.leave * 120
-      spin = (1 - this.enter) * 2.2
-    } else if (a) {
-      show = a.inView ? clamp(a.visibility * 1.4, 0, 1) : 0
-    }
-
-    this.intensity = damp(this.intensity, show, 3, dt)
+    this.intensity = damp(this.intensity, a?.inView ? 1 : 0, 3, dt)
     this.group.visible = !!a && this.intensity > 0.01
     if (!this.group.visible) return
 
-    const t = engine.time
-    const r = a.r * Math.max(0.001, scale)
-    const float = engine.reduced ? 0 : Math.sin(t * 0.8) * 6
-    engine.toWorld(a.sx, a.sy + offsetY + float, 0, this.mesh.position)
-    this.mesh.scale.setScalar(r)
-    this.mesh.rotation.set(Math.sin(t * 0.35) * 0.06, t * 0.25 + spin, Math.sin(t * 0.5) * 0.08)
-
-    const dark = engine.isDarkAt(a.sy)
-    this.halo.position.copy(this.mesh.position)
-    this.halo.position.z -= 1
-    this.halo.scale.setScalar(r * (dark ? 6 : 4.5))
-    this.halo.material.uniforms.uOpacity.value = (THREE_CONFIG.bloom ? (dark ? 0.32 : 0.22) : 0) * this.intensity
-
-    if (this.material.isShaderMaterial) this.material.uniforms.uOpacity.value = this.intensity
-    else this.material.opacity = this.intensity * 0.92
+    // 0–65% thành hình, 65–85% kéo dài cổ, 85–100% rơi và tan
+    const p = engine.reduced ? 0.55 : (engine.time % this.period) / this.period
+    const grow = 0.3 + 0.7 * smoothstep(0, 0.65, p)
+    const neck = 1 + 0.4 * smoothstep(0.5, 0.85, p)
+    const fall = p > 0.85 ? (p - 0.85) * this.period : 0 // giây kể từ lúc rơi
+    // thân giọt (rộng ~1.5 đơn vị) bằng bề ngang dòng mật trong tranh
+    const size = (a.width / 1.5) * grow
+    // đỉnh giọt (y ≈ 1.3) lồng vào đầu dòng mật, phần thân treo bên dưới
+    const top = a.y - a.width * 0.45
+    const sy = top + 1.3 * size * neck + 0.5 * 1400 * fall * fall
+    engine.toWorld(a.x, sy, 0, this.mesh.position)
+    this.mesh.scale.set(size, size * neck, size)
+    this.mesh.rotation.set(0, engine.time * 0.3, 0)
+    setHoneyOpacity(this.material, this.intensity * (1 - smoothstep(0.9, 1, p)))
   }
 
   dispose() {
     this.group.remove(this.mesh)
     this.material.dispose()
     super.dispose()
-    // hình học dùng chung giữa các giọt: chỉ huỷ khi giọt cuối cùng bị dọn
-    if (--geometryUsers === 0) {
-      sharedGeometry.dispose()
-      sharedGeometry = null
-    }
+    releaseDropGeometry()
   }
 }
