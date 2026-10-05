@@ -125,7 +125,7 @@ Trang không hiện hình minh hoạ thay ảnh thật ở những chỗ cần �
 
 ### Câu chuyện, nguồn gốc, quy trình, lifestyle
 Đều nằm trong `src/data/sections.js` (`story`, `origin`, `process.steps`, `whyUs`, `lifestyle`).
-Quy trình thêm/bớt bước: thêm/xoá object trong `process.steps` (các bước nối nhau bằng một nét mật đầy dần theo cuộn).
+Quy trình thêm/bớt bước: thêm/xoá object trong `process.steps` (các bước so le hai bên một dòng mật chảy dọc, đầy dần theo cuộn; mỗi bước có ảnh `image`, chưa có ảnh thì dùng tranh `art`).
 
 ### Chia sẻ khách hàng
 `src/data/testimonials.js`. Hiện là **nội dung mẫu** (`sample: true`) nên **không hiện** trên trang — MelBee
@@ -187,14 +187,15 @@ Muốn mặc định tắt: `autoplay: false` trong `src/audio/config.js`.
 
 Một canvas WebGL **duy nhất** phủ cả trang (trong suốt, không chặn chuột, nằm dưới navbar và cửa sổ
 sản phẩm). Mỗi hiệu ứng tự bám vào section của nó qua thuộc tính `data-scene` trên thẻ `<section>`.
-Three.js chỉ làm **không khí** — nắng, sương, phấn hoa, ong, hoa — không làm vật thể trình diễn.
+Three.js chủ yếu làm **không khí** — nắng, sương, phấn hoa, ong, hoa. Vật thể duy nhất là miếng bánh tổ
+ở "Giọt mật", vì người xem cầm lắc được nó.
 Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở Hero, chiều tà ở CTA.
 
 | Section | Hiệu ứng |
 |---|---|
 | Hero | tia nắng sớm toả từ mặt trời trong tranh, sương trôi ở chân núi, 1–3 con ong ghé cành hoa ban |
 | Nguồn gốc | núi xa xanh lam + sương, đồng hoa (cải vàng, tam giác mạch, hoa trắng) lay theo gió, đàn ong đi kiếm mật |
-| Giọt mật | giọt mật hình thành ở đầu dòng mật trong tranh tổ ong rồi nhỏ xuống |
+| Giọt mật | miếng bánh tổ 3D (vách sáp, ô vít nắp, ô mật bóng): rê chuột → nghiêng theo; kéo hoặc chạm → lắc, rung rinh rồi về chỗ; giọt mật ở mép dưới to dần thấy rõ rồi rơi (2–3,5 giây một giọt), đung đưa theo khi lắc, lắc mạnh thì giọt văng sớm. Máy không có WebGL → hiện ảnh `story/intro-macro.jpg` hoặc tranh tổ ong |
 | Sản phẩm | gần như tĩnh; rê chuột lên thẻ → vài hạt phấn bay lên |
 | CTA | tia nắng chiều cùng hướng, bụi nắng bay lên |
 | Cả trang | một lớp phấn hoa mỏng, một màu vàng ấm — dày ở Hero / Nguồn gốc, thưa ở phần nội dung |
@@ -240,7 +241,7 @@ src/
 │   ├── experience.js        ghép các hiệu ứng vào từng section
 │   ├── core/                Engine (renderer, camera, gió, cuộn, chuột), ScrollTracker, anchors
 │   ├── effects/             PollenField, LightRays, MountainAtmosphere, FlowerField,
-│   │                        BeeSwarm, HoneyDrop, HoneyParticles
+│   │                        BeeSwarm, Honeycomb, HoneyParticles, honey (vật liệu mật dùng chung)
 │   ├── shaders/             honey, pollen, distortion, noise, space (.glsl)
 │   ├── utils/               noise, random, performance
 │   └── debug/               bảng debug (chỉ bản dev)

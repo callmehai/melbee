@@ -48,6 +48,74 @@
   transition: transform 1.2s var(--ease);
 }
 
+/* sân khấu bánh tổ 3D: nắng sớm từ bên phải (cùng mặt trời của trang), hoa ban nhoè phía xa */
+.intro__stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(55% 42% at 80% 28%, rgba(255, 228, 168, 0.6), transparent 72%),
+    radial-gradient(16% 12% at 20% 22%, rgba(240, 210, 220, 0.55), transparent 70%),
+    radial-gradient(10% 8% at 31% 31%, rgba(250, 244, 236, 0.75), transparent 70%),
+    radial-gradient(13% 10% at 86% 74%, rgba(236, 204, 214, 0.42), transparent 70%),
+    radial-gradient(9% 7% at 14% 64%, rgba(222, 230, 214, 0.6), transparent 70%),
+    linear-gradient(180deg, #edf0ea 0%, #f6f0e4 52%, #f0dfbf 100%);
+  cursor: grab;
+  touch-action: pan-y; /* vuốt dọc vẫn cuộn trang, vuốt ngang để lắc */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.intro__stage:active {
+  cursor: grabbing;
+}
+
+/* bóng mềm dưới miếng tổ (giọt mật rơi tới đây thì tan) */
+.intro__shadow {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 9%;
+  height: 7%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(110, 72, 26, 0.24), rgba(110, 72, 26, 0) 100%);
+  filter: blur(4px);
+}
+
+.intro__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 22px;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--brown-2);
+  opacity: 0.62;
+  transition: opacity 0.8s var(--ease);
+  pointer-events: none;
+}
+
+.intro__stage.is-played .intro__hint {
+  opacity: 0;
+}
+
+.intro__hint-touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .intro__hint-mouse {
+    display: none;
+  }
+
+  .intro__hint-touch {
+    display: inline;
+  }
+}
+
 .intro__hex {
   position: absolute;
   right: -28px;

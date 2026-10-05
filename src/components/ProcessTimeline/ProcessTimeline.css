@@ -1,19 +1,21 @@
-/* ── máy tính: 5 cột, nét mật chạy ngang qua tâm các chấm ───────── */
+/* ── máy tính: dòng mật chảy dọc giữa, các bước so le hai bên ───── */
 .timeline {
   --p: 0;
   --dot: 18px;
   position: relative;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: clamp(20px, 2.4vw, 36px);
+  gap: clamp(44px, 6vw, 84px);
+  max-width: 1080px;
+  margin: 0 auto;
 }
 
 .timeline__track {
   position: absolute;
-  top: calc(var(--dot) / 2 - 3px);
-  left: 10%;
-  right: 10%;
-  height: 6px;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  margin-left: -3px;
   border-radius: 3px;
   background: rgba(200, 138, 36, 0.14);
 }
@@ -24,112 +26,141 @@
   border-radius: inherit;
   /* mật sánh: lõi sáng, viền đậm, một vệt bóng chạy dọc */
   background:
-    linear-gradient(180deg, rgba(255, 241, 200, 0.75) 0 22%, transparent 34%),
-    linear-gradient(180deg, #e9b24f, #c88a24 60%, #9a6514);
-  box-shadow: 0 2px 10px -2px rgba(200, 138, 36, 0.55);
-  transform: scaleX(var(--p));
-  transform-origin: left center;
+    linear-gradient(90deg, rgba(255, 241, 200, 0.75) 0 22%, transparent 34%),
+    linear-gradient(90deg, #e9b24f, #c88a24 60%, #9a6514);
+  box-shadow: 2px 0 10px -2px rgba(200, 138, 36, 0.55);
+  transform: scaleY(var(--p));
+  transform-origin: center top;
 }
 
+/* giọt mật ở đầu dòng */
 .timeline__bead {
   position: absolute;
-  top: 50%;
-  left: calc(var(--p) * 100%);
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #fff1c8 0 18%, #e9b24f 40%, #a86d1c 100%);
-  box-shadow: 0 3px 10px -2px rgba(154, 101, 20, 0.6);
+  top: calc(var(--p) * 100%);
+  left: 50%;
+  width: 16px;
+  height: 19px;
+  margin: -6px 0 0 -8px;
+  border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
+  background: radial-gradient(circle at 38% 62%, #fff1c8 0 14%, #e9b24f 42%, #a86d1c 100%);
+  box-shadow: 0 4px 10px -3px rgba(154, 101, 20, 0.6);
   opacity: calc(var(--p) * 40 - 0.2);
 }
 
 .step {
   position: relative;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(64px, 9vw, 128px);
+  align-items: center;
   /* bước sáng lên khi mật chảy tới */
   --reached: clamp(0, (var(--p) - var(--i)) * 30 + 1, 1);
 }
 
 .step__dot {
-  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
   width: var(--dot);
   height: calc(var(--dot) * 1.12);
-  margin: 0 auto 26px;
+  margin: calc(var(--dot) * -0.56) 0 0 calc(var(--dot) / -2);
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
   background: color-mix(in srgb, var(--honey) calc(var(--reached) * 100%), #e6d8c2);
-  position: relative;
   z-index: 1;
+}
+
+.step__media {
+  width: 100%;
+  max-width: 380px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius);
+  justify-self: end;
+  box-shadow: 0 24px 50px -32px rgba(58, 41, 29, 0.45);
+}
+
+.step__media .media {
+  width: 100%;
+  height: 100%;
+}
+
+.step.is-right .step__media {
+  order: 2;
+  justify-self: start;
+}
+
+.step.is-right .step__text {
+  justify-self: end;
+  text-align: right;
+}
+
+.step.is-right .step__text p {
+  margin-left: auto;
 }
 
 .step__no {
   display: block;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(36px, 3.4vw, 52px);
+  font-size: clamp(40px, 4.2vw, 60px);
   line-height: 1;
   color: var(--honey);
   opacity: calc(0.35 + var(--reached) * 0.65);
 }
 
-.step h3 {
-  margin: 12px 0 10px;
+.step__text h3 {
+  margin: 10px 0 12px;
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(22px, 1.9vw, 28px);
-  line-height: 1.2;
+  font-size: clamp(26px, 2.4vw, 34px);
+  line-height: 1.15;
 }
 
-.step p {
-  max-width: 260px;
-  margin: 0 auto;
-  font-size: 15px;
+.step__text p {
+  max-width: 400px;
   color: var(--brown-2);
 }
 
-/* ── điện thoại / máy tính bảng dọc: nét mật chạy dọc bên trái ──── */
-@media (max-width: 900px) {
+/* ── điện thoại: dòng mật chạy dọc bên trái, ảnh trên chữ dưới ──── */
+@media (max-width: 760px) {
   .timeline {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    padding-left: 44px;
+    gap: 48px;
+    padding-left: 40px;
   }
 
   .timeline__track {
-    top: 4px;
-    bottom: 4px;
-    left: 6px;
-    right: auto;
-    width: 6px;
-    height: auto;
-  }
-
-  .timeline__fill {
-    background:
-      linear-gradient(90deg, rgba(255, 241, 200, 0.75) 0 22%, transparent 34%),
-      linear-gradient(90deg, #e9b24f, #c88a24 60%, #9a6514);
-    transform: scaleY(var(--p));
-    transform-origin: center top;
+    left: 9px;
   }
 
   .timeline__bead {
-    top: calc(var(--p) * 100%);
-    left: 50%;
+    left: 9px;
   }
 
   .step {
-    text-align: left;
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .step__dot {
-    position: absolute;
-    left: -44px;
-    top: 6px;
+    left: -40px; /* tâm chấm trùng tâm dòng mật (cách mép 9px) */
+    top: 4px;
     margin: 0;
   }
 
-  .step p {
-    margin: 0;
-    max-width: 460px;
+  .step__media,
+  .step.is-right .step__media {
+    order: 0;
+    justify-self: stretch;
+    max-width: none;
+    aspect-ratio: 16 / 10;
+  }
+
+  .step.is-right .step__text {
+    justify-self: stretch;
+    text-align: left;
+  }
+
+  .step.is-right .step__text p {
+    margin-left: 0;
   }
 }

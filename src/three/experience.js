@@ -6,17 +6,17 @@ import { LightRays } from './effects/LightRays.js'
 import { MountainAtmosphere } from './effects/MountainAtmosphere.js'
 import { FlowerField } from './effects/FlowerField.js'
 import { BeeSwarm } from './effects/BeeSwarm.js'
-import { HoneyDrop } from './effects/HoneyDrop.js'
+import { Honeycomb } from './effects/Honeycomb.js'
 import { HoneyParticles } from './effects/HoneyParticles.js'
 
 /**
  * Một ngày xuân ở Điện Biên, kể bằng không khí: HOA → PHẤN → ONG → MẬT.
- * Three.js chỉ làm nắng, sương, phấn, ong, hoa — không làm vật thể trình diễn.
+ * Three.js chủ yếu làm nắng, sương, phấn, ong, hoa; vật thể duy nhất là miếng bánh tổ lắc được ở "Giọt mật".
  * Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở Hero, chiều tà ở CTA.
  *
  *   Hero          tia nắng sớm toả từ mặt trời trong tranh + sương trôi ở chân núi + vài con ong ghé cành hoa ban
  *   Nguồn gốc     núi xa xanh lam + sương + đồng hoa lay theo gió + đàn ong đi kiếm mật
- *   Giọt mật      giọt mật hình thành ở đầu dòng mật trong tranh tổ ong rồi nhỏ xuống
+ *   Giọt mật      miếng bánh tổ 3D: nghiêng theo chuột, kéo/chạm để lắc; sợi mật đung đưa, giọt to dần rồi rơi
  *   Sản phẩm      gần như tĩnh — vài hạt phấn khi rê chuột lên thẻ
  *   CTA           tia nắng chiều cùng hướng + bụi nắng bay lên
  *   Phấn hoa      một lớp mỏng, một màu, chạy xuyên trang — dày ở Hero/Nguồn gốc, thưa ở phần nội dung
@@ -49,12 +49,8 @@ export function createExperience(canvas, options) {
   }
   const flowers = fx.flowers ? engine.add(new FlowerField(engine, P, { band: anchors.meadow })) : null
 
-  // ── chủ thể: giọt mật & ong ───────────────────────────────
-  if (fx.honeyDrop) {
-    // màu theo dòng mật trong tranh tổ ong (gradient #9A6514 → #F2BE5C → #C88A24 dưới lớp phủ mờ)
-    const tone = { deep: '#b98235', mid: '#dbb267', light: '#f3d48f', glow: 0.4 }
-    engine.add(new HoneyDrop(engine, P, { name: 'Giọt mật', anchor: anchors.introDrip, tone }))
-  }
+  // ── chủ thể: bánh tổ & ong ────────────────────────────────
+  if (fx.honeycomb) engine.add(new Honeycomb(engine, P, { anchor: anchors.combStage }))
   if (fx.bees) {
     engine.add(
       new BeeSwarm(engine, {

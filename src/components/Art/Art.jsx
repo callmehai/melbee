@@ -323,8 +323,6 @@ export const Dipper = memo(function Dipper({ className, label = 'Mật ong chả
           {/* dòng mật mảnh rơi thẳng từ đáy đầu gáo */}
           <path d="M425 300 C 420 350, 432 400, 428 452 C 426 480, 430 500, 428 518" stroke={`url(#m${id})`} strokeWidth="9" strokeLinecap="round" fill="none" />
           <path d="M424 316 C 421 360, 429 404, 426 450" stroke="#FFF0C4" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.5" />
-          {/* mốc vô hình ở đầu dòng mật — giọt mật 3D hình thành và nhỏ xuống đúng chỗ này */}
-          <rect data-drip-tip x="412" y="518" width="32" height="20" fill="none" />
         </>
       )}
     </Frame>
@@ -430,8 +428,6 @@ export const Honeycomb = memo(function Honeycomb({ className, label = 'Cận c�
           {/* vệt sáng dọc dòng mật */}
           <path d="M540 132 C 518 160, 512 230, 494 286" stroke="#FFF1C8" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.35" />
           <ellipse cx="480" cy="295" rx="6" ry="10" fill="#FFF3D0" opacity="0.6" />
-          {/* mốc vô hình ở đầu dòng mật — lớp Three.js cho giọt mật 3D nhỏ xuống đúng chỗ này */}
-          <rect data-drip-tip x="462" y="300" width="36" height="22" fill="none" />
           <rect width="800" height="800" fill={`url(#v${id})`} />
         </>
       )}

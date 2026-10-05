@@ -82,11 +82,13 @@
   transition: opacity 0.3s, transform 0.4s var(--ease);
 }
 
-.cursor[data-state='view'] .cursor__label {
+.cursor[data-state='view'] .cursor__label,
+.cursor[data-state='grab'] .cursor__label {
   opacity: 1;
   transform: none;
 }
 
-.cursor[data-state='view'] .cursor__scale {
+.cursor[data-state='view'] .cursor__scale,
+.cursor[data-state='grab'] .cursor__scale {
   transform: scale(1.15);
 }

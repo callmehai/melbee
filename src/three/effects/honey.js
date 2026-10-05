@@ -1,8 +1,6 @@
-import { Color, LatheGeometry, Mesh, MeshPhysicalMaterial, ShaderMaterial, Vector2 } from 'three'
-import { Effect } from '../core/Effect.js'
+import { Color, LatheGeometry, MeshPhysicalMaterial, ShaderMaterial, Vector2 } from 'three'
 import { THREE_CONFIG } from '../config.js'
 import { DISTORTION, HONEY_FRAG, NOISE, rawColor } from '../shaders/index.js'
-import { damp, smoothstep } from '../utils/noise.js'
 
 const VERT = /* glsl */ `
 ${NOISE}
@@ -38,7 +36,7 @@ function dropGeometry() {
 let sharedGeometry = null
 let geometryUsers = 0
 
-/** Hình giọt mật dùng chung (giọt ở "Mật ong", giọt nhỏ từ tổ ong). Nhớ gọi releaseDropGeometry khi dọn. */
+/** Hình giọt mật dùng chung (giọt treo và giọt rơi ở bánh tổ). Nhớ gọi releaseDropGeometry khi dọn. */
 export function acquireDropGeometry() {
   sharedGeometry ||= dropGeometry()
   geometryUsers++
@@ -94,54 +92,4 @@ export function createHoneyMaterial(engine, palette, tone = {}) {
 export function setHoneyOpacity(material, v) {
   if (material.isShaderMaterial) material.uniforms.uOpacity.value = v
   else material.opacity = v * 0.92
-}
-
-/**
- * Giọt mật nhỏ xuống từ đầu dòng mật trong tranh tổ ong (section "Mật ong là gì"):
- * hình thành ở đầu dòng, kéo dài cổ, rơi rồi tan — lặp lại. Vị trí lấy từ mốc vô hình
- * data-drip-tip trong SVG nên luôn khớp tranh dù ảnh co giãn; màu lấy theo gradient của tranh.
- * Có ảnh thật thay tranh (không còn mốc) → giọt tự ẩn.
- */
-export class HoneyDrop extends Effect {
-  constructor(engine, palette, { name, anchor, tone, period = 5.5, renderOrder = 8 }) {
-    super(engine, name)
-    this.anchor = anchor
-    this.period = period
-    this.geometry = acquireDropGeometry()
-    this.material = createHoneyMaterial(engine, palette, tone)
-    this.mesh = new Mesh(this.geometry, this.material)
-    this.mesh.frustumCulled = false
-    this.mesh.renderOrder = renderOrder
-    this.group.add(this.mesh)
-    this.count = 1
-  }
-
-  update(dt, engine) {
-    const a = THREE_CONFIG.effects.honeyDrop ? this.anchor() : null
-    this.intensity = damp(this.intensity, a?.inView ? 1 : 0, 3, dt)
-    this.group.visible = !!a && this.intensity > 0.01
-    if (!this.group.visible) return
-
-    // 0–65% thành hình, 65–85% kéo dài cổ, 85–100% rơi và tan
-    const p = engine.reduced ? 0.55 : (engine.time % this.period) / this.period
-    const grow = 0.3 + 0.7 * smoothstep(0, 0.65, p)
-    const neck = 1 + 0.4 * smoothstep(0.5, 0.85, p)
-    const fall = p > 0.85 ? (p - 0.85) * this.period : 0 // giây kể từ lúc rơi
-    // thân giọt (rộng ~1.5 đơn vị) bằng bề ngang dòng mật trong tranh
-    const size = (a.width / 1.5) * grow
-    // đỉnh giọt (y ≈ 1.3) lồng vào đầu dòng mật, phần thân treo bên dưới
-    const top = a.y - a.width * 0.45
-    const sy = top + 1.3 * size * neck + 0.5 * 1400 * fall * fall
-    engine.toWorld(a.x, sy, 0, this.mesh.position)
-    this.mesh.scale.set(size, size * neck, size)
-    this.mesh.rotation.set(0, engine.time * 0.3, 0)
-    setHoneyOpacity(this.material, this.intensity * (1 - smoothstep(0.9, 1, p)))
-  }
-
-  dispose() {
-    this.group.remove(this.mesh)
-    this.material.dispose()
-    super.dispose()
-    releaseDropGeometry()
-  }
 }

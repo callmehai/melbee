@@ -42,8 +42,9 @@ export const intro = {
     'Đó là dấu vết của những mùa hoa, của núi rừng, của người nuôi ong và của hành trình từ những vùng đất tự nhiên đến từng giọt mật.',
     'Mỗi sản phẩm được giới thiệu với mong muốn giữ lại sự nguyên bản và câu chuyện phía sau nó.',
   ],
+  // khung này mặc định là miếng bánh tổ 3D lắc được; ảnh / tranh dưới đây chỉ hiện khi máy không có WebGL
   image: 'assets/images/story/intro-macro.jpg',
-  imageAlt: 'Cận cảnh mật ong chảy trên bánh tổ',
+  imageAlt: 'Miếng bánh tổ đầy mật, mật chảy thành sợi rồi nhỏ giọt',
   art: 'honeycomb',
 }
 

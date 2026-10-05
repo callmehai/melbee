@@ -5,7 +5,7 @@
 export function createAnchors(engine) {
   const q = (sel) => document.querySelector(sel)
   const els = {
-    introFrame: q('.intro__frame'),
+    stage: q('.intro__stage'),
     meadow: q('.origin__meadow'),
     blooms: [...document.querySelectorAll('.hero__branch [data-bloom]')],
   }
@@ -34,13 +34,14 @@ export function createAnchors(engine) {
       return { sx: 0, sy: s.top, targets, visibility: s.visibility, inView: s.inView }
     },
 
-    /** Đầu dòng mật trong tranh của khung "Giọt mật" (mốc data-drip-tip trong SVG). */
-    introDrip() {
-      const tip = els.introFrame?.querySelector('[data-drip-tip]')
-      if (!tip) return null
-      const r = tip.getBoundingClientRect()
+    /** Khung "Giọt mật" (.intro__stage) — sân khấu của miếng bánh tổ; null khi khung đang hiện ảnh/tranh thay thế. */
+    combStage() {
+      if (!els.stage?.isConnected) els.stage = q('.intro__stage')
+      const el = els.stage
+      if (!el) return null
+      const r = el.getBoundingClientRect()
       if (!r.width) return null
-      return { x: r.left + r.width / 2, y: r.top, width: r.width, inView: r.bottom > -80 && r.top < engine.H + 80 }
+      return { el, x: r.left + r.width / 2, top: r.top, bottom: r.bottom, w: r.width, h: r.height, inView: r.bottom > -40 && r.top < engine.H + 40 }
     },
 
     /** Dải đồng hoa ở chân "Nguồn gốc" (.origin__meadow) — chỗ cho hoa, cỏ, núi xa, sương. */

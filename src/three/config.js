@@ -26,14 +26,15 @@ export const THREE_CONFIG = {
   autoQuality: true, // FPS thấp kéo dài → tự hạ một cấp
 
   // ── bật/tắt từng hiệu ứng ─────────────────────────────────
-  // Three.js chỉ làm KHÔNG KHÍ (nắng, sương, phấn, ong, hoa) — không làm vật thể trình diễn.
+  // Three.js chủ yếu làm KHÔNG KHÍ (nắng, sương, phấn, ong, hoa). Vật thể duy nhất là miếng bánh tổ
+  // ở "Giọt mật" — người xem cầm lắc được, nên nó là một phần câu chuyện chứ không phải đồ trình diễn.
   effects: {
     pollen: true,
     lightRays: true, // chỉ ở Hero và CTA, cùng hướng với mặt trời trong tranh (thấp bên phải)
     atmosphere: true, // sương + dãy núi xa
     flowers: true,
     bees: true,
-    honeyDrop: true, // giọt mật ở section "Giọt mật"
+    honeycomb: true, // miếng bánh tổ 3D lắc được, mật chảy thành sợi rồi nhỏ giọt (section "Giọt mật")
     goldenParticles: true,
   },
 }

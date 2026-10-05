@@ -6,12 +6,14 @@ import './Cursor.css'
  * Con trỏ hình con ong (chỉ máy có chuột; điện thoại tự tắt).
  * - Ong vỗ cánh, đầu luôn quay theo hướng chuột di chuyển (quay đầu mượt khi đổi chiều).
  * - Trên ảnh bấm được ([data-cursor="view"]: thẻ sản phẩm, gallery) → hiện nhãn "XEM".
+ * - Trên thứ cầm lắc được ([data-cursor="grab"]: miếng bánh tổ) → hiện nhãn lấy từ data-cursor-label.
  * - Trên nút ([data-cursor="cta"]) → ong to lên một chút.
  */
 export default function Cursor() {
   const enabled = useMediaQuery('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)')
   const ref = useRef(null)
   const beeRef = useRef(null)
+  const labelRef = useRef(null)
 
   useEffect(() => {
     if (!enabled) return
@@ -34,6 +36,8 @@ export default function Cursor() {
       el.classList.add('is-on')
       const t = e.target instanceof Element ? e.target.closest('[data-cursor], a[href], button:not(:disabled)') : null
       el.dataset.state = t ? t.dataset.cursor || 'cta' : ''
+      const label = t?.dataset.cursorLabel || 'Xem'
+      if (labelRef.current.textContent !== label) labelRef.current.textContent = label
     }
     const leave = () => el.classList.remove('is-on')
     const down = () => el.classList.add('is-down')
@@ -88,7 +92,9 @@ export default function Cursor() {
           <path d="M-17 -6 Q-22 -15 -19 -18 M-13 -7 Q-14 -16 -10 -18" stroke="#1E1C18" strokeWidth="1.4" fill="none" strokeLinecap="round" />
         </svg>
       </div>
-      <span className="cursor__label">Xem</span>
+      <span ref={labelRef} className="cursor__label">
+        Xem
+      </span>
     </div>
   )
 }

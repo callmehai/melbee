@@ -31,8 +31,8 @@ void main() {
   col += uLight * caustic * 0.6 * uGlow;
   col += 0.05 * fine;
 
-  // điểm phản chiếu: một nguồn sáng trên-trái
-  vec3 L = normalize(vec3(-0.5, 0.75, 0.6));
+  // điểm phản chiếu: mặt trời chung của trang (thấp bên phải)
+  vec3 L = normalize(vec3(0.62, 0.38, 0.69));
   vec3 H = normalize(L + V);
   float nh = max(dot(N, H), 0.0);
   float spec = pow(nh, 90.0) * 1.3 + pow(nh, 14.0) * 0.1;
