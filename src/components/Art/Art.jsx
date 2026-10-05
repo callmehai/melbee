@@ -332,41 +332,53 @@ export const Dipper = memo(function Dipper({ className, label = 'Mật ong chả
 })
 
 /* ── TỔ ONG CẬN CẢNH ─────────────────────────────────────── */
+// Bánh tổ thật: vách sáp mảnh, sắc cạnh; ô vít nắp phẳng màu sáp ngà (gom thành mảng, nhiều ở phía trên);
+// ô còn mật trong như hổ phách, sáng dần về phía dưới vì nắng xuyên qua; vài ô trống thấy đáy.
+// Nắng từ phía trên bên phải: ô lõm sáng mép dưới-trái, tối mép trên-phải; nắp sáp thì ngược lại.
 export const Honeycomb = memo(function Honeycomb({ className, label = 'Cận cảnh bánh tổ ong đầy mật' }) {
   const r = rng(5)
-  const R = 46
+  const R = 34
   const w = Math.sqrt(3) * R
   const cells = []
-  for (let row = -1; row < 12; row++) {
-    for (let col = -1; col < 11; col++) {
+  for (let row = -1; row < 18; row++) {
+    for (let col = -1; col < 15; col++) {
       const cx = col * w + (row % 2 ? w / 2 : 0)
       const cy = row * R * 1.5
+      // mảng nắp sáp loang tự nhiên, dày hơn ở phía trên khung
+      const patch = Math.sin(cx * 0.011 + 1.3) * Math.cos(cy * 0.013 - 0.4) + Math.sin((cx + cy) * 0.006) * 0.6
+      const top = (1 - cy / 800) * 0.7
       const k = r()
-      cells.push({ cx, cy, type: k < 0.42 ? 'cap' : k < 0.9 ? 'honey' : 'empty', l: r() })
+      const type = k < 0.05 ? 'empty' : patch + top > 0.55 ? 'cap' : 'honey'
+      cells.push({ cx, cy, type, l: r() })
     }
   }
-  const hex = (cx, cy, s) =>
-    Array.from({ length: 6 }, (_, i) => {
-      const a = (Math.PI / 3) * i + Math.PI / 6
-      return `${f(cx + s * Math.cos(a))},${f(cy + s * Math.sin(a))}`
-    }).join(' ')
+  const pt = (cx, cy, s, i) => {
+    const a = (Math.PI / 3) * i + Math.PI / 6 // đỉnh 0: dưới-phải, 1: dưới, 2: dưới-trái, 3: trên-trái, 4: trên, 5: trên-phải
+    return [f(cx + s * Math.cos(a)), f(cy + s * Math.sin(a))]
+  }
+  const hex = (cx, cy, s) => [0, 1, 2, 3, 4, 5].map((i) => pt(cx, cy, s, i).join(',')).join(' ')
+  const edge = (cx, cy, s, idx) => idx.map((i) => pt(cx, cy, s, i).join(',')).join(' ')
   return (
-    <Frame className={className} label={label}>
+    <Frame className={className} label={label} grain={0.2}>
       {(id) => (
         <>
           <defs>
-            <radialGradient id={`h${id}`} cx="0.4" cy="0.35" r="0.7">
-              <stop offset="0" stopColor="#F4C76A" />
-              <stop offset="0.6" stopColor={C.honey} />
-              <stop offset="1" stopColor={C.honeyDeep} />
-            </radialGradient>
-            <radialGradient id={`c${id}`} cx="0.4" cy="0.35" r="0.75">
-              <stop offset="0" stopColor="#FBEBC4" />
-              <stop offset="1" stopColor="#E2BE78" />
-            </radialGradient>
-            <radialGradient id={`v${id}`} cx="0.5" cy="0.45" r="0.75">
+            <linearGradient id={`h${id}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#7A420C" />
+              <stop offset="0.5" stopColor="#B4701A" />
+              <stop offset="1" stopColor="#EAAA3E" />
+            </linearGradient>
+            <linearGradient id={`c${id}`} x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#F1DCA6" />
+              <stop offset="1" stopColor="#D8B46C" />
+            </linearGradient>
+            <linearGradient id={`e${id}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#3E2409" />
+              <stop offset="1" stopColor="#6A4314" />
+            </linearGradient>
+            <radialGradient id={`v${id}`} cx="0.6" cy="0.4" r="0.8">
               <stop offset="0.55" stopColor="#000" stopOpacity="0" />
-              <stop offset="1" stopColor="#1A0F05" stopOpacity="0.6" />
+              <stop offset="1" stopColor="#1A0F05" stopOpacity="0.45" />
             </radialGradient>
             <linearGradient id={`d${id}`} x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stopColor={C.honeyDeep} />
@@ -374,21 +386,49 @@ export const Honeycomb = memo(function Honeycomb({ className, label = 'Cận c�
               <stop offset="1" stopColor={C.honey} />
             </linearGradient>
           </defs>
-          <rect width="800" height="800" fill="#6E4410" />
-          {cells.map((c, i) => (
-            <g key={i}>
-              <polygon points={hex(c.cx, c.cy, R - 2)} fill="#A3701F" />
-              <polygon
-                points={hex(c.cx, c.cy, R - 7)}
-                fill={c.type === 'cap' ? `url(#c${id})` : c.type === 'honey' ? `url(#h${id})` : '#5A3810'}
-                opacity={0.85 + c.l * 0.15}
-              />
-              {c.type !== 'empty' && (
-                <ellipse cx={c.cx - 12} cy={c.cy - 14} rx="12" ry="6" fill="#FFF6DD" opacity={c.type === 'cap' ? 0.5 : 0.35} transform={`rotate(-30 ${c.cx - 12} ${c.cy - 14})`} />
-              )}
-            </g>
-          ))}
+          {/* sáp ong: màu vách */}
+          <rect width="800" height="800" fill="#B98A3E" />
+          {cells.map((c, i) => {
+            const s = R - 3.2
+            if (c.type === 'cap') {
+              return (
+                <g key={i}>
+                  <polygon points={hex(c.cx, c.cy, s)} fill={`url(#c${id})`} opacity={0.88 + c.l * 0.12} />
+                  {/* nắp hơi phồng: sáng mép trên-phải, tối mép dưới-trái */}
+                  <polyline points={edge(c.cx, c.cy, s - 1.5, [3, 4, 5, 0])} fill="none" stroke="#FFF4D6" strokeWidth="1.6" opacity="0.6" />
+                  <polyline points={edge(c.cx, c.cy, s - 1.5, [0, 1, 2, 3])} fill="none" stroke="#9C7330" strokeWidth="1.6" opacity="0.45" />
+                </g>
+              )
+            }
+            if (c.type === 'empty') {
+              return (
+                <g key={i}>
+                  <polygon points={hex(c.cx, c.cy, s)} fill={`url(#e${id})`} />
+                  {/* đáy ô: 3 mặt thoi */}
+                  <path
+                    d={`M${c.cx} ${c.cy} L${pt(c.cx, c.cy, s * 0.5, 1).join(' ')} M${c.cx} ${c.cy} L${pt(c.cx, c.cy, s * 0.5, 3).join(' ')} M${c.cx} ${c.cy} L${pt(c.cx, c.cy, s * 0.5, 5).join(' ')}`}
+                    stroke="#8A5E26"
+                    strokeWidth="1.2"
+                    opacity="0.6"
+                  />
+                  <polyline points={edge(c.cx, c.cy, s - 1.5, [1, 2, 3])} fill="none" stroke="#C9974A" strokeWidth="2" opacity="0.5" />
+                </g>
+              )
+            }
+            return (
+              <g key={i}>
+                <polygon points={hex(c.cx, c.cy, s)} fill={`url(#h${id})`} opacity={0.9 + c.l * 0.1} />
+                {/* mật trong ô lõm: bóng đổ của vách ở mép trên-phải, nắng xuyên sáng mép dưới-trái */}
+                <polyline points={edge(c.cx, c.cy, s - 2, [3, 4, 5, 0])} fill="none" stroke="#4A2406" strokeWidth="3" opacity="0.35" />
+                <polyline points={edge(c.cx, c.cy, s - 1.5, [0, 1, 2])} fill="none" stroke="#FFD27A" strokeWidth="1.6" opacity="0.7" />
+                {/* phản chiếu mảnh trên mặt mật */}
+                <path d={`M${f(c.cx + s * 0.15)} ${f(c.cy - s * 0.55)} L${f(c.cx + s * 0.55)} ${f(c.cy - s * 0.3)}`} stroke="#FFF1C8" strokeWidth="1.4" strokeLinecap="round" opacity={0.25 + c.l * 0.25} />
+              </g>
+            )
+          })}
           <path d="M-20 -20 L820 -20 L820 90 C 700 110, 640 70, 560 120 C 520 145, 520 260, 498 300 C 486 322, 470 322, 462 300 C 448 250, 455 150, 400 130 C 300 95, 120 140, -20 100 Z" fill={`url(#d${id})`} opacity="0.95" />
+          {/* vệt sáng dọc dòng mật */}
+          <path d="M540 132 C 518 160, 512 230, 494 286" stroke="#FFF1C8" strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.35" />
           <ellipse cx="480" cy="295" rx="6" ry="10" fill="#FFF3D0" opacity="0.6" />
           {/* mốc vô hình ở đầu dòng mật — lớp Three.js cho giọt mật 3D nhỏ xuống đúng chỗ này */}
           <rect data-drip-tip x="462" y="300" width="36" height="22" fill="none" />
