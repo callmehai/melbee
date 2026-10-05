@@ -45,10 +45,10 @@ function Grain({ id, opacity = 0.18 }) {
   )
 }
 
-function Frame({ viewBox = '0 0 800 800', children, grain = 0.16, className, label }) {
+function Frame({ viewBox = '0 0 800 800', children, grain = 0.16, className, label, align = 'xMidYMid' }) {
   const id = useId().replace(/:/g, '')
   return (
-    <svg className={className} viewBox={viewBox} preserveAspectRatio="xMidYMid slice" role="img" aria-label={label}>
+    <svg className={className} viewBox={viewBox} preserveAspectRatio={`${align} slice`} role="img" aria-label={label}>
       <defs>
         <Grain id={`g${id}`} opacity={grain} />
       </defs>
@@ -102,7 +102,7 @@ export const Landscape = memo(function Landscape({ variant = 'dawn', className, 
   const bases = [520, 590, 660, 740, 830, 930]
   const amps = [90, 110, 120, 110, 100, 70]
   return (
-    <Frame viewBox="0 0 1600 1000" className={className} label={label} grain={0.14}>
+    <Frame viewBox="0 0 1600 1000" className={className} label={label} grain={0.14} align="xMidYMax">
       {(id) => (
         <>
           <defs>
@@ -451,6 +451,10 @@ const JAR_TONES = {
 
 export const Jar = memo(function Jar({ tone = 'amber', name = 'Mật ong', className, label }) {
   const t = JAR_TONES[tone] || JAR_TONES.amber
+  // bỏ chữ "Mật ong" ở đầu cho gọn nhãn, tự thu nhỏ chữ theo độ dài
+  const short = name.replace(/^mật ong\s+/i, '').toUpperCase()
+  const fs = Math.min(17, Math.floor(168 / (short.length * 0.66)))
+  const body = 'M250 300 Q250 270 280 262 L520 262 Q550 270 550 300 L550 630 Q550 668 512 668 L288 668 Q250 668 250 630 Z'
   return (
     <Frame className={className} label={label || `Hũ ${name} (hình minh hoạ)`} grain={0.12}>
       {(id) => (
@@ -466,6 +470,9 @@ export const Jar = memo(function Jar({ tone = 'amber', name = 'Mật ong', class
               <stop offset="0.7" stopColor={t[1]} />
               <stop offset="1" stopColor={t[2]} />
             </linearGradient>
+            <clipPath id={`jc${id}`}>
+              <path d={body} />
+            </clipPath>
             <linearGradient id={`gl${id}`} x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stopColor="#fff" stopOpacity="0.05" />
               <stop offset="0.2" stopColor="#fff" stopOpacity="0.45" />
@@ -477,14 +484,18 @@ export const Jar = memo(function Jar({ tone = 'amber', name = 'Mật ong', class
           <rect width="800" height="800" fill={`url(#bg${id})`} />
           <ellipse cx="400" cy="672" rx="200" ry="26" fill="#3A291D" opacity="0.16" />
           {/* thân hũ */}
-          <path d="M250 300 Q250 270 280 262 L520 262 Q550 270 550 300 L550 630 Q550 668 512 668 L288 668 Q250 668 250 630 Z" fill={`url(#h${id})`} />
-          {tone === 'comb' &&
-            Array.from({ length: 24 }, (_, i) => {
-              const cx = 290 + (i % 6) * 44 + (Math.floor(i / 6) % 2 ? 22 : 0)
-              const cy = 340 + Math.floor(i / 6) * 38
-              return <circle key={i} cx={cx} cy={cy} r="17" fill="#F4D58E" stroke="#C08A34" strokeWidth="3" opacity="0.8" />
-            })}
-          <path d="M250 300 Q250 270 280 262 L520 262 Q550 270 550 300 L550 630 Q550 668 512 668 L288 668 Q250 668 250 630 Z" fill={`url(#gl${id})`} />
+          <path d={body} fill={`url(#h${id})`} />
+          {tone === 'comb' && (
+            <g clipPath={`url(#jc${id})`}>
+              {Array.from({ length: 70 }, (_, i) => {
+                const row = Math.floor(i / 7)
+                const cx = 262 + (i % 7) * 44 + (row % 2 ? 22 : 0)
+                const cy = 300 + row * 38
+                return <circle key={i} cx={cx} cy={cy} r="17" fill="#F4D58E" stroke="#C08A34" strokeWidth="3" opacity="0.75" />
+              })}
+            </g>
+          )}
+          <path d={body} fill={`url(#gl${id})`} />
           {/* nắp vải + dây gai */}
           <path d="M262 262 C 250 230, 262 200, 300 196 L500 196 C 538 200, 550 230, 538 262 Z" fill="#E9DCC3" />
           <path d="M240 268 C 290 300, 330 250, 360 290 C 390 320, 420 262, 450 296 C 480 322, 520 270, 560 270 L 540 250 L 260 250 Z" fill="#DCCBAA" />
@@ -497,8 +508,8 @@ export const Jar = memo(function Jar({ tone = 'amber', name = 'Mật ong', class
             MELBEE
           </text>
           <line x1="360" y1="468" x2="440" y2="468" stroke={C.honey} />
-          <text x="400" y="498" textAnchor="middle" fontFamily="Be Vietnam Pro, sans-serif" fontSize="15" letterSpacing="2" fill={C.brown}>
-            {name.toUpperCase().slice(0, 22)}
+          <text x="400" y="498" textAnchor="middle" fontFamily="Be Vietnam Pro, sans-serif" fontSize={fs} letterSpacing="1.5" fill={C.brown}>
+            {short}
           </text>
           <text x="400" y="524" textAnchor="middle" fontFamily="Be Vietnam Pro, sans-serif" fontSize="11" letterSpacing="3" fill="#8D7A64">
             TÂY BẮC

@@ -16,10 +16,10 @@ export default function Pollen({ count = 40 }) {
     const parts = Array.from({ length: count }, () => ({
       x: Math.random(),
       y: Math.random(),
-      r: 0.8 + Math.random() * 2.2,
+      r: 0.6 + Math.random() * 1.5,
       vy: 0.00008 + Math.random() * 0.00018,
       ph: Math.random() * Math.PI * 2,
-      a: 0.25 + Math.random() * 0.5,
+      a: 0.2 + Math.random() * 0.45,
     }))
 
     const resize = () => {
@@ -52,12 +52,12 @@ export default function Pollen({ count = 40 }) {
         const x = (p.x + Math.sin(t * 0.0003 + p.ph) * 0.02) * w
         const y = p.y * h
         const tw = 0.6 + 0.4 * Math.sin(t * 0.002 + p.ph * 3)
-        const g = ctx.createRadialGradient(x, y, 0, x, y, p.r * 4)
+        const g = ctx.createRadialGradient(x, y, 0, x, y, p.r * 3)
         g.addColorStop(0, `rgba(255, 214, 140, ${p.a * tw})`)
         g.addColorStop(1, 'rgba(255, 214, 140, 0)')
         ctx.fillStyle = g
         ctx.beginPath()
-        ctx.arc(x, y, p.r * 4, 0, Math.PI * 2)
+        ctx.arc(x, y, p.r * 3, 0, Math.PI * 2)
         ctx.fill()
       }
       raf = requestAnimationFrame(tick)

@@ -153,8 +153,9 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
   (`src/components/common/Reveal.jsx`) — chỉnh `VARIANTS` để đổi khoảng trượt/thời gian.
 - Hero: thứ tự xuất hiện chữ ở `src/components/Hero/Hero.jsx` (hàm `item(delay)`), tốc độ zoom nền
   ở `Hero.css` (`slow-zoom`), số hạt phấn hoa `<Pollen count={40} />`.
-- Con trỏ "VIEW": `src/components/Cursor/` — gắn `data-cursor="view"` lên phần tử bất kỳ để có hiệu ứng.
-  Chỉ hiện trên máy có chuột, tự tắt trên điện thoại.
+- Con trỏ con ong: `src/components/Cursor/` — ong vỗ cánh, quay đầu theo hướng chuột; lướt qua ảnh hiện
+  nhãn "VIEW" (gắn `data-cursor="view"` lên phần tử bất kỳ), lướt qua nút thì ong to lên.
+  Chỉ bật trên máy có chuột, tự tắt trên điện thoại. Không muốn dùng: xoá `<Cursor />` trong `src/App.jsx`.
 - Người dùng bật *Reduce motion* trong hệ điều hành → hiệu ứng phức tạp tự tắt.
 
 ---

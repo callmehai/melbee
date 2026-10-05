@@ -23,6 +23,12 @@ body {
   overflow-x: hidden;
 }
 
+/* chặn mọi thứ tràn ngang (hiệu ứng trượt, trang trí) — clip không phá position: sticky */
+main,
+footer {
+  overflow-x: clip;
+}
+
 img,
 svg,
 video {

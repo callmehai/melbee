@@ -45,9 +45,25 @@
 }
 
 .step__media {
-  aspect-ratio: 5 / 4;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: var(--radius);
+  justify-self: end;
+}
+
+.step.is-right .step__media {
+  justify-self: start;
+}
+
+.step.is-right .step__text {
+  justify-self: end;
+  text-align: right;
+}
+
+.step.is-right .step__text p {
+  margin-left: auto;
 }
 
 .step__media .media {
@@ -101,5 +117,16 @@
 
   .step.is-right .step__media {
     order: 0;
+  }
+
+  .step__media,
+  .step.is-right .step__media {
+    justify-self: stretch;
+    max-width: none;
+  }
+
+  .step.is-right .step__text {
+    justify-self: stretch;
+    text-align: left;
   }
 }

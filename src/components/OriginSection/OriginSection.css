@@ -5,10 +5,9 @@
 .origin__contours {
   position: absolute;
   inset: 0;
-  opacity: 0.08;
   background:
-    repeating-radial-gradient(ellipse at 85% 10%, transparent 0 28px, var(--honey-pale) 28px 29px),
-    repeating-radial-gradient(ellipse at 5% 95%, transparent 0 34px, var(--honey-pale) 34px 35px);
+    radial-gradient(ellipse 50% 40% at 80% 18%, rgba(228, 178, 90, 0.14), transparent 70%),
+    radial-gradient(ellipse 45% 35% at 10% 90%, rgba(138, 154, 120, 0.12), transparent 70%);
   pointer-events: none;
 }
 
@@ -117,7 +116,16 @@
   transform: scale(1.05);
 }
 
+.origin__photos li::after {
+  content: '';
+  position: absolute;
+  inset: 55% 0 0;
+  background: linear-gradient(transparent, rgba(20, 28, 22, 0.65));
+  pointer-events: none;
+}
+
 .origin__photos span {
+  z-index: 1;
   position: absolute;
   left: 16px;
   bottom: 14px;

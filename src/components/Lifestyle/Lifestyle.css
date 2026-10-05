@@ -1,36 +1,28 @@
 .life__grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: clamp(28px, 3vw, 44px) clamp(20px, 2.4vw, 36px);
+  grid-template-columns: 7fr 5fr;
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
 }
 
-.life__item--1 {
-  grid-column: 1 / span 7;
+.life__col {
+  display: grid;
+  gap: clamp(44px, 6vw, 88px);
 }
 
-.life__item--2 {
-  grid-column: 8 / span 5;
-  margin-top: clamp(60px, 10vw, 160px);
-}
-
-.life__item--3 {
-  grid-column: 1 / span 5;
-}
-
-.life__item--4 {
-  grid-column: 6 / span 7;
-  margin-top: clamp(-120px, -6vw, -40px);
+.life__col--offset {
+  padding-top: clamp(60px, 9vw, 150px);
 }
 
 .life__media {
   overflow: hidden;
   border-radius: var(--radius);
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
 }
 
 .life__item--2 .life__media,
 .life__item--3 .life__media {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
 }
 
 .life__media .media {
@@ -73,29 +65,22 @@
 }
 
 @media (max-width: 760px) {
-  .life__grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .life__item--1,
-  .life__item--4 {
-    grid-column: 1 / -1;
-    margin-top: 0;
-  }
-
-  .life__item--2,
-  .life__item--3 {
-    grid-column: auto;
-    margin-top: 0;
-  }
-
-  .life__item b {
-    font-size: 22px;
-  }
-}
-
-@media (max-width: 420px) {
+  /* gộp 2 cột thành 1 nhưng vẫn giữ thứ tự 01 → 04 */
   .life__grid {
     grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .life__col {
+    display: contents;
+  }
+
+  .life__item--1 { order: 1; }
+  .life__item--2 { order: 2; }
+  .life__item--3 { order: 3; }
+  .life__item--4 { order: 4; }
+
+  .life__item b {
+    font-size: 24px;
   }
 }

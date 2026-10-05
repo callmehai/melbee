@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import Logo from '../common/Logo.jsx'
@@ -81,40 +82,44 @@ export default function Navbar() {
         </button>
       </div>
 
+      {/* portal: header có backdrop-filter nên phần tử fixed bên trong sẽ bị giam trong header */}
+      {createPortal(
       <AnimatePresence>
-        {open && (
-          <motion.div
-            id="mobile-menu"
-            className="mobile-menu"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-          >
-            <nav aria-label="Điều hướng (di động)">
-              <ul>
-                {nav.map((n, i) => (
-                  <motion.li key={n.href} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * i + 0.1, duration: 0.5 }}>
-                    <a href={n.href} onClick={() => setOpen(false)}>
-                      <span>{String(i + 1).padStart(2, '0')}</span>
-                      {n.label}
-                    </a>
-                  </motion.li>
-                ))}
-              </ul>
-            </nav>
-            <div className="mobile-menu__cta">
-              <p>{brand.cta.order}</p>
-              <a className="btn btn--solid" href={brand.facebook} target="_blank" rel="noopener noreferrer">
-                <FacebookIcon /> <span>{brand.cta.facebook}</span>
-              </a>
-              <a className="btn btn--outline" href={brand.zalo} target="_blank" rel="noopener noreferrer">
-                <ZaloIcon /> <span>{brand.cta.zalo}</span>
-              </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {open && (
+            <motion.div
+              id="mobile-menu"
+              className="mobile-menu"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <nav aria-label="Điều hướng (di động)">
+                <ul>
+                  {nav.map((n, i) => (
+                    <motion.li key={n.href} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * i + 0.1, duration: 0.5 }}>
+                      <a href={n.href} onClick={() => setOpen(false)}>
+                        <span>{String(i + 1).padStart(2, '0')}</span>
+                        {n.label}
+                      </a>
+                    </motion.li>
+                  ))}
+                </ul>
+              </nav>
+              <div className="mobile-menu__cta">
+                <p>{brand.cta.order}</p>
+                <a className="btn btn--solid" href={brand.facebook} target="_blank" rel="noopener noreferrer">
+                  <FacebookIcon /> <span>{brand.cta.facebook}</span>
+                </a>
+                <a className="btn btn--outline" href={brand.zalo} target="_blank" rel="noopener noreferrer">
+                  <ZaloIcon /> <span>{brand.cta.zalo}</span>
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </header>
   )
 }
