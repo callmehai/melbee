@@ -1,0 +1,34 @@
+.media {
+  position: relative;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.media__img,
+.media__art {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.media__img {
+  opacity: 0;
+  transition: opacity 0.8s var(--ease);
+}
+
+.media__img.is-loaded {
+  opacity: 1;
+}
+
+.media__tag {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(250, 247, 240, 0.86);
+  color: var(--brown-2);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}

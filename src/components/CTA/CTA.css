@@ -1,0 +1,48 @@
+.cta {
+  position: relative;
+  padding: clamp(110px, 16vw, 220px) 0;
+  overflow: hidden;
+  color: var(--ivory);
+  text-align: center;
+}
+
+.cta__bg,
+.cta__bg .media {
+  position: absolute;
+  inset: 0;
+}
+
+.cta__shade {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(25, 18, 12, 0.55), rgba(25, 18, 12, 0.82));
+}
+
+.cta__inner {
+  position: relative;
+}
+
+.cta .section-heading {
+  margin-bottom: 24px;
+}
+
+.cta__sub {
+  max-width: 520px;
+  margin: 0 auto;
+  font-size: 17px;
+  color: rgba(250, 247, 240, 0.8);
+}
+
+.cta__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 40px;
+}
+
+@media (max-width: 480px) {
+  .cta__buttons .btn {
+    width: 100%;
+  }
+}

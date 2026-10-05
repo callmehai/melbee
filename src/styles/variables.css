@@ -1,0 +1,35 @@
+/* ============================================================
+   BIẾN GIAO DIỆN — đổi màu, font, nhịp chuyển động ở đây
+   ============================================================ */
+:root {
+  /* Màu chính */
+  --honey: #c88a24; /* mật ong / amber */
+  --honey-light: #e4b25a;
+  --honey-pale: #f2d9a2;
+  --honey-deep: #9a6514;
+  --forest: #24352a; /* xanh rừng */
+  --forest-2: #34503d;
+  --brown: #3a291d; /* nâu gỗ */
+  --brown-2: #5a4532;
+  --cream: #f5ebdd; /* kem */
+  --ivory: #faf7f0;
+  --charcoal: #1e1c18; /* đen than */
+  --muted: #7d6c5a;
+  --line: rgba(58, 41, 29, 0.14);
+  --line-light: rgba(250, 247, 240, 0.18);
+
+  /* Font — đều hỗ trợ đầy đủ tiếng Việt */
+  --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Bố cục */
+  --container: 1320px;
+  --gutter: clamp(20px, 5vw, 56px);
+  --section-y: clamp(88px, 12vw, 168px);
+  --nav-h: 78px;
+  --radius: 4px;
+
+  /* Chuyển động */
+  --ease: cubic-bezier(0.22, 0.8, 0.24, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}

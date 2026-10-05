@@ -1,0 +1,101 @@
+.tslider {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.tslider__mark {
+  margin: 0 auto 18px;
+  color: var(--honey);
+}
+
+.tslider__viewport {
+  min-height: 220px;
+  display: grid;
+  align-items: center;
+}
+
+.tslider blockquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(26px, 3.2vw, 40px);
+  line-height: 1.3;
+  color: var(--brown);
+  text-wrap: balance;
+}
+
+.tslider figcaption {
+  margin-top: 26px;
+}
+
+.tslider figcaption b {
+  display: block;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.tslider figcaption span {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.tslider__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 40px;
+}
+
+.tslider__controls > button {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.tslider__controls > button:hover {
+  background: var(--cream);
+  border-color: var(--brown);
+}
+
+.tslider__dots {
+  display: flex;
+  gap: 4px;
+}
+
+.tslider__dots button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.tslider__dots button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.tslider__dots button.is-active::after {
+  background: var(--honey);
+  transform: scale(1.3);
+}
