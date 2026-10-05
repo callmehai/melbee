@@ -23,8 +23,12 @@
   transition: box-shadow 0.7s var(--ease);
 }
 
+/* rê chuột: quầng mật ong ấm quanh ảnh */
 .product-card:hover .product-card__visual {
-  box-shadow: 0 40px 70px -36px rgba(58, 41, 29, 0.7);
+  box-shadow:
+    0 40px 70px -36px rgba(58, 41, 29, 0.7),
+    0 18px 60px -18px rgba(228, 178, 90, 0.55),
+    0 0 0 1px rgba(200, 138, 36, 0.22);
 }
 
 .product-card__visual .media {

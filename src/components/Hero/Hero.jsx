@@ -4,6 +4,7 @@ import { ArrowDown } from 'lucide-react'
 import Button from '../common/Button.jsx'
 import { Landscape } from '../Art/Art.jsx'
 import Pollen from './Pollen.jsx'
+import { useThreeStatus } from '../../three/store.js'
 import { hero } from '../../data/sections.js'
 import { asset, hasAsset } from '../../lib/assets.js'
 import './Hero.css'
@@ -18,6 +19,7 @@ const item = (delay) => ({
 export default function Hero() {
   const ref = useRef(null)
   const reduced = useReducedMotion()
+  const three = useThreeStatus()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
 
   // parallax: lớp núi gần trôi nhanh hơn lớp xa
@@ -48,7 +50,7 @@ export default function Hero() {
   }, [hasVideo, reduced])
 
   return (
-    <section id="trang-chu" ref={ref} className="hero" aria-label="Giới thiệu">
+    <section id="trang-chu" data-scene="hero" ref={ref} className="hero" aria-label="Giới thiệu">
       <motion.div className="hero__bg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
         <div className="hero__zoom">
           {hasImage || hasVideo ? (
@@ -68,7 +70,8 @@ export default function Hero() {
           )}
         </div>
         <div className="hero__shade" />
-        <Pollen />
+        {/* phấn hoa 2D chỉ dùng khi lớp Three.js chưa chạy / không có WebGL */}
+        {three !== 'running' && <Pollen />}
       </motion.div>
 
       <motion.div className="container hero__content" style={reduced ? undefined : { y: textY, opacity: textOpacity }}>

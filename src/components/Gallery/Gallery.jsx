@@ -12,7 +12,7 @@ export default function Gallery() {
   const items = gallery.items
 
   return (
-    <section className="section section--cream gallery" aria-labelledby="gallery-title">
+    <section data-scene="gallery" className="section section--cream gallery" aria-labelledby="gallery-title">
       <div className="container">
         <SectionHeading id="gallery-title" eyebrow={gallery.eyebrow} title={gallery.title} align="center" />
         <ul className="gallery__grid">

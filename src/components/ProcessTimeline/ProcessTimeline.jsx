@@ -13,7 +13,7 @@ export default function ProcessTimeline() {
   const scaleY = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.4 })
 
   return (
-    <section id="quy-trinh" className="section process" aria-labelledby="process-title">
+    <section id="quy-trinh" data-scene="process" className="section process" aria-labelledby="process-title">
       <div className="container">
         <SectionHeading id="process-title" eyebrow={process.eyebrow} title={process.title} align="center" />
         <ol className="timeline" ref={ref}>

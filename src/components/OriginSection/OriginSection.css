@@ -1,5 +1,7 @@
 .origin {
   overflow: hidden;
+  /* chừa dải đồng cỏ ở chân section cho hoa, núi xa và sương (lớp Three.js) */
+  padding-bottom: calc(var(--section-y) + clamp(40px, 7vw, 110px));
 }
 
 .origin__contours {

@@ -2,12 +2,18 @@ import { memo } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import Media from '../common/Media.jsx'
 import OrderMenu from '../common/OrderMenu.jsx'
+import { signalCardHover } from '../../three/signals.js'
 import './ProductCard.css'
 
 /** Thẻ sản phẩm: không giỏ hàng — chỉ "Xem chi tiết" và "Nhắn tin đặt hàng". */
 function ProductCard({ product, onOpen, index = 0 }) {
   return (
-    <article className="product-card" aria-labelledby={`p-${product.id}`}>
+    <article
+      className="product-card"
+      aria-labelledby={`p-${product.id}`}
+      onMouseEnter={(e) => signalCardHover(e.currentTarget.querySelector('.product-card__visual'), true)}
+      onMouseLeave={(e) => signalCardHover(e.currentTarget.querySelector('.product-card__visual'), false)}
+    >
       <button type="button" className="product-card__visual" onClick={() => onOpen(product)} aria-label={`Xem chi tiết ${product.name}`} data-cursor="view">
         <Media
           src={product.image}

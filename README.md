@@ -157,6 +157,41 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
   nhãn "XEM" (gắn `data-cursor="view"` lên phần tử bất kỳ), lướt qua nút thì ong to lên.
   Chỉ bật trên máy có chuột, tự tắt trên điện thoại. Không muốn dùng: xoá `<Cursor />` trong `src/App.jsx`.
 - Người dùng bật *Reduce motion* trong hệ điều hành → hiệu ứng phức tạp tự tắt.
+- Tiêu đề tab tự chạy chữ khi dài: `src/lib/titleMarquee.js` (tốc độ `step`, nghỉ đầu vòng `pause`).
+- Nút "Âm thanh" góc trái dưới: tiếng gió núi tổng hợp, **mặc định tắt**. Muốn dùng file thật: chép
+  `public/assets/audio/ambient.mp3` (tự dùng file đó thay tiếng tổng hợp). Bỏ nút: xoá `<SoundToggle />` trong `src/App.jsx`.
+
+---
+
+## Lớp Three.js — "thế giới mật ong"
+
+Một canvas WebGL **duy nhất** phủ cả trang (trong suốt, không chặn chuột, nằm dưới navbar và cửa sổ
+sản phẩm). Mỗi hiệu ứng tự bám vào section của nó qua thuộc tính `data-scene` trên thẻ `<section>`.
+Hành trình: **hoa → phấn → ong → mật → sản phẩm**.
+
+| Section | Hiệu ứng |
+|---|---|
+| Hero | tia nắng, sương ấm, phấn hoa, giọt mật 3D lơ lửng, đàn ong lượn quanh |
+| Mật ong là gì | giọt mật rơi xuống cạnh khung ảnh khi cuộn tới, bay đi khi cuộn qua |
+| Sản phẩm | gần như tĩnh; rê chuột lên thẻ → quầng mật + vài hạt phấn bay lên |
+| Câu chuyện | bụi nắng dày, tia sáng chậm |
+| Nguồn gốc | núi xa + sương, cánh đồng hoa lay theo gió, vệt gió, đàn ong bay tới |
+| Quy trình | dòng mật chảy dọc trục timeline qua 5 bước |
+| Lifestyle / Gallery | phấn hoa / bụi nắng thưa |
+| CTA | hạt vàng bay lên, tia nắng ấm |
+
+**Chỉnh ở `src/three/config.js`:**
+- `THREE_CONFIG.effects` — bật/tắt từng hiệu ứng; `enabled: false` tắt cả lớp Three.js.
+- Số lượng theo cấp chất lượng: `pollen`, `dust`, `bees`, `flowers`, `grass`, `honeyFlow`, `goldenParticles`, `windStreaks`.
+- `bloom`, `mouseParallax`, `maxParallaxRotation`, `wind`, `windScrollFactor`, `honeyShader`, `beeInteraction`, `autoQuality`, `maxPixelRatio`.
+- `SCENES` — "tâm trạng" từng section (mật độ phấn, bụi, gió; nền tối/sáng).
+- `PALETTE` — màu hạt, mật, hoa, núi.
+
+**Chất lượng:** tự chọn high / medium / low theo máy (CPU, RAM, cỡ màn hình), tự hạ cấp khi FPS thấp.
+Thử một cấp: thêm `?quality=low` vào URL. Bảng debug (chỉ khi chạy `npm run dev`): `?debug=true`.
+
+**An toàn:** không có WebGL / lỗi → lớp Three.js tự ẩn, trang chạy như cũ (Hero dùng lại phấn hoa 2D).
+Three.js nằm ở file riêng, chỉ tải sau khi trang đã hiện xong.
 
 ---
 
@@ -172,9 +207,20 @@ src/
 ├── components/
 │   ├── Navbar/  Hero/  Intro/  ProductShowcase/  ProductCard/  ProductModal/
 │   ├── BrandStory/  OriginSection/  ProcessTimeline/  WhyUs/  Lifestyle/
-│   ├── Gallery/  Lightbox/  Testimonials/  CTA/  Footer/  Cursor/
+│   ├── Gallery/  Lightbox/  Testimonials/  CTA/  Footer/  Cursor/  SoundToggle/
 │   ├── Art/                 hình minh hoạ SVG (dùng khi chưa có ảnh thật)
 │   └── common/              nút, ảnh, menu đặt hàng, tiêu đề section…
+├── three/                   lớp Three.js (xem mục "Lớp Three.js")
+│   ├── config.js            bật/tắt hiệu ứng, số lượng, màu, tâm trạng section
+│   ├── ThreeCanvas.jsx      điểm vào: kiểm tra WebGL, tải lazy
+│   ├── ThreeScene.jsx       canvas dùng chung + vòng đời engine
+│   ├── experience.js        ghép các hiệu ứng vào từng section
+│   ├── core/                Engine (renderer, camera, gió, cuộn, chuột), ScrollTracker, anchors
+│   ├── effects/             PollenField, WindParticles, LightRays, MountainAtmosphere,
+│   │                        FlowerField, BeeSwarm, HoneyDrop, HoneyFlow, HoneyParticles
+│   ├── shaders/             honey, pollen, distortion, noise, space (.glsl)
+│   ├── utils/               noise, random, performance
+│   └── debug/               bảng debug (chỉ bản dev)
 ├── hooks/                   useScrollReveal, useMediaQuery, useLockBody
 ├── styles/                  variables.css (màu, font) + globals.css
 ├── App.jsx                  thứ tự các phần

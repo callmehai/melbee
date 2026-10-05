@@ -9,7 +9,7 @@ const ICONS = { mountain: Mountain, leaf: Leaf, flower: Flower, 'heart-handshake
 
 export default function OriginSection() {
   return (
-    <section id="nguon-goc" className="section section--forest origin" aria-labelledby="origin-title">
+    <section id="nguon-goc" data-scene="origin" className="section section--forest origin" aria-labelledby="origin-title">
       <div className="origin__contours" aria-hidden="true" />
       <div className="container">
         <div className="origin__top">

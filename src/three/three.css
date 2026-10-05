@@ -1,0 +1,17 @@
+/* Lớp Three.js: phủ màn hình, trong suốt, không chặn chuột; dưới navbar (50) và modal (100). */
+.three-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh; /* không đổi cỡ khi thanh địa chỉ điện thoại co giãn */
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease);
+}
+
+.three-canvas.is-ready {
+  opacity: 1;
+}

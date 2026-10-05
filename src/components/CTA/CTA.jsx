@@ -7,7 +7,7 @@ import './CTA.css'
 
 export default function CTA() {
   return (
-    <section id="lien-he" className="cta" aria-labelledby="cta-title">
+    <section id="lien-he" data-scene="cta" className="cta" aria-labelledby="cta-title">
       <div className="cta__bg" aria-hidden="true">
         <Media src={cta.image} alt="" art={cta.art} />
       </div>

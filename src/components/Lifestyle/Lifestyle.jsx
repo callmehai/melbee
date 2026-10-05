@@ -29,7 +29,7 @@ export default function Lifestyle() {
   const left = items.filter(({ i }) => i % 2 === 0)
   const right = items.filter(({ i }) => i % 2 === 1)
   return (
-    <section className="section lifestyle" aria-labelledby="life-title">
+    <section data-scene="lifestyle" className="section lifestyle" aria-labelledby="life-title">
       <div className="container">
         <SectionHeading id="life-title" eyebrow={lifestyle.eyebrow} title={lifestyle.title} />
         <div className="life__grid">

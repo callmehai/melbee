@@ -5,7 +5,7 @@ import './WhyUs.css'
 
 export default function WhyUs() {
   return (
-    <section className="section section--cream why" aria-labelledby="why-title">
+    <section data-scene="values" className="section section--cream why" aria-labelledby="why-title">
       <div className="container why__grid">
         <div className="why__head">
           <SectionHeading id="why-title" eyebrow={whyUs.eyebrow} title={whyUs.title} />

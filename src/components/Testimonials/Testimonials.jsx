@@ -23,7 +23,7 @@ export default function Testimonials() {
   const t = testimonials[i]
 
   return (
-    <section className="section testimonials" aria-labelledby="t-title">
+    <section data-scene="testimonials" className="section testimonials" aria-labelledby="t-title">
       <div className="container">
         <SectionHeading id="t-title" eyebrow={testimonialsSection.eyebrow} title={testimonialsSection.title} align="center" />
         <div

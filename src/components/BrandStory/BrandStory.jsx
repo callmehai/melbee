@@ -14,7 +14,7 @@ export default function BrandStory() {
   const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
 
   return (
-    <section id="cau-chuyen" ref={ref} className="section story" aria-labelledby="story-title">
+    <section id="cau-chuyen" data-scene="story" ref={ref} className="section story" aria-labelledby="story-title">
       <div className="container story__grid">
         <div className="story__text">
           <SectionHeading id="story-title" eyebrow={story.eyebrow} title={story.title} />

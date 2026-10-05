@@ -11,7 +11,7 @@ const YEAR = new Date().getFullYear()
 export default function Footer() {
   const { phone, email, address } = brand.contact
   return (
-    <footer className="footer">
+    <footer className="footer" data-scene="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
           <Logo light />

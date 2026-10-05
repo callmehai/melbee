@@ -13,10 +13,14 @@ import './styles/variables.css'
 import './styles/globals.css'
 import App from './App.jsx'
 import { zaloIsPlaceholder } from './config/brand.js'
+import { startTitleMarquee } from './lib/titleMarquee.js'
 
 if (import.meta.env.DEV && zaloIsPlaceholder) {
   console.info('[Melbee] Link Zalo đang là placeholder — thay trong src/config/brand.js')
 }
+
+// tiêu đề tab dài bị cắt → cho chạy chữ
+startTitleMarquee()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

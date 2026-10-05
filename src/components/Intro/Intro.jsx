@@ -12,7 +12,7 @@ export default function Intro() {
   const y = useTransform(scrollYProgress, [0, 1], [60, -60])
 
   return (
-    <section id="gioi-thieu" ref={ref} className="section intro" aria-labelledby="intro-title">
+    <section id="gioi-thieu" data-scene="honey" ref={ref} className="section intro" aria-labelledby="intro-title">
       <div className="container intro__grid">
         <div className="intro__text">
           <Reveal as="p" className="eyebrow" effect="fade">
