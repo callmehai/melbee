@@ -157,7 +157,7 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
   nhãn "XEM" (gắn `data-cursor="view"` lên phần tử bất kỳ), lướt qua nút thì ong to lên.
   Chỉ bật trên máy có chuột, tự tắt trên điện thoại. Không muốn dùng: xoá `<Cursor />` trong `src/App.jsx`.
 - Người dùng bật *Reduce motion* trong hệ điều hành → hiệu ứng phức tạp tự tắt.
-- Tiêu đề tab tự chạy chữ khi dài: `src/lib/titleMarquee.js` (tốc độ `step`, nghỉ đầu vòng `pause`).
+- Tiêu đề tab (ngắn, vừa khung tab): `src/main.jsx`. Tiêu đề đầy đủ cho Google / mạng xã hội: `<title>` và `og:title` trong `index.html`.
 - Nút "Âm thanh" góc trái dưới — xem mục **Âm thanh nền** bên dưới. Bỏ nút: xoá `<SoundToggle />` trong `src/App.jsx`.
 
 ---

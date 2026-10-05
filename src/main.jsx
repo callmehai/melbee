@@ -13,14 +13,13 @@ import './styles/variables.css'
 import './styles/globals.css'
 import App from './App.jsx'
 import { zaloIsPlaceholder } from './config/brand.js'
-import { startTitleMarquee } from './lib/titleMarquee.js'
 
 if (import.meta.env.DEV && zaloIsPlaceholder) {
   console.info('[Melbee] Link Zalo đang là placeholder — thay trong src/config/brand.js')
 }
 
-// tiêu đề tab dài bị cắt → cho chạy chữ
-startTitleMarquee()
+// tiêu đề tab ngắn cho vừa khung tab; <title> + og:title trong index.html giữ câu đầy đủ cho Google, mạng xã hội
+document.title = 'Mật Ong Tây Bắc · Melbee'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
