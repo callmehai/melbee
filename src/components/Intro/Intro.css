@@ -49,10 +49,6 @@
   transition: transform 1.2s var(--ease);
 }
 
-.intro__frame:hover .media {
-  transform: scale(1.04);
-}
-
 .intro__hex {
   position: absolute;
   right: -28px;

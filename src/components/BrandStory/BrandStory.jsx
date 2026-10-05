@@ -29,7 +29,7 @@ export default function BrandStory() {
             — {brand.shortName}
           </Reveal>
         </div>
-        <Reveal effect="slide-right" duration={1.2} className="story__visual" data-cursor="view">
+        <Reveal effect="slide-right" duration={1.2} className="story__visual">
           <motion.div className="story__parallax" style={reduced ? undefined : { y }}>
             <Media src={story.image} alt={story.imageAlt} art={story.art} />
           </motion.div>

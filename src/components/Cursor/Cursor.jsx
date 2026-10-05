@@ -5,7 +5,7 @@ import './Cursor.css'
 /**
  * Con trỏ hình con ong (chỉ máy có chuột; điện thoại tự tắt).
  * - Ong vỗ cánh, đầu luôn quay theo hướng chuột di chuyển (quay đầu mượt khi đổi chiều).
- * - Trên ảnh ([data-cursor="view"]) → hiện nhãn "XEM".
+ * - Trên ảnh bấm được ([data-cursor="view"]: thẻ sản phẩm, gallery) → hiện nhãn "XEM".
  * - Trên nút ([data-cursor="cta"]) → ong to lên một chút.
  */
 export default function Cursor() {
@@ -32,7 +32,7 @@ export default function Cursor() {
       x = e.clientX
       y = e.clientY
       el.classList.add('is-on')
-      const t = e.target instanceof Element ? e.target.closest('[data-cursor], a, button') : null
+      const t = e.target instanceof Element ? e.target.closest('[data-cursor], a[href], button:not(:disabled)') : null
       el.dataset.state = t ? t.dataset.cursor || 'cta' : ''
     }
     const leave = () => el.classList.remove('is-on')

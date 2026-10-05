@@ -32,7 +32,7 @@ export default function Intro() {
           </div>
         </div>
         <motion.div className="intro__visual" style={reduced ? undefined : { y }}>
-          <Reveal effect="scale" duration={1.2} className="intro__frame" data-cursor="view">
+          <Reveal effect="scale" duration={1.2} className="intro__frame">
             <Media src={intro.image} alt={intro.imageAlt} art={intro.art} />
           </Reveal>
           <span className="intro__hex" aria-hidden="true" />

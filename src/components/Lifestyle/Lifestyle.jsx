@@ -8,7 +8,7 @@ function Item({ it, i }) {
   return (
     <Reveal as="li" className={`life__item life__item--${i + 1}`} delay={(i % 2) * 0.12}>
       <figure>
-        <div className="life__media" data-cursor="view">
+        <div className="life__media">
           <Media src={it.image} alt={it.title} art={it.art} />
         </div>
         <figcaption>

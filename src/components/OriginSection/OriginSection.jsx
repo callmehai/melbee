@@ -44,7 +44,7 @@ export default function OriginSection() {
 
         <ul className="origin__photos">
           {origin.photos.map((p, i) => (
-            <Reveal as="li" key={i} delay={i * 0.12} effect="fade-up" data-cursor="view">
+            <Reveal as="li" key={i} delay={i * 0.12} effect="fade-up">
               <Media src={p.image} alt={p.alt} art={p.art} />
               <span>{p.alt}</span>
             </Reveal>

@@ -31,10 +31,6 @@
   transition: transform 1.2s var(--ease);
 }
 
-.life__media:hover .media {
-  transform: scale(1.04);
-}
-
 .life__item figcaption {
   display: flex;
   gap: 18px;

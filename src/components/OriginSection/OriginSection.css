@@ -112,10 +112,6 @@
   transition: transform 1.2s var(--ease);
 }
 
-.origin__photos li:hover .media {
-  transform: scale(1.05);
-}
-
 .origin__photos li::after {
   content: '';
   position: absolute;

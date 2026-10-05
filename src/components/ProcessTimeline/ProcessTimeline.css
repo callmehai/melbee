@@ -72,10 +72,6 @@
   transition: transform 1.2s var(--ease);
 }
 
-.step__media:hover .media {
-  transform: scale(1.04);
-}
-
 .step__no {
   display: block;
   font-family: var(--font-serif);
