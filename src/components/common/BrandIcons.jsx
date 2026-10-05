@@ -7,6 +7,14 @@ export function FacebookIcon({ size = 18, ...rest }) {
   )
 }
 
+export function TikTokIcon({ size = 18, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false" {...rest}>
+      <path d="M16.6 3c.3 2.2 1.6 3.7 3.9 3.9v2.6c-1.4.1-2.6-.3-3.9-1.1v5.7c0 3.6-2.6 5.9-5.8 5.9-3.1 0-5.6-2.4-5.6-5.6 0-3.4 2.9-6 6.5-5.5v2.8c-1.6-.4-3.6.6-3.6 2.7 0 1.6 1.2 2.8 2.7 2.8 1.6 0 2.9-1.1 2.9-3.2V3h2.9z" />
+    </svg>
+  )
+}
+
 export function ZaloIcon({ size = 18, ...rest }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" {...rest}>

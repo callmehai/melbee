@@ -1,26 +1,28 @@
 /**
  * THÔNG TIN THƯƠNG HIỆU — sửa ở đây, mọi nút/footer tự cập nhật.
+ * Nguồn: trang Facebook chính thức https://www.facebook.com/melbeetaybac
  *
  * Thông tin nào chưa có thì để null → trang hiển thị "Đang cập nhật".
  */
 export const brand = {
   name: 'Mật Ong Tây Bắc',
-  shortName: 'Melbee',
-  tagline: 'Vị ngọt từ núi rừng.',
+  shortName: 'MelBee',
+  tagline: 'Mật ngọt từ hoa, Tinh hoa từ rừng.',
+  about: 'Mật ong Điện Biên & quà tặng đặc sản Tây Bắc',
 
-  // Logo: để null sẽ dùng logo chữ. Muốn dùng ảnh: 'assets/icons/logo.svg'
-  logo: null,
+  // Logo (huy hiệu tròn cạnh chữ). Để null → dùng biểu tượng vẽ sẵn.
+  logo: 'assets/icons/logo.jpg',
 
   // Kênh nhắn tin đặt hàng
   facebook: 'https://www.facebook.com/melbeetaybac',
-  // ⚠️ THAY bằng link Zalo thật, ví dụ 'https://zalo.me/0912345678'
-  zalo: 'https://zalo.me/PLACEHOLDER',
+  zalo: 'https://zalo.me/0936321902',
+  tiktok: 'https://www.tiktok.com/@melbeetaybac',
 
   // Liên hệ — null = "Đang cập nhật"
   contact: {
-    phone: null, // ví dụ '0912 345 678'
-    email: null, // ví dụ 'lienhe@melbee.vn'
-    address: null, // ví dụ 'Số 1, đường ..., Sơn La'
+    phone: '093 632 19 02',
+    email: 'melbeetaybac@gmail.com',
+    address: 'Hà Nội',
   },
 
   // Chữ trên các nút

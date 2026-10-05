@@ -19,7 +19,7 @@ if (import.meta.env.DEV && zaloIsPlaceholder) {
 }
 
 // tiêu đề tab ngắn cho vừa khung tab; <title> + og:title trong index.html giữ câu đầy đủ cho Google, mạng xã hội
-document.title = 'Mật Ong Tây Bắc · Melbee'
+document.title = 'MelBee · Mật ong Tây Bắc'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

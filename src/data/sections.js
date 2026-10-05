@@ -1,5 +1,6 @@
 /**
  * NỘI DUNG CÁC PHẦN CỦA TRANG — sửa chữ, ảnh ở đây, không cần đụng vào component.
+ * Câu chữ lấy từ các bài viết trên trang Facebook MelBee (facebook.com/melbeetaybac).
  *
  * image: đường dẫn tính từ public/ (vd 'assets/images/hero/hero.jpg').
  *        Chưa có file → tự hiện hình minh hoạ theo `art`.
@@ -17,10 +18,10 @@ export const nav = [
 ]
 
 export const hero = {
-  eyebrow: 'Melbee · Đặc sản vùng cao',
+  eyebrow: 'MelBee · Mật ong Điện Biên',
   title: 'Mật Ong Tây Bắc',
-  tagline: 'Tinh hoa từ những mùa hoa nơi núi rừng.',
-  subtext: 'Giữ lại vị ngọt nguyên bản từ thiên nhiên Tây Bắc.',
+  tagline: 'Mật ngọt từ hoa, tinh hoa từ rừng.',
+  subtext: 'Mang mật ong từ vùng núi Điện Biên đến gần hơn với bạn — rõ ràng, chỉn chu và đáng tin cậy.',
   primaryCta: { label: 'Khám phá sản phẩm', href: '#san-pham' },
   secondaryCta: { label: 'Câu chuyện của chúng tôi', href: '#cau-chuyen' },
   image: 'assets/images/hero/hero.jpg',
@@ -54,20 +55,20 @@ export const story = {
   eyebrow: 'Câu chuyện',
   title: 'Câu chuyện của chúng tôi',
   paragraphs: [
-    'Giữa những dãy núi Tây Bắc, mùa hoa đến rồi đi theo từng mùa trong năm.',
-    'Những đàn ong tìm mật giữa những vùng hoa tự nhiên, và từ hành trình ấy, những giọt mật mang theo hương vị đặc trưng của núi rừng được hình thành.',
-    'Chúng tôi muốn đưa một phần hương vị ấy đến gần hơn với cuộc sống hiện đại — theo cách chân thành, rõ ràng và trọn vẹn nhất.',
+    'Giữa rất nhiều sản phẩm mật ong, điều người dùng cần không chỉ là một lời khẳng định “nguyên chất”, mà là sự an tâm về nguồn gốc và hành trình tạo nên sản phẩm.',
+    'MelBee được hình thành từ mong muốn mang mật ong từ vùng núi Điện Biên đến gần hơn với người tiêu dùng — giữ lại vị ngọt tự nhiên và cả câu chuyện về vùng đất, người nuôi ong phía sau mỗi giọt mật.',
+    'Không dừng ở một sản phẩm dùng hằng ngày, MelBee muốn mật ong trở thành một món quà gần gũi, mang nét riêng của núi rừng Tây Bắc.',
   ],
   image: 'assets/images/story/story.jpg',
-  imageAlt: 'Những dãy núi Tây Bắc trong sương sớm',
+  imageAlt: 'Người nuôi ong bên đàn ong giữa núi rừng Tây Bắc',
   art: 'landscape',
 }
 
 export const origin = {
   eyebrow: 'Nguồn gốc',
   title: 'Nơi những giọt mật bắt đầu',
-  lead: ['Không chỉ là nơi sản xuất.', 'Đó là nơi câu chuyện bắt đầu.'],
-  text: 'Tây Bắc là vùng núi cao, nơi rừng còn giữ được nhiều mảng xanh và hoa dại nở theo mùa. Những điều kiện tự nhiên ấy tạo nên hương vị riêng cho từng mùa mật.',
+  lead: ['Không chỉ là nơi có mật ong.', 'Đó là vùng đất có câu chuyện để kể.'],
+  text: 'Tây Bắc sở hữu hệ thực vật phong phú cùng nhiều mùa hoa đặc trưng — nền tảng tạo nên những dòng mật mang hương vị riêng, gắn với từng vùng nguyên liệu và từng thời điểm trong năm.',
   image: 'assets/images/origin/map.jpg',
   imageAlt: 'Bản đồ minh hoạ vùng núi Tây Bắc',
   art: 'map',
@@ -80,7 +81,7 @@ export const origin = {
   photos: [
     { image: 'assets/images/origin/mountain.jpg', alt: 'Núi rừng Tây Bắc', art: 'landscape' },
     { image: 'assets/images/origin/flowers.jpg', alt: 'Hoa dại trên sườn núi', art: 'blossom' },
-    { image: 'assets/images/origin/beekeeping.jpg', alt: 'Những thùng ong giữa vùng hoa', art: 'hive' },
+    { image: 'assets/images/origin/beekeeping.jpg', alt: 'Cầu ong đầy mật của người nuôi ong', art: 'hive' },
   ],
 }
 
@@ -127,20 +128,20 @@ export const whyUs = {
   // Không viết công dụng chữa bệnh / tăng miễn dịch nếu không có căn cứ.
   items: [
     {
-      title: 'Nguồn nguyên liệu',
-      text: 'Bắt đầu từ những vùng hoa tự nhiên giữa núi rừng Tây Bắc.',
+      title: 'Nguồn mật gắn với mùa hoa vùng cao',
+      text: 'Từ những cánh hoa đến hành trình của đàn ong — mật đến từ đâu, MelBee muốn bạn đều được biết.',
     },
     {
-      title: 'Hương vị tự nhiên',
-      text: 'Mỗi mùa hoa cho một sắc mật, một hương vị riêng — chúng tôi giữ nguyên sự khác biệt ấy.',
+      title: 'Đồng hành cùng người nuôi ong',
+      text: 'MelBee hướng đến hợp tác với các hộ, trại ong tại vùng nguyên liệu, góp phần nâng giá trị sản vật địa phương.',
     },
     {
-      title: 'Chăm chút trong từng công đoạn',
-      text: 'Từ lúc thu mật đến khi đóng chai, mỗi bước đều được làm cẩn thận.',
+      title: 'Bảo quản & thông tin rõ ràng',
+      text: 'Hướng đến quy trình kiểm soát bảo quản và truy xuất thông tin minh bạch, từ nguồn mật đến tay khách hàng.',
     },
     {
-      title: 'Câu chuyện từ vùng đất',
-      text: 'Mỗi hũ mật mang theo một phần câu chuyện của núi rừng và người nuôi ong.',
+      title: 'Món quà mang dấu ấn Tây Bắc',
+      text: 'Thiết kế hiện đại, câu chuyện vùng miền và những bộ quà chỉn chu để trao gửi trong dịp ý nghĩa.',
     },
   ],
 }
@@ -184,9 +185,9 @@ export const gallery = {
     { image: 'assets/images/gallery/01.jpg', alt: 'Ong trên hoa', caption: 'Ong tìm mật', art: 'bee', size: 'tall' },
     { image: 'assets/images/gallery/02.jpg', alt: 'Hoa dại Tây Bắc', caption: 'Mùa hoa', art: 'blossom', size: 'normal' },
     { image: 'assets/images/gallery/03.jpg', alt: 'Núi rừng Tây Bắc', caption: 'Núi rừng', art: 'landscape', size: 'wide' },
-    { image: 'assets/images/gallery/04.jpg', alt: 'Hũ mật ong', caption: 'Những hũ mật', art: 'jar', size: 'normal' },
+    { image: 'assets/images/gallery/04.jpg', alt: 'Hũ mật ong Tây Bắc MelBee', caption: 'Hũ mật MelBee', art: 'jar', size: 'normal' },
     { image: 'assets/images/gallery/05.jpg', alt: 'Bánh tổ ong', caption: 'Bánh tổ', art: 'honeycomb', size: 'normal' },
-    { image: 'assets/images/gallery/06.jpg', alt: 'Thùng ong giữa vùng hoa', caption: 'Người nuôi ong', art: 'hive', size: 'tall' },
+    { image: 'assets/images/gallery/06.jpg', alt: 'Người nuôi ong giữa núi rừng Tây Bắc', caption: 'Người nuôi ong', art: 'hive', size: 'tall' },
     { image: 'assets/images/gallery/07.jpg', alt: 'Hộp quà mật ong', caption: 'Đóng gói', art: 'gift', size: 'normal' },
     { image: 'assets/images/gallery/08.jpg', alt: 'Núi Tây Bắc lúc hoàng hôn', caption: 'Hoàng hôn vùng cao', art: 'landscape-dusk', size: 'wide' },
   ],

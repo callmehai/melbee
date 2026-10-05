@@ -11,17 +11,18 @@
 export const products = [
   {
     id: 'honey-01',
-    name: 'Mật ong hoa rừng',
-    subtitle: 'Tinh hoa từ những mùa hoa Tây Bắc',
+    // sản phẩm thật — ảnh và tên theo trang Facebook MelBee
+    name: 'Mật ong Tây Bắc',
+    subtitle: 'Mật ngọt từ hoa · Tinh hoa từ rừng',
     description:
-      'Mật được ong lấy từ nhiều loài hoa dại mọc tự nhiên trên các sườn núi. Màu hổ phách, hương thơm nhẹ của hoa rừng, vị ngọt đậm và có hậu.',
-    origin: 'Vùng núi Tây Bắc (thông tin chi tiết đang cập nhật).',
+      'Mật ong từ những mùa hoa nơi núi rừng Điện Biên, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee. Thông tin chi tiết về quy cách và giá sẽ được cập nhật khi sản phẩm ra mắt.',
+    origin: 'Vùng núi Điện Biên, Tây Bắc.',
     flavor: ['Hương hoa rừng', 'Ngọt đậm', 'Hậu vị dịu'],
     usage: ['Pha cùng nước ấm', 'Dùng cùng trà', 'Rưới lên bánh, sữa chua'],
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
     price: 'Liên hệ',
-    size: '500ml',
+    size: 'Đang cập nhật',
     featured: true,
     facebookMessage: true,
     zaloMessage: true,

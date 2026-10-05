@@ -39,26 +39,21 @@ và đăng lại (~30 giây). Muốn dùng Vercel/Netlify: import repo, build `n
 | Thứ tự các phần trên trang | `src/App.jsx` |
 
 ### Logo & tên thương hiệu
-`src/config/brand.js` → `name`, `shortName`, `tagline`.
-Logo ảnh: chép file vào `public/assets/icons/logo.svg` rồi đặt `logo: 'assets/icons/logo.svg'`
-(để `null` thì dùng logo chữ có sẵn). Favicon: thay `public/favicon.svg`.
+`src/config/brand.js` → `name`, `shortName`, `tagline`, `about`. Thông tin lấy từ trang Facebook MelBee.
+Logo: `public/assets/icons/logo.jpg` (huy hiệu tròn cạnh chữ; `logo: null` → biểu tượng vẽ sẵn).
+Favicon: `public/favicon.png`, `public/apple-touch-icon.png`. Ảnh chia sẻ mạng xã hội: `public/og-image.jpg` (từ ảnh bìa Facebook).
 
 ### Facebook
 `src/config/brand.js` → `facebook: 'https://www.facebook.com/melbeetaybac'`.
 Mọi nút "Nhắn tin qua Facebook" trên trang đều lấy link từ đây.
 Mẹo: dùng `https://m.me/melbeetaybac` để mở thẳng khung chat Messenger.
 
-### Zalo — ⚠️ CẦN THAY
-Hiện đang là placeholder `https://zalo.me/PLACEHOLDER` (bấm vào sẽ không tới đâu).
-Đổi trong `src/config/brand.js`:
-
-```js
-zalo: 'https://zalo.me/0912345678', // số điện thoại Zalo hoặc link Zalo OA
-```
+### Zalo, TikTok
+`src/config/brand.js` → `zalo: 'https://zalo.me/0936321902'` (theo hotline), `tiktok` (để `null` thì ẩn link TikTok ở footer).
 
 ### Thông tin liên hệ
-`brand.contact` trong `src/config/brand.js`. Để `null` → footer hiện "Đang cập nhật".
-Không điền thông tin giả.
+`brand.contact` trong `src/config/brand.js` (đang là hotline, email, Hà Nội theo trang Facebook).
+Để `null` → footer hiện "Đang cập nhật". Không điền thông tin giả.
 
 ---
 
@@ -126,8 +121,8 @@ không phải sửa code. Muốn dùng tên khác thì sửa đường dẫn tro
 Quy trình thêm/bớt bước: thêm/xoá object trong `process.steps`.
 
 ### Chia sẻ khách hàng
-`src/data/testimonials.js`. Hiện là **nội dung giữ chỗ** ("Khách hàng 01"…). Chỉ thay bằng chia sẻ thật,
-có sự đồng ý của khách — không bịa tên hay nhận xét.
+`src/data/testimonials.js`. Hiện là **nội dung mẫu** (`sample: true` → thẻ hiện nhãn "Nội dung mẫu") vì MelBee
+chưa mở bán. Khi có chia sẻ thật, được khách đồng ý: thay chữ và xoá `sample: true`.
 
 ---
 

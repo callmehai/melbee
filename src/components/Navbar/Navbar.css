@@ -38,6 +38,15 @@
   gap: 12px;
 }
 
+.logo__badge {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(200, 138, 36, 0.35), 0 6px 16px -8px rgba(30, 28, 24, 0.5);
+}
+
 .logo__mark {
   width: 34px;
   height: 38px;

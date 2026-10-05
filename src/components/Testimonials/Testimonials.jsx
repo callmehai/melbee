@@ -50,6 +50,7 @@ export default function Testimonials() {
                 <figcaption>
                   <b>{t.name}</b>
                   {t.role && <span>{t.role}</span>}
+                  {t.sample && <em className="tslider__sample">Nội dung mẫu</em>}
                 </figcaption>
               </motion.figure>
             </AnimatePresence>

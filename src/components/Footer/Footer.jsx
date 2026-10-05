@@ -1,6 +1,6 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
 import Logo from '../common/Logo.jsx'
-import { FacebookIcon, ZaloIcon } from '../common/BrandIcons.jsx'
+import { FacebookIcon, TikTokIcon, ZaloIcon } from '../common/BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import { nav } from '../../data/sections.js'
 import './Footer.css'
@@ -15,7 +15,7 @@ export default function Footer() {
       <div className="container footer__grid">
         <div className="footer__brand">
           <Logo light />
-          <p className="footer__name">{brand.name}</p>
+          <p className="footer__name">{brand.about || brand.name}</p>
           <p className="footer__tagline">{brand.tagline}</p>
         </div>
 
@@ -61,6 +61,13 @@ export default function Footer() {
                 <ZaloIcon /> Zalo
               </a>
             </li>
+            {brand.tiktok && (
+              <li>
+                <a href={brand.tiktok} target="_blank" rel="noopener noreferrer">
+                  <TikTokIcon /> TikTok
+                </a>
+              </li>
+            )}
           </ul>
         </div>
       </div>
