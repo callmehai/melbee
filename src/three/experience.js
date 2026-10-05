@@ -8,16 +8,20 @@ import { FlowerField } from './effects/FlowerField.js'
 import { BeeSwarm } from './effects/BeeSwarm.js'
 import { Honeycomb } from './effects/Honeycomb.js'
 import { HoneyParticles } from './effects/HoneyParticles.js'
+import { GiftBox } from './effects/GiftBox.js'
+import { GuideBee } from './effects/GuideBee.js'
 
 /**
  * Một ngày xuân ở Điện Biên, kể bằng không khí: HOA → PHẤN → ONG → MẬT.
- * Three.js chủ yếu làm nắng, sương, phấn, ong, hoa; vật thể duy nhất là miếng bánh tổ lắc được ở "Giọt mật".
+ * Three.js chủ yếu làm nắng, sương, phấn, ong, hoa; vật thể chỉ có miếng bánh tổ lắc được ở "Giọt mật" và hộp quà ở "Hộp quà".
  * Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở Hero, chiều tà ở CTA.
  *
  *   Hero          tia nắng sớm toả từ mặt trời trong tranh + sương trôi ở chân núi + vài con ong ghé cành hoa ban
  *   Nguồn gốc     núi xa xanh lam + sương + đồng hoa lay theo gió + đàn ong đi kiếm mật
  *   Giọt mật      miếng bánh tổ 3D: nghiêng theo chuột, kéo/chạm để lắc; sợi mật đung đưa, giọt to dần rồi rơi
  *   Sản phẩm      gần như tĩnh — vài hạt phấn khi rê chuột lên thẻ
+ *   Ong dẫn đường một con ong theo suốt trang, đậu lên thứ chính của từng phần (data-bee-perch), để lại vệt phấn
+ *   Hộp quà       hộp lục giác 3D: kéo để xoay, bấm để mở nắp — hũ mật nhô lên, thiệp ở mặt trong nắp
  *   CTA           tia nắng chiều cùng hướng + bụi nắng bay lên
  *   Phấn hoa      một lớp mỏng, một màu, chạy xuyên trang — dày ở Hero/Nguồn gốc, thưa ở phần nội dung
  */
@@ -51,6 +55,7 @@ export function createExperience(canvas, options) {
 
   // ── chủ thể: bánh tổ & ong ────────────────────────────────
   if (fx.honeycomb) engine.add(new Honeycomb(engine, P, { anchor: anchors.combStage }))
+  if (fx.giftBox) engine.add(new GiftBox(engine, P, { anchor: anchors.giftStage }))
   if (fx.bees) {
     engine.add(
       new BeeSwarm(engine, {
@@ -67,6 +72,7 @@ export function createExperience(canvas, options) {
       })
     )
   }
+  if (fx.guideBee) engine.add(new GuideBee(engine))
   if (fx.pollen) engine.add(new PollenField(engine, P))
   if (fx.goldenParticles) engine.add(new HoneyParticles(engine, { section: 'cta' }))
 

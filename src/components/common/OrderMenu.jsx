@@ -1,15 +1,27 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
-import { FacebookIcon, ZaloIcon } from './BrandIcons.jsx'
+import { FacebookLogo, ZaloLogo } from './BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import './OrderMenu.css'
 
 /**
  * Nút "Nhắn tin đặt hàng" → mở lựa chọn Facebook / Zalo.
  * Không có giỏ hàng: mọi đơn đặt qua tin nhắn.
+ * onPick: gọi khi khách bấm chọn kênh (vd. chép sẵn lời nhắn mô tả hộp quà) · hint: dòng chữ đầu menu.
  */
-export default function OrderMenu({ label = brand.cta.order, variant = 'solid', align = 'right', facebook = true, zalo = true, className = '', size }) {
+export default function OrderMenu({
+  label = brand.cta.order,
+  variant = 'solid',
+  align = 'right',
+  facebook = true,
+  zalo = true,
+  className = '',
+  size,
+  hint = 'Chọn kênh để nhắn tin cho chúng tôi',
+  onPick,
+  perch, // chỗ đậu của ong dẫn đường (data-bee-perch) — xem three/effects/GuideBee.js
+}) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
   const id = useId()
@@ -43,6 +55,7 @@ export default function OrderMenu({ label = brand.cta.order, variant = 'solid', 
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
         data-cursor="cta"
+        data-bee-perch={perch}
       >
         <MessageCircle size={17} aria-hidden="true" />
         <span>{label}</span>
@@ -57,11 +70,19 @@ export default function OrderMenu({ label = brand.cta.order, variant = 'solid', 
             exit={{ opacity: 0, y: 6, scale: 0.98 }}
             transition={{ duration: 0.25, ease: [0.22, 0.8, 0.24, 1] }}
           >
-            <p className="order-menu__hint">Chọn kênh để nhắn tin cho chúng tôi</p>
+            <p className="order-menu__hint">{hint}</p>
             {facebook && (
-              <a href={brand.facebook} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
-                <span className="order-menu__icon is-fb">
-                  <FacebookIcon size={16} />
+              <a
+                href={brand.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  onPick?.('facebook')
+                  setOpen(false)
+                }}
+              >
+                <span className="order-menu__icon">
+                  <FacebookLogo size={36} />
                 </span>
                 <span>
                   <b>Facebook Messenger</b>
@@ -70,9 +91,17 @@ export default function OrderMenu({ label = brand.cta.order, variant = 'solid', 
               </a>
             )}
             {zalo && (
-              <a href={brand.zalo} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)}>
-                <span className="order-menu__icon is-zalo">
-                  <ZaloIcon size={18} />
+              <a
+                href={brand.zalo}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  onPick?.('zalo')
+                  setOpen(false)
+                }}
+              >
+                <span className="order-menu__icon">
+                  <ZaloLogo size={36} />
                 </span>
                 <span>
                   <b>Zalo</b>

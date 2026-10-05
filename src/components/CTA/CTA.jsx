@@ -18,8 +18,8 @@ export default function CTA() {
           {cta.subtext}
         </Reveal>
         <Reveal className="cta__buttons" delay={0.25}>
-          <FacebookButton>Nhắn tin Facebook</FacebookButton>
-          <ZaloButton variant="outline">Nhắn tin Zalo</ZaloButton>
+          <FacebookButton data-bee-perch="top-right">Nhắn tin Facebook</FacebookButton>
+          <ZaloButton>Nhắn tin Zalo</ZaloButton>
         </Reveal>
       </div>
     </section>

@@ -19,6 +19,7 @@ export const nav = [
   { label: 'Câu chuyện', href: '#cau-chuyen' },
   { label: 'Quy trình', href: '#quy-trinh' },
   { label: 'Sản phẩm', href: '#san-pham' },
+  { label: 'Hộp quà', href: '#hop-qua' },
   { label: 'Liên hệ', href: '#lien-he' },
 ]
 

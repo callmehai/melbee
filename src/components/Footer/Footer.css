@@ -1,78 +1,176 @@
+/* nền giấy kem ấm — chân núi chiều tà của CTA phía trên tan vào đúng màu này (Art: landscape-sunset fadeTo) */
 .footer {
-  background: var(--charcoal);
-  color: rgba(250, 247, 240, 0.78);
-  padding-top: clamp(72px, 9vw, 120px);
+  --footer-bg: #efe4cd;
+  position: relative;
+  overflow: hidden;
+  background: var(--footer-bg);
+  color: var(--brown-2);
+  padding-top: clamp(20px, 3vw, 36px);
+  margin-top: -1px; /* phủ kẽ nửa điểm ảnh giữa tranh CTA và footer */
 }
 
+/* ── ba lời hứa: một dải gọn trong khung viền mảnh ────────── */
+.footer__promises {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid rgba(154, 101, 20, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 252, 244, 0.55);
+}
+
+.footer__promises li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 16px 18px;
+}
+
+.footer__promises li + li {
+  border-left: 1px solid rgba(154, 101, 20, 0.16);
+}
+
+.footer__promises svg {
+  flex: none;
+  color: var(--honey-deep);
+}
+
+.footer__promises b {
+  display: block;
+  font-weight: 500;
+  font-size: 14.5px;
+  color: var(--brown);
+}
+
+.footer__promises span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* ── cột liên kết ─────────────────────────────────────────── */
 .footer__grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1.3fr 1fr;
-  gap: 48px;
-}
-
-.footer .logo {
-  color: var(--ivory);
-}
-
-.footer__name {
-  margin-top: 26px;
-  font-family: var(--font-serif);
-  font-size: 30px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ivory);
+  grid-template-columns: 1.3fr 1.2fr 1fr 1.2fr;
+  gap: 40px;
+  padding-top: clamp(32px, 4vw, 48px);
 }
 
 .footer__tagline {
-  margin-top: 4px;
+  margin-top: 14px;
+  max-width: 360px;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 20px;
-  color: var(--honey-light);
+  font-size: 19px;
+  line-height: 1.35;
+  color: var(--honey-deep);
+}
+
+.footer__social {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.footer__social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fffaf0;
+  border: 1px solid rgba(58, 41, 29, 0.12);
+  color: var(--brown);
+  box-shadow: 0 6px 14px -10px rgba(58, 41, 29, 0.5);
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+.footer__social a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px -10px rgba(58, 41, 29, 0.55);
 }
 
 .footer__h {
-  margin: 0 0 18px;
-  font-size: 11.5px;
+  margin: 0 0 14px;
+  font-family: var(--font-serif);
   font-weight: 500;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--honey-light);
+  font-size: 18px;
+  color: var(--brown);
 }
 
-.footer ul {
+.footer__links,
+.footer__contact {
   display: grid;
-  gap: 10px;
+  gap: 8px;
+  font-size: 14.5px;
 }
 
-.footer a {
+/* danh mục 7 mục → 2 cột cho footer thấp lại */
+.footer__links.is-cols {
+  grid-template-columns: repeat(2, max-content);
+  column-gap: 36px;
+}
+
+.footer__links small {
+  display: block;
+  font-size: 12.5px;
+  color: var(--honey-deep);
+}
+
+.footer__links a,
+.footer__contact a,
+.footer__bottom a {
   text-decoration: none;
   background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
-  transition: background-size 0.4s var(--ease), color 0.3s;
+  transition:
+    background-size 0.4s var(--ease),
+    color 0.3s;
 }
 
-.footer a:hover {
-  color: var(--ivory);
+.footer__links a:hover,
+.footer__contact a:hover,
+.footer__bottom a:hover {
+  color: var(--honey-deep);
   background-size: 100% 1px;
 }
 
 .footer__contact li {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: flex-start;
-  font-size: 15px;
 }
 
 .footer__contact svg {
-  margin-top: 5px;
-  color: var(--honey-light);
+  margin-top: 4px;
+  color: var(--honey-deep);
   flex: none;
 }
 
-.footer__social a {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+/* ── núi vẽ nét + dòng cuối ───────────────────────────────── */
+.footer__base {
+  position: relative;
+  margin-top: -8px;
+}
+
+.footer__ridges {
+  display: block;
+  width: 100%;
+  height: clamp(56px, 6.5vw, 92px);
+  fill: var(--footer-bg); /* cùng màu nền: lớp núi gần che lớp xa */
+  stroke: rgba(176, 116, 28, 0.28);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.footer__ridges path:nth-child(2) {
+  stroke: rgba(176, 116, 28, 0.42);
+}
+
+.footer__ridges path:nth-child(3) {
+  stroke: rgba(176, 116, 28, 0.6);
 }
 
 .footer__bottom {
@@ -80,22 +178,107 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin-top: 72px;
-  padding-top: 26px;
-  padding-bottom: 32px;
-  border-top: 1px solid rgba(250, 247, 240, 0.1);
-  font-size: 13px;
-  color: rgba(250, 247, 240, 0.5);
+  padding-top: 10px;
+  padding-bottom: 18px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* chừa chỗ cho hai nút nổi Zalo / hỏi nhanh ở góc phải */
+.footer__bottom a {
+  margin-right: 84px;
 }
 
 @media (max-width: 960px) {
+  .footer__promises {
+    grid-template-columns: 1fr;
+  }
+
+  .footer__promises li {
+    justify-content: flex-start;
+    padding: 12px 16px;
+  }
+
+  .footer__promises li + li {
+    border-left: 0;
+    border-top: 1px solid rgba(154, 101, 20, 0.14);
+  }
+
   .footer__grid {
     grid-template-columns: 1fr 1fr;
+    gap: 32px;
   }
 }
 
 @media (max-width: 560px) {
+  /* điện thoại: cam kết thành 3 ô ngang gọn; bỏ cột sản phẩm (ngay phía trên đã có, danh mục cũng có link) */
+  .footer__promises {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer__promises li {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 12px 6px;
+    text-align: center;
+  }
+
+  .footer__promises li + li {
+    border-top: 0;
+    border-left: 1px solid rgba(154, 101, 20, 0.14);
+  }
+
+  .footer__promises b {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .footer__promises span,
+  .footer__products {
+    display: none;
+  }
+
   .footer__grid {
-    grid-template-columns: 1fr;
+    gap: 26px;
+    padding-top: 28px;
+  }
+
+  .footer__brand,
+  .footer__grid > nav,
+  .footer__grid > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  .footer__tagline {
+    margin-top: 10px;
+    font-size: 17px;
+  }
+
+  .footer__social {
+    margin-top: 14px;
+  }
+
+  .footer__h {
+    margin-bottom: 10px;
+    font-size: 17px;
+  }
+
+  .footer__links,
+  .footer__contact {
+    font-size: 14px;
+  }
+
+  .footer__links.is-cols {
+    grid-template-columns: repeat(3, max-content);
+    column-gap: 22px;
+  }
+
+  .footer__bottom {
+    padding-right: 64px;
+  }
+
+  .footer__bottom a {
+    margin-right: 0;
   }
 }

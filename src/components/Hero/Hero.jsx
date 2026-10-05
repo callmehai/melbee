@@ -93,7 +93,7 @@ export default function Hero() {
           {hero.subtext}
         </motion.p>
         <motion.div className="hero__ctas" {...item(1.15)}>
-          <Button href={hero.primaryCta.href}>{hero.primaryCta.label}</Button>
+          <Button href={hero.primaryCta.href} data-bee-perch="top-right">{hero.primaryCta.label}</Button>
           <Button href={hero.secondaryCta.href} variant="outline">
             {hero.secondaryCta.label}
           </Button>

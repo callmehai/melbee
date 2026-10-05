@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
+import { BEE_SIP_EVENT } from '../../lib/beeSip.js'
 import './Cursor.css'
 
 /**
@@ -8,6 +9,7 @@ import './Cursor.css'
  * - Trên ảnh bấm được ([data-cursor="view"]: thẻ sản phẩm, gallery) → hiện nhãn "XEM".
  * - Trên thứ cầm lắc được ([data-cursor="grab"]: miếng bánh tổ) → hiện nhãn lấy từ data-cursor-label.
  * - Trên nút ([data-cursor="cta"]) → ong to lên một chút.
+ * - Bấm bông hoa nhạc nền → ong chúc đầu xuống hoa hút / nhả mật (SoundToggle phát BEE_SIP_EVENT).
  */
 export default function Cursor() {
   const enabled = useMediaQuery('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)')
@@ -40,6 +42,16 @@ export default function Cursor() {
       if (labelRef.current.textContent !== label) labelRef.current.textContent = label
     }
     const leave = () => el.classList.remove('is-on')
+    let sipTimer = 0
+    const sip = () => {
+      // chúc đầu xuống hoa: hình gốc quay trái → xoay ngược chiều kim đồng hồ; đang quay phải thì ngược lại
+      el.style.setProperty('--sip', `${face > 0 ? -32 : 32}deg`)
+      el.classList.remove('is-sip')
+      void el.offsetWidth // chạy lại hoạt ảnh nếu bấm liên tiếp
+      el.classList.add('is-sip')
+      clearTimeout(sipTimer)
+      sipTimer = setTimeout(() => el.classList.remove('is-sip'), 900)
+    }
     const down = () => el.classList.add('is-down')
     const up = () => el.classList.remove('is-down')
     const loop = () => {
@@ -61,12 +73,15 @@ export default function Cursor() {
       raf = requestAnimationFrame(loop)
     }
     window.addEventListener('pointermove', move, { passive: true })
+    window.addEventListener(BEE_SIP_EVENT, sip)
     window.addEventListener('pointerdown', down)
     window.addEventListener('pointerup', up)
     document.documentElement.addEventListener('pointerleave', leave)
     raf = requestAnimationFrame(loop)
     return () => {
       cancelAnimationFrame(raf)
+      clearTimeout(sipTimer)
+      window.removeEventListener(BEE_SIP_EVENT, sip)
       document.documentElement.classList.remove('has-bee-cursor')
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerdown', down)

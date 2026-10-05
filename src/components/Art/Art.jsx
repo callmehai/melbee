@@ -106,15 +106,16 @@ const LANDSCAPES = {
     mist: '#F6F2E8',
     fadeTo: '#EEF0E7', // màu đầu section kế tiếp (Nguồn gốc) → không có đường cắt
   },
-  // Chiều tà của chính ngày ấy: cùng hướng nắng (thấp bên phải), núi gần hoà vào footer.
+  // Chiều tà của chính ngày ấy: cùng hướng nắng (thấp bên phải), chân núi tan vào footer.
   sunset: {
     sky: ['#F5EBDD', '#F4DDBC', '#EFBF8A', '#DE9563'],
     sun: '#FFE6B8',
     glow: '#F6B26E',
     sunPos: [1250, 720],
     sunR: 60,
-    ridges: ['#C99278', '#A8735F', '#83564A', '#5E3D35', '#3B2A25', '#1E1C18'],
+    ridges: ['#C99278', '#A8735F', '#8A5D4D', '#6E4A3C', '#58402F', '#4A3627'],
     mist: '#F2C79A',
+    fadeTo: '#EFE4CD', // chân núi tan vào nền giấy kem của footer → không có đường cắt
     // núi thấp hơn → nửa trên là trời cho chữ
     bases: [680, 730, 785, 845, 905, 965],
     amps: [70, 80, 85, 80, 70, 50],

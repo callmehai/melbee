@@ -60,7 +60,7 @@ function ProductCard({ product, onOpen, feature = false, badge = false, lead }) 
             <span>Xem chi tiết</span>
             <ArrowUpRight size={16} aria-hidden="true" />
           </button>
-          <OrderMenu size="sm" variant="outline" align="up" facebook={product.facebookMessage !== false} zalo={product.zaloMessage !== false} />
+          <OrderMenu size="sm" variant="outline" align="up" perch="top-right" facebook={product.facebookMessage !== false} zalo={product.zaloMessage !== false} />
         </div>
       </div>
     </article>

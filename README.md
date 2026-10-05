@@ -33,6 +33,8 @@ và đăng lại (~30 giây). Muốn dùng Vercel/Netlify: import repo, build `n
 |---|---|
 | Tên thương hiệu, logo, Facebook, Zalo, điện thoại, email, địa chỉ | `src/config/brand.js` |
 | Sản phẩm | `src/data/products.js` |
+| Hộp quà: kiểu hộp, màu, phí hộp, loại mật đặt vào hộp | `src/data/giftbox.js` |
+| Trợ lý hỏi nhanh (nút chat góc phải): câu hỏi gợi ý, câu trả lời soạn sẵn theo từ khoá — không phải AI | `src/data/chatbot.js` |
 | Chia sẻ khách hàng | `src/data/testimonials.js` |
 | Chữ & ảnh của mọi phần còn lại (hero, câu chuyện, nguồn gốc, quy trình, lifestyle, gallery, CTA, menu) | `src/data/sections.js` |
 | Màu, font, khoảng cách | `src/styles/variables.css` |
@@ -160,7 +162,9 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
   Chỉ bật trên máy có chuột, tự tắt trên điện thoại. Không muốn dùng: xoá `<Cursor />` trong `src/App.jsx`.
 - Người dùng bật *Reduce motion* trong hệ điều hành → hiệu ứng phức tạp tự tắt.
 - Tiêu đề tab (ngắn, vừa khung tab): `src/main.jsx`. Tiêu đề đầy đủ cho Google / mạng xã hội: `<title>` và `og:title` trong `index.html`.
-- Nút âm thanh (tròn, trên thanh điều hướng — không che nội dung) — xem mục **Âm thanh nền** bên dưới.
+- Nút âm thanh là **một bông hoa** trên thanh điều hướng: tắt tiếng thì hoa xám, cánh khép; bật thì hoa nở đủ màu,
+  xoay chậm, sóng + phấn toả ra. Bấm vào hoa: con ong (con trỏ) chúc đầu hút mật (tắt) / nhả mật (bật), giọt mật bay
+  giữa hoa và ong. Xem thêm mục **Âm thanh nền** bên dưới.
   Bỏ nút: xoá `<SoundToggle />` trong `src/components/Navbar/Navbar.jsx`.
 
 ---
@@ -187,8 +191,8 @@ Muốn mặc định tắt: `autoplay: false` trong `src/audio/config.js`.
 
 Một canvas WebGL **duy nhất** phủ cả trang (trong suốt, không chặn chuột, nằm dưới navbar và cửa sổ
 sản phẩm). Mỗi hiệu ứng tự bám vào section của nó qua thuộc tính `data-scene` trên thẻ `<section>`.
-Three.js chủ yếu làm **không khí** — nắng, sương, phấn hoa, ong, hoa. Vật thể duy nhất là miếng bánh tổ
-ở "Giọt mật", vì người xem cầm lắc được nó.
+Three.js chủ yếu làm **không khí** — nắng, sương, phấn hoa, ong, hoa. Vật thể chỉ có hai, đều cầm nắm được:
+miếng bánh tổ ở "Giọt mật" và hộp quà ở "Hộp quà".
 Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở Hero, chiều tà ở CTA.
 
 | Section | Hiệu ứng |
@@ -197,6 +201,8 @@ Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở H
 | Nguồn gốc | núi xa xanh lam + sương, đồng hoa (cải vàng, tam giác mạch, hoa trắng) lay theo gió, đàn ong đi kiếm mật |
 | Giọt mật | miếng bánh tổ 3D (vách sáp, ô vít nắp, ô mật bóng): rê chuột → nghiêng theo; kéo hoặc chạm → lắc, rung rinh rồi về chỗ; giọt mật ở mép dưới to dần thấy rõ rồi rơi (2–3,5 giây một giọt), đung đưa theo khi lắc, lắc mạnh thì giọt văng sớm. Máy không có WebGL → hiện ảnh `story/intro-macro.jpg` hoặc tranh tổ ong |
 | Sản phẩm | gần như tĩnh; rê chuột lên thẻ → vài hạt phấn bay lên |
+| Cả trang | **ong dẫn đường**: một con ong luôn bay (không đậu) theo người xem — cuộn tới phần nào thì bay tới lượn hình số 8 cạnh thứ chính của phần đó (nút chính, miếng tổ, ảnh, bước quy trình…), nút được chỉ sáng viền mật; người xem dừng đọc thì ong bay một vòng quanh, chuột sà tới thì né; bay sang chỗ mới để lại vệt phấn mờ dần. Đánh dấu chỗ lượn bằng `data-bee-perch` (xem `three/effects/GuideBee.js`) |
+| Hộp quà | hộp lục giác 3D (như một ô tổ ong) in nhũ dãy núi, thắt nơ satin, khay tổ ong màu mật: kéo/vuốt → xoay mọi hướng (ngang quanh hộp, dọc lật lên xuống); bấm/chạm → mở nắp, các hũ mật nhô lên khỏi khay, bụi vàng bay lên, thiệp nằm ở mặt trong nắp (in tổ ong). Đổi kiểu hộp, màu, hũ, lời nhắn ở bảng bên cạnh → hộp đổi theo ngay. Bước cuối chép sẵn lời nhắn mô tả hộp để dán vào Facebook / Zalo (không có giỏ hàng). Không có WebGL → tranh hộp quà |
 | CTA | tia nắng chiều cùng hướng, bụi nắng bay lên |
 | Cả trang | một lớp phấn hoa mỏng, một màu vàng ấm — dày ở Hero / Nguồn gốc, thưa ở phần nội dung |
 
@@ -225,12 +231,15 @@ src/
 ├── config/brand.js          tên, logo, Facebook, Zalo, liên hệ
 ├── data/
 │   ├── products.js          sản phẩm
+│   ├── giftbox.js           hộp quà (kiểu, màu, phí hộp, loại mật)
+│   ├── chatbot.js           trợ lý hỏi nhanh: câu trả lời soạn sẵn + từ khoá
 │   ├── testimonials.js      chia sẻ khách hàng
 │   └── sections.js          chữ & ảnh của từng phần, menu
 ├── components/
-│   ├── Navbar/  Hero/  Intro/  ProductShowcase/  ProductCard/  ProductModal/
+│   ├── Navbar/  Hero/  Intro/  ProductShowcase/  ProductCard/  ProductModal/  GiftBuilder/
 │   ├── BrandStory/  OriginSection/  ProcessTimeline/  WhyUs/  Lifestyle/
 │   ├── Gallery/  Lightbox/  Testimonials/  CTA/  Footer/  Cursor/  SoundToggle/
+│   ├── SupportWidget/       nút Zalo + trợ lý hỏi nhanh ở góc phải dưới
 │   ├── Art/                 hình minh hoạ SVG (dùng khi chưa có ảnh thật)
 │   └── common/              nút, ảnh, menu đặt hàng, tiêu đề section…
 ├── audio/                   âm thanh nền: AudioManager + config
@@ -241,7 +250,7 @@ src/
 │   ├── experience.js        ghép các hiệu ứng vào từng section
 │   ├── core/                Engine (renderer, camera, gió, cuộn, chuột), ScrollTracker, anchors
 │   ├── effects/             PollenField, LightRays, MountainAtmosphere, FlowerField,
-│   │                        BeeSwarm, Honeycomb, HoneyParticles, honey (vật liệu mật dùng chung)
+│   │                        BeeSwarm, Honeycomb, GiftBox, HoneyParticles, honey (vật liệu mật dùng chung)
 │   ├── shaders/             honey, pollen, distortion, noise, space (.glsl)
 │   ├── utils/               noise, random, performance
 │   └── debug/               bảng debug (chỉ bản dev)

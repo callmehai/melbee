@@ -8,6 +8,7 @@
  * tone:  màu mật cho hình minh hoạ: 'light' | 'amber' | 'dark' | 'comb'
  *
  * ⚠️ Đây là DỮ LIỆU MẪU — hãy thay tên, mô tả, quy cách, giá bằng thông tin thật.
+ *    GIÁ HIỆN TẠI LÀ GIÁ TẠM để duyệt giao diện, chưa phải giá bán.
  *    Không viết công dụng chữa bệnh/tăng miễn dịch nếu không có căn cứ.
  */
 export const products = [
@@ -17,12 +18,14 @@ export const products = [
     name: 'Mật ong Tây Bắc',
     subtitle: 'Mật ngọt từ hoa · Tinh hoa từ rừng',
     description:
-      'Mật ong từ những mùa hoa nơi núi rừng Điện Biên, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee. Thông tin chi tiết về quy cách và giá sẽ được cập nhật khi sản phẩm ra mắt.',
+      'Mật ong từ những mùa hoa nơi núi rừng Điện Biên, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee. Thông tin chi tiết về nguồn mật sẽ được cập nhật thêm.',
     origin: 'Vùng núi Điện Biên, Tây Bắc.',
     flavor: ['Hương hoa rừng', 'Ngọt đậm', 'Hậu vị dịu'],
     usage: ['Pha cùng nước ấm', 'Dùng cùng trà', 'Rưới lên bánh, sữa chua'],
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
+    price: '280.000 ₫', // giá tạm
+    size: 'Hũ 500ml', // quy cách tạm
     featured: true,
     facebookMessage: true,
     zaloMessage: true,
@@ -38,7 +41,7 @@ export const products = [
     usage: ['Pha nước ấm buổi sáng', 'Dùng cùng chanh, gừng', 'Làm sốt trộn salad'],
     image: 'assets/images/products/honey-02.jpg',
     tone: 'light',
-    price: 'Liên hệ',
+    price: '320.000 ₫', // giá tạm
     size: '500ml',
     featured: false,
     facebookMessage: true,
@@ -55,7 +58,7 @@ export const products = [
     usage: ['Ăn trực tiếp', 'Dùng cùng phô mai, bánh mì', 'Làm quà tặng'],
     image: 'assets/images/products/honey-03.jpg',
     tone: 'comb',
-    price: 'Liên hệ',
+    price: '350.000 ₫', // giá tạm
     size: 'Hộp 300g',
     featured: false,
     facebookMessage: true,
@@ -72,7 +75,7 @@ export const products = [
     usage: ['Quà biếu dịp lễ, Tết', 'Quà doanh nghiệp'],
     image: 'assets/images/products/gift-01.jpg',
     tone: 'dark',
-    price: 'Liên hệ',
+    price: '690.000 ₫', // giá tạm
     size: 'Hộp 2–3 hũ',
     featured: false,
     facebookMessage: true,

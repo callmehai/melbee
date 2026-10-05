@@ -92,3 +92,25 @@
 .cursor[data-state='grab'] .cursor__scale {
   transform: scale(1.15);
 }
+
+/* hút / nhả mật ở bông hoa nhạc nền: chúc đầu xuống, cánh vỗ dồn, nhún hai nhịp */
+.cursor.is-sip .cursor__scale {
+  animation: bee-sip 0.85s var(--ease);
+}
+
+.cursor.is-sip .wing {
+  animation-duration: 0.05s;
+}
+
+@keyframes bee-sip {
+  25%,
+  45%,
+  65% {
+    transform: rotate(var(--sip)) translateY(5px) scale(1.18);
+  }
+  35%,
+  55% {
+    transform: rotate(var(--sip)) translateY(2px) scale(1.12);
+  }
+}
+

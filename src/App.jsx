@@ -3,6 +3,7 @@ import Navbar from './components/Navbar/Navbar.jsx'
 import Hero from './components/Hero/Hero.jsx'
 import Intro from './components/Intro/Intro.jsx'
 import ProductShowcase from './components/ProductShowcase/ProductShowcase.jsx'
+import GiftBuilder from './components/GiftBuilder/GiftBuilder.jsx'
 import BrandStory from './components/BrandStory/BrandStory.jsx'
 import OriginSection from './components/OriginSection/OriginSection.jsx'
 import ProcessTimeline from './components/ProcessTimeline/ProcessTimeline.jsx'
@@ -13,6 +14,7 @@ import Testimonials from './components/Testimonials/Testimonials.jsx'
 import CTA from './components/CTA/CTA.jsx'
 import Footer from './components/Footer/Footer.jsx'
 import Cursor from './components/Cursor/Cursor.jsx'
+import SupportWidget from './components/SupportWidget/SupportWidget.jsx'
 import ThreeCanvas from './three/ThreeCanvas.jsx'
 
 /**
@@ -38,6 +40,7 @@ export default function App() {
         <BrandStory />
         <ProcessTimeline />
         <ProductShowcase />
+        <GiftBuilder />
         <WhyUs />
         <Lifestyle />
         <Gallery />
@@ -45,6 +48,8 @@ export default function App() {
         <CTA />
       </main>
       <Footer />
+      {/* góc phải dưới: nút Zalo + trợ lý hỏi nhanh (câu trả lời soạn sẵn, không phải AI) */}
+      <SupportWidget />
       {/* lớp Three.js dùng chung cho cả trang — tự ẩn nếu không có WebGL */}
       <ThreeCanvas />
       <Cursor />

@@ -25,7 +25,7 @@ export default function OriginSection() {
               {origin.text}
             </Reveal>
           </div>
-          <Reveal as="figure" effect="scale" duration={1.2} className="origin__photo">
+          <Reveal as="figure" effect="scale" duration={1.2} className="origin__photo" data-bee-perch="top-right" data-bee-glow="off">
             <Media src={origin.image} alt={origin.imageAlt} art={origin.art} />
             <figcaption>{origin.imageAlt}</figcaption>
           </Reveal>

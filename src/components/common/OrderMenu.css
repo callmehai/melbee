@@ -71,15 +71,5 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  border-radius: 50%;
-  color: #fff;
   flex: none;
-}
-
-.order-menu__icon.is-fb {
-  background: #1877f2;
-}
-
-.order-menu__icon.is-zalo {
-  background: #0068ff;
 }

@@ -6,6 +6,7 @@ export function createAnchors(engine) {
   const q = (sel) => document.querySelector(sel)
   const els = {
     stage: q('.intro__stage'),
+    gift: q('.gift__stage'),
     meadow: q('.origin__meadow'),
     blooms: [...document.querySelectorAll('.hero__branch [data-bloom]')],
   }
@@ -38,6 +39,16 @@ export function createAnchors(engine) {
     combStage() {
       if (!els.stage?.isConnected) els.stage = q('.intro__stage')
       const el = els.stage
+      if (!el) return null
+      const r = el.getBoundingClientRect()
+      if (!r.width) return null
+      return { el, x: r.left + r.width / 2, top: r.top, bottom: r.bottom, w: r.width, h: r.height, inView: r.bottom > -40 && r.top < engine.H + 40 }
+    },
+
+    /** Khung hộp quà 3D (.gift__stage) — hộp nằm giữa khung, nghe chuột/chạm ở đây. */
+    giftStage() {
+      if (!els.gift?.isConnected) els.gift = q('.gift__stage')
+      const el = els.gift
       if (!el) return null
       const r = el.getBoundingClientRect()
       if (!r.width) return null

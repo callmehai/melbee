@@ -1,0 +1,437 @@
+/* trên lớp Three.js (40), dưới navbar / menu điện thoại (49–50) và cửa sổ sản phẩm (100) */
+.support {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 45;
+  font-size: 14.5px;
+}
+
+/* ── hai nút tròn ─────────────────────────────────────────── */
+.support__dock {
+  display: grid;
+  gap: 14px;
+  justify-items: end;
+}
+
+.support__btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 14px 28px -12px rgba(30, 28, 24, 0.55);
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
+  animation: support-in 0.7s var(--ease) backwards; /* chỉ giữ trạng thái đầu lúc chờ, xong thì trả transform cho hover */
+}
+
+.support__btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 32px -12px rgba(30, 28, 24, 0.6);
+}
+
+.support__btn.is-zalo {
+  background: #0068ff;
+  animation-delay: 0.9s;
+}
+
+/* vòng sóng nhẹ quanh nút Zalo, vài lần rồi thôi */
+.support__btn.is-zalo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 104, 255, 0.5);
+  animation: support-ring 2.4s var(--ease) 2s 3;
+  opacity: 0;
+}
+
+/* khung chat mở: ẩn nút Zalo (trong khung đã có "Chat qua Zalo") để không đè lên khung */
+.support.is-open .support__btn.is-zalo {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px) scale(0.8);
+  transition:
+    opacity 0.2s,
+    transform 0.3s var(--ease),
+    visibility 0s 0.3s;
+}
+
+.support__btn.is-chat {
+  background: radial-gradient(circle at 35% 30%, #e9b45a, var(--honey) 55%, var(--honey-deep));
+  animation-delay: 1.05s;
+}
+
+.support__btn.is-chat.is-open {
+  background: var(--forest);
+}
+
+.support__btn.is-chat > span:first-child {
+  display: grid;
+}
+
+.support__tip {
+  position: absolute;
+  right: calc(100% + 12px);
+  top: 50%;
+  translate: 6px -50%;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--charcoal);
+  color: var(--ivory);
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.25s,
+    translate 0.35s var(--ease);
+}
+
+.support__btn:hover .support__tip,
+.support__btn:focus-visible .support__tip {
+  opacity: 1;
+  translate: 0 -50%;
+}
+
+@keyframes support-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.85);
+  }
+}
+
+@keyframes support-ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.55);
+  }
+}
+
+/* ── khung chat ───────────────────────────────────────────── */
+.support__panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(58px + 18px);
+  display: flex;
+  flex-direction: column;
+  width: 372px;
+  height: min(600px, calc(100vh - var(--nav-h) - 120px));
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  box-shadow: 0 34px 70px -28px rgba(30, 28, 24, 0.55);
+  transform-origin: bottom right;
+}
+
+.support__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px 16px 18px;
+  background:
+    radial-gradient(80% 140% at 100% 0%, rgba(228, 178, 90, 0.22), transparent 60%),
+    var(--forest);
+  color: var(--ivory);
+}
+
+.support__avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(228, 178, 90, 0.7);
+  background: var(--cream);
+}
+
+.support__head h2 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.support__head p {
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(250, 247, 240, 0.72);
+}
+
+.support__close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin-left: auto;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ivory);
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.support__close:hover {
+  background: rgba(250, 247, 240, 0.12);
+}
+
+.support__list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: linear-gradient(180deg, #f6f0e4, var(--ivory) 40%);
+}
+
+.support__eyebrow {
+  margin-bottom: 4px;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.support__msg {
+  max-width: 88%;
+  padding: 11px 14px;
+  border-radius: 16px;
+  line-height: 1.55;
+  white-space: pre-line;
+}
+
+.support__msg.is-bot {
+  align-self: flex-start;
+  border: 1px solid var(--line);
+  border-top-left-radius: 6px;
+  background: #fff;
+  color: var(--brown);
+}
+
+.support__msg.is-me {
+  margin-left: auto;
+  border-top-right-radius: 6px;
+  background: var(--honey);
+  color: #fff;
+}
+
+.support__list > div:has(.is-me) {
+  display: flex;
+}
+
+.support__msg.is-typing {
+  display: flex;
+  gap: 5px;
+  padding: 14px 16px;
+}
+
+.support__msg.is-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--honey-light);
+  animation: support-dot 1s ease-in-out infinite;
+}
+
+.support__msg.is-typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.support__msg.is-typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes support-dot {
+  0%,
+  60%,
+  100% {
+    transform: none;
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.support__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.support__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 1px solid rgba(200, 138, 36, 0.45);
+  border-radius: 999px;
+  background: #fffdf8;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--brown);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.25s,
+    border-color 0.25s;
+}
+
+.support__chip:hover {
+  border-color: var(--honey);
+  background: #fff3d8;
+}
+
+.support__chip.is-link {
+  border-color: transparent;
+  background: var(--forest);
+  color: var(--ivory);
+}
+
+.support__chip.is-link:hover {
+  background: var(--forest-2);
+}
+
+.support__chip.is-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+.support__foot {
+  padding: 12px 14px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--ivory);
+}
+
+.support__links {
+  display: flex;
+  gap: 18px;
+  margin: 0 4px 10px;
+  font-size: 13.5px;
+}
+
+.support__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--brown);
+  text-decoration: none;
+}
+
+.support__links a:hover {
+  color: var(--honey-deep);
+}
+
+.support__form {
+  display: flex;
+  gap: 8px;
+}
+
+.support__form input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  font: inherit;
+  font-size: 16px; /* ≥16px: iPhone không tự phóng to khi chạm vào ô */
+  color: var(--brown);
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s;
+}
+
+.support__form input:focus {
+  outline: none;
+  border-color: var(--honey);
+  box-shadow: 0 0 0 3px rgba(200, 138, 36, 0.18);
+}
+
+.support__form button {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--honey);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background-color 0.25s,
+    opacity 0.25s;
+}
+
+.support__form button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.support__form button:not(:disabled):hover {
+  background: var(--honey-deep);
+}
+
+.support__note {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* ── điện thoại: nút nhỏ hơn, khung chat gần kín bề ngang ── */
+@media (max-width: 560px) {
+  .support {
+    right: 14px;
+    bottom: 14px;
+  }
+
+  .support__dock {
+    gap: 10px;
+  }
+
+  .support__btn {
+    width: 50px;
+    height: 50px;
+  }
+
+  .support__tip {
+    display: none;
+  }
+
+  .support__panel {
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    bottom: 76px;
+    width: auto;
+    height: min(78vh, calc(100dvh - 96px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support__btn,
+  .support__btn.is-zalo::after {
+    animation: none;
+  }
+}

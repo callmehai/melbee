@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react'
 import Logo from '../common/Logo.jsx'
 import OrderMenu from '../common/OrderMenu.jsx'
 import SoundToggle from '../SoundToggle/SoundToggle.jsx'
-import { FacebookIcon, ZaloIcon } from '../common/BrandIcons.jsx'
+import { FacebookIcon, ZaloLogo } from '../common/BrandIcons.jsx'
 import { nav } from '../../data/sections.js'
 import { brand } from '../../config/brand.js'
 import { useLockBody } from '../../hooks/useLockBody.js'
@@ -113,11 +113,11 @@ export default function Navbar() {
               </nav>
               <div className="mobile-menu__cta">
                 <p>{brand.cta.order}</p>
-                <a className="btn btn--solid" href={brand.facebook} target="_blank" rel="noopener noreferrer">
-                  <FacebookIcon /> <span>{brand.cta.facebook}</span>
+                <a className="btn btn--facebook" href={brand.facebook} target="_blank" rel="noopener noreferrer">
+                  <FacebookIcon size={20} /> <span>{brand.cta.facebook}</span>
                 </a>
-                <a className="btn btn--outline" href={brand.zalo} target="_blank" rel="noopener noreferrer">
-                  <ZaloIcon /> <span>{brand.cta.zalo}</span>
+                <a className="btn btn--zalo" href={brand.zalo} target="_blank" rel="noopener noreferrer">
+                  <ZaloLogo size={22} /> <span>{brand.cta.zalo}</span>
                 </a>
               </div>
             </motion.div>

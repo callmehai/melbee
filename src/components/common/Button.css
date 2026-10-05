@@ -142,3 +142,35 @@
 .arrow-link:hover svg {
   transform: translate(3px, -3px);
 }
+
+/* ── nút thương hiệu: đúng màu & logo của Facebook / Zalo để khách nhận ra ngay ── */
+.btn--facebook {
+  background: #0866ff;
+  color: #fff;
+  box-shadow: 0 12px 26px -14px rgba(8, 102, 255, 0.85);
+}
+
+.btn--facebook::before {
+  background: #0552d1;
+}
+
+.btn--zalo {
+  background: #fff;
+  border-color: rgba(0, 104, 255, 0.28);
+  color: #0068ff;
+  box-shadow: 0 12px 26px -16px rgba(0, 72, 180, 0.45);
+}
+
+.btn--zalo::before {
+  background: #eaf2ff;
+}
+
+.btn--zalo:hover {
+  border-color: rgba(0, 104, 255, 0.55);
+}
+
+.btn--facebook svg,
+.btn--zalo svg {
+  margin-left: -6px;
+}
+

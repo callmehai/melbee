@@ -20,6 +20,8 @@ function CombStage() {
       aria-label={intro.imageAlt}
       data-cursor="grab"
       data-cursor-label="Lắc"
+      data-bee-perch="0.56,0.25"
+      data-bee-glow="off"
       onPointerDown={() => setPlayed(true)}
     >
       <span className="intro__shadow" aria-hidden="true" />

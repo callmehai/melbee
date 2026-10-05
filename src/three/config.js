@@ -26,8 +26,8 @@ export const THREE_CONFIG = {
   autoQuality: true, // FPS thấp kéo dài → tự hạ một cấp
 
   // ── bật/tắt từng hiệu ứng ─────────────────────────────────
-  // Three.js chủ yếu làm KHÔNG KHÍ (nắng, sương, phấn, ong, hoa). Vật thể duy nhất là miếng bánh tổ
-  // ở "Giọt mật" — người xem cầm lắc được, nên nó là một phần câu chuyện chứ không phải đồ trình diễn.
+  // Three.js chủ yếu làm KHÔNG KHÍ (nắng, sương, phấn, ong, hoa). Vật thể chỉ có hai, đều cầm nắm được:
+  // miếng bánh tổ ở "Giọt mật" (lắc cho mật nhỏ giọt) và hộp quà ở "Hộp quà" (xoay, mở nắp).
   effects: {
     pollen: true,
     lightRays: true, // chỉ ở Hero và CTA, cùng hướng với mặt trời trong tranh (thấp bên phải)
@@ -35,6 +35,8 @@ export const THREE_CONFIG = {
     flowers: true,
     bees: true,
     honeycomb: true, // miếng bánh tổ 3D lắc được, mật chảy thành sợi rồi nhỏ giọt (section "Giọt mật")
+    guideBee: true, // một con ong dẫn đường: cuộn tới đâu bay tới đậu lên thứ chính của phần đó (data-bee-perch)
+    giftBox: true, // hộp quà lục giác 3D: xoay, mở nắp xem hũ mật và thiệp bên trong (section "Hộp quà")
     goldenParticles: true,
   },
 }
@@ -51,12 +53,13 @@ export const SCENES = {
   story: { pollen: 0.3, wind: 0.15 },
   process: { pollen: 0.12, wind: 0.15 },
   products: { pollen: 0.05, wind: 0.1 }, // tối giản — sản phẩm là nhân vật chính
+  gift: { pollen: 0.04, wind: 0.1 },
   values: { pollen: 0.15, wind: 0.15 },
   lifestyle: { pollen: 0.3, wind: 0.2 },
   gallery: { pollen: 0.1, wind: 0.1 },
   testimonials: { pollen: 0.15, wind: 0.1 },
   cta: { pollen: 0.4, wind: 0.25 },
-  footer: { dark: true, pollen: 0.05, wind: 0.1 },
+  footer: { pollen: 0.05, wind: 0.1 },
 }
 
 /** Màu dùng trong shader (giữ đúng tông thương hiệu ở src/styles/variables.css). */

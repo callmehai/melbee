@@ -226,3 +226,32 @@ ol {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ── ong dẫn đường (three/effects/GuideBee.js) đậu lên phần tử → viền mật sáng lên, thở nhẹ ── */
+[data-bee-perch]:not(:focus-visible) {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition:
+    outline-color 0.6s var(--ease),
+    outline-offset 0.6s var(--ease);
+}
+
+.bee-perched:not([data-bee-glow='off'], :focus-visible) {
+  outline-color: rgba(200, 138, 36, 0.55);
+  outline-offset: 5px;
+  animation: bee-perched 2s ease-in-out infinite;
+}
+
+@keyframes bee-perched {
+  50% {
+    outline-color: rgba(200, 138, 36, 0.18);
+    outline-offset: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bee-perched:not([data-bee-glow='off']) {
+    animation: none;
+  }
+}
+

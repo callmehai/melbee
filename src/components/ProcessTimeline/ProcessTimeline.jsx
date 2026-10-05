@@ -29,7 +29,13 @@ export default function ProcessTimeline() {
           {process.steps.map((s, i) => (
             <li key={s.title} className={`step ${i % 2 ? 'is-right' : 'is-left'}`} style={{ '--i': (i + 0.5) / n }}>
               <span className="step__dot" aria-hidden="true" />
-              <Reveal className="step__media" effect={i % 2 ? 'slide-left' : 'slide-right'} duration={1.1}>
+              <Reveal
+                className="step__media"
+                effect={i % 2 ? 'slide-left' : 'slide-right'}
+                duration={1.1}
+                data-bee-perch={i % 2 ? 'top-left' : 'top-right'}
+                data-bee-glow="off"
+              >
                 <Media src={s.image} alt={s.title} art={s.art} />
               </Reveal>
               <Reveal className="step__text" effect={i % 2 ? 'slide-right' : 'slide-left'} delay={0.12}>

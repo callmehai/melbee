@@ -1,9 +1,9 @@
 import { ArrowUpRight } from 'lucide-react'
-import { FacebookIcon, ZaloIcon } from './BrandIcons.jsx'
+import { FacebookIcon, ZaloLogo } from './BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import './Button.css'
 
-/** Nút/đường dẫn dùng chung. variant: solid | outline | ghost | light */
+/** Nút/đường dẫn dùng chung. variant: solid | outline | ghost | light | facebook | zalo */
 export default function Button({ href, children, variant = 'solid', icon, external, className = '', ...rest }) {
   const isExternal = external ?? /^https?:/.test(href || '')
   const Tag = href ? 'a' : 'button'
@@ -23,19 +23,19 @@ export default function Button({ href, children, variant = 'solid', icon, extern
   )
 }
 
-/** Nút nhắn tin Facebook — link lấy từ src/config/brand.js */
-export function FacebookButton({ variant = 'solid', children = brand.cta.facebook, ...rest }) {
+/** Nút nhắn tin Facebook (xanh Facebook, logo thật) — link lấy từ src/config/brand.js */
+export function FacebookButton({ variant = 'facebook', children = brand.cta.facebook, ...rest }) {
   return (
-    <Button href={brand.facebook} variant={variant} icon={<FacebookIcon />} aria-label={`${children} (mở Facebook)`} {...rest}>
+    <Button href={brand.facebook} variant={variant} icon={<FacebookIcon size={20} />} aria-label={`${children} (mở Facebook)`} {...rest}>
       {children}
     </Button>
   )
 }
 
-/** Nút nhắn tin Zalo — link lấy từ src/config/brand.js */
-export function ZaloButton({ variant = 'outline', children = brand.cta.zalo, ...rest }) {
+/** Nút nhắn tin Zalo (nền trắng, logo Zalo thật) — link lấy từ src/config/brand.js */
+export function ZaloButton({ variant = 'zalo', children = brand.cta.zalo, ...rest }) {
   return (
-    <Button href={brand.zalo} variant={variant} icon={<ZaloIcon />} aria-label={`${children} (mở Zalo)`} {...rest}>
+    <Button href={brand.zalo} variant={variant} icon={<ZaloLogo size={22} />} aria-label={`${children} (mở Zalo)`} {...rest}>
       {children}
     </Button>
   )

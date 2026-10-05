@@ -39,7 +39,7 @@ void main() {
  * Sprite ong mật nhìn nghiêng, đầu quay trái (2 khung: cánh vỗ / cánh khép).
  * Màu thật: bụng hổ phách có khoanh nâu sẫm, ngực lông vàng nâu, cánh trong — không viền hoạt hình.
  */
-function beeAtlas() {
+export function beeAtlas() {
   const S = 128
   const cv = document.createElement('canvas')
   cv.width = S * 2
@@ -388,3 +388,6 @@ export class BeeSwarm extends Effect {
     this.aBee.needsUpdate = true
   }
 }
+
+// sprite ong dùng chung với con ong dẫn đường (GuideBee)
+export { VERT as BEE_VERT, FRAG as BEE_FRAG }

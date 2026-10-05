@@ -13,7 +13,7 @@ export default function WhyUs() {
         <ol className="why__list">
           {whyUs.items.map((it, i) => (
             <Reveal as="li" key={it.title} delay={i * 0.1}>
-              <span className="why__no">{String(i + 1).padStart(2, '0')}</span>
+              <span className="why__no" data-bee-perch="top-right" data-bee-glow="off">{String(i + 1).padStart(2, '0')}</span>
               <h3>{it.title}</h3>
               <p>{it.text}</p>
             </Reveal>
