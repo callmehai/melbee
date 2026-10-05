@@ -5,7 +5,7 @@ import './Cursor.css'
 /**
  * Con trỏ hình con ong (chỉ máy có chuột; điện thoại tự tắt).
  * - Ong vỗ cánh, đầu luôn quay theo hướng chuột di chuyển (quay đầu mượt khi đổi chiều).
- * - Trên ảnh ([data-cursor="view"]) → hiện nhãn "VIEW".
+ * - Trên ảnh ([data-cursor="view"]) → hiện nhãn "XEM".
  * - Trên nút ([data-cursor="cta"]) → ong to lên một chút.
  */
 export default function Cursor() {
@@ -88,7 +88,7 @@ export default function Cursor() {
           <path d="M-17 -6 Q-22 -15 -19 -18 M-13 -7 Q-14 -16 -10 -18" stroke="#1E1C18" strokeWidth="1.4" fill="none" strokeLinecap="round" />
         </svg>
       </div>
-      <span className="cursor__label">View</span>
+      <span className="cursor__label">Xem</span>
     </div>
   )
 }
