@@ -5,20 +5,39 @@ import { AUDIO_CONFIG, AUDIO_LAYERS, AUDIO_SCENES } from './config.js'
 const LAYERS = Object.keys(AUDIO_LAYERS)
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 
-// nhớ lựa chọn bật/tắt của người xem cho lần sau
+// nhớ lựa chọn tắt tiếng trong phiên xem (tải lại trang vẫn tắt); lần sau vào trang thì nhạc lại bật
 const PREF_KEY = 'melbee:sound'
 const readPref = () => {
   try {
-    return localStorage.getItem(PREF_KEY)
+    return sessionStorage.getItem(PREF_KEY)
   } catch {
     return null
   }
 }
 const writePref = (v) => {
   try {
-    localStorage.setItem(PREF_KEY, v)
+    sessionStorage.setItem(PREF_KEY, v)
   } catch {
     // trình duyệt chặn lưu trữ — bỏ qua
+  }
+}
+
+/**
+ * Trình duyệt có cho phát tiếng ngay khi vào trang không (khách quen của trang, hoặc người xem đã cho
+ * phép âm thanh với trang này). Firefox có API hỏi thẳng; Chrome/Edge: ngữ cảnh âm thanh tạo ra mà chạy
+ * luôn ("running") là được phép.
+ */
+function canAutoplay() {
+  try {
+    if (navigator.getAutoplayPolicy) return navigator.getAutoplayPolicy('audiocontext') === 'allowed'
+    const Ctx = window.AudioContext || window.webkitAudioContext
+    if (!Ctx) return false
+    const probe = new Ctx()
+    const ok = probe.state === 'running'
+    probe.close()
+    return ok
+  } catch {
+    return false
   }
 }
 // các thao tác trình duyệt tính là "người xem đã tương tác" (cuộn trang thì không)
@@ -273,9 +292,9 @@ class AudioManager {
   }
 
   /**
-   * Mặc định bật: trình duyệt không cho phát tiếng trước khi người xem tương tác, nên nút hiện sẵn
-   * "Bật" (trạng thái pending) và nhạc chạy ngay ở lần bấm / chạm / gõ phím đầu tiên trên trang.
-   * Người xem từng tắt → giữ tắt ở các lần sau.
+   * Mặc định bật khi vào trang: trình duyệt cho phát ngay thì phát luôn; không thì nút hiện sẵn "Bật"
+   * (trạng thái pending) và nhạc chạy ở lần bấm / chạm / gõ phím đầu tiên trên trang (trình duyệt không
+   * tính cuộn trang là tương tác). Người xem tắt → giữ tắt tới hết phiên xem.
    */
   autoStart() {
     if (!AUDIO_CONFIG.autoplay || readPref() === 'off' || this.status !== 'off') return
@@ -291,6 +310,10 @@ class AudioManager {
     this.cancelPending = () => {
       for (const t of GESTURES) window.removeEventListener(t, start, { capture: true })
       this.cancelPending = () => {}
+    }
+    if (canAutoplay()) {
+      this.cancelPending()
+      this.setMuted(false)
     }
   }
 

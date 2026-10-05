@@ -32,7 +32,7 @@ export const AUDIO_SCENES = {
 
 export const AUDIO_CONFIG = {
   enabled: true,
-  autoplay: true, // mặc định bật: phát ở lần bấm/chạm đầu tiên trên trang (trình duyệt không cho phát sớm hơn)
+  autoplay: true, // mặc định bật: phát ngay khi vào trang nếu trình duyệt cho phép, không thì ở lần bấm/chạm đầu tiên
   mobileVolume: 0.75, // điện thoại nhỏ hơn 25%
   crossfade: 0.5, // hằng số thời gian (giây) — đạt ~95% mức mới sau ~1,5 giây
   fadeIn: 1.2, // bật âm thanh: mờ dần lên (giây)
