@@ -5,6 +5,25 @@ import { AUDIO_CONFIG, AUDIO_LAYERS, AUDIO_SCENES } from './config.js'
 const LAYERS = Object.keys(AUDIO_LAYERS)
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 
+// nhớ lựa chọn bật/tắt của người xem cho lần sau
+const PREF_KEY = 'melbee:sound'
+const readPref = () => {
+  try {
+    return localStorage.getItem(PREF_KEY)
+  } catch {
+    return null
+  }
+}
+const writePref = (v) => {
+  try {
+    localStorage.setItem(PREF_KEY, v)
+  } catch {
+    // trình duyệt chặn lưu trữ — bỏ qua
+  }
+}
+// các thao tác trình duyệt tính là "người xem đã tương tác" (cuộn trang thì không)
+const GESTURES = ['pointerup', 'touchend', 'click', 'keydown']
+
 /**
  * Quản lý toàn bộ âm thanh nền (các lớp khai báo ở config.js) trong MỘT AudioContext.
  *
@@ -253,12 +272,44 @@ class AudioManager {
     }, AUDIO_CONFIG.fadeOut * 1000 + 300)
   }
 
+  /**
+   * Mặc định bật: trình duyệt không cho phát tiếng trước khi người xem tương tác, nên nút hiện sẵn
+   * "Bật" (trạng thái pending) và nhạc chạy ngay ở lần bấm / chạm / gõ phím đầu tiên trên trang.
+   * Người xem từng tắt → giữ tắt ở các lần sau.
+   */
+  autoStart() {
+    if (!AUDIO_CONFIG.autoplay || readPref() === 'off' || this.status !== 'off') return
+    this.setStatus('pending')
+    const start = (e) => {
+      // bấm vào chính nút âm thanh → để toggle() xử lý (người xem đang muốn tắt)
+      if (e.target instanceof Element && e.target.closest('.sound-toggle')) return
+      if (e.type === 'keydown' && e.key === 'Escape') return
+      this.cancelPending()
+      if (this.status === 'pending') this.setMuted(false)
+    }
+    for (const t of GESTURES) window.addEventListener(t, start, { capture: true })
+    this.cancelPending = () => {
+      for (const t of GESTURES) window.removeEventListener(t, start, { capture: true })
+      this.cancelPending = () => {}
+    }
+  }
+
+  cancelPending() {}
+
   toggle() {
+    if (this.status === 'pending') {
+      this.cancelPending()
+      writePref('off')
+      this.setStatus('off')
+      return Promise.resolve()
+    }
+    writePref(this.muted ? 'on' : 'off')
     return this.setMuted(!this.muted)
   }
 
   dispose() {
     clearTimeout(this.suspendTimer)
+    this.cancelPending()
     for (const off of this.cleanups) off()
     this.cleanups = []
     for (const l of Object.values(this.layers)) {

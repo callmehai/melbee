@@ -5,22 +5,33 @@ import './SoundToggle.css'
 
 const LABEL = {
   off: 'Tắt',
+  pending: 'Bật',
   loading: 'Đang tải',
   on: 'Bật',
   error: 'Lỗi',
 }
 
 /**
- * Nút nhạc nền. Mặc định TẮT — trang không bao giờ tự phát tiếng;
- * chỉ khi người xem bấm mới tải và bật âm thanh.
+ * Nút nhạc nền. Mặc định BẬT: nhạc phát ở lần bấm/chạm đầu tiên trên trang
+ * (trình duyệt không cho phát tiếng trước khi người xem tương tác). Bấm nút → tắt, và nhớ cho lần sau.
  */
 export default function SoundToggle() {
   const [status, setStatus] = useState(audioManager.status)
   useEffect(() => audioManager.subscribe(setStatus), [])
-  useEffect(() => () => audioManager.dispose(), [])
+  useEffect(() => {
+    audioManager.autoStart()
+    return () => audioManager.dispose()
+  }, [])
 
-  const on = status === 'on' || status === 'loading'
-  const hint = on ? 'Tắt nhạc nền' : status === 'error' ? 'Không tải được âm thanh — bấm để thử lại' : 'Bật nhạc nền'
+  const on = status === 'on' || status === 'loading' || status === 'pending'
+  const hint =
+    status === 'pending'
+      ? 'Nhạc nền sẽ phát khi bạn chạm vào trang — bấm để tắt'
+      : on
+        ? 'Tắt nhạc nền'
+        : status === 'error'
+          ? 'Không tải được âm thanh — bấm để thử lại'
+          : 'Bật nhạc nền'
 
   return (
     <button

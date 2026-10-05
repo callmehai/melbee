@@ -166,7 +166,9 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
 
 Nhạc nền `public/assets/audio/music.mp3` — Mixkit "Wedding 01" (#657, giấy phép miễn phí, dùng thương mại được,
 không cần ghi nguồn), đã cắt khoảng lặng đầu/cuối, chuẩn hoá độ to, nén 128kbps (~2,2MB, 2 phút 23 giây, lặp lại).
-**Mặc định tắt** — chỉ tải và phát khi người xem bấm nút "Âm thanh".
+**Mặc định bật**: trình duyệt không cho trang tự phát tiếng trước khi người xem tương tác, nên nhạc chạy
+ở lần bấm / chạm / gõ phím đầu tiên trên trang. Người xem bấm nút để tắt → trang nhớ, lần sau vẫn tắt.
+Muốn mặc định tắt: `autoplay: false` trong `src/audio/config.js`.
 
 - Âm lượng, mức theo từng section: `src/audio/config.js` (`AUDIO_LAYERS`, `AUDIO_SCENES`). Đổi section → tự chuyển ~1,5 giây.
 - Đổi bài: chép file MP3 mới đè lên `music.mp3` (hoặc đổi đường dẫn trong `config.js`).
