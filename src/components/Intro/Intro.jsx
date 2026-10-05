@@ -32,6 +32,7 @@ export default function Intro() {
           <Reveal effect="scale" duration={1.2} className="intro__frame">
             <Media src={intro.image} alt={intro.imageAlt} art={intro.art} />
           </Reveal>
+          <span className="intro__hex" aria-hidden="true" />
         </motion.div>
       </div>
     </section>

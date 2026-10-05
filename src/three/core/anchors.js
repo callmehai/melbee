@@ -34,7 +34,7 @@ export function createAnchors(engine) {
       return { sx: 0, sy: s.top, targets, visibility: s.visibility, inView: s.inView }
     },
 
-    /** Đầu dòng mật trong tranh gáo mật (mốc data-drip-tip trong SVG). */
+    /** Đầu dòng mật trong tranh của khung "Giọt mật" (mốc data-drip-tip trong SVG). */
     introDrip() {
       const tip = els.introFrame?.querySelector('[data-drip-tip]')
       if (!tip) return null

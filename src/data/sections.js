@@ -43,8 +43,8 @@ export const intro = {
     'Mỗi sản phẩm được giới thiệu với mong muốn giữ lại sự nguyên bản và câu chuyện phía sau nó.',
   ],
   image: 'assets/images/story/intro-macro.jpg',
-  imageAlt: 'Mật ong chảy từ gáo gỗ',
-  art: 'dipper',
+  imageAlt: 'Cận cảnh mật ong chảy trên bánh tổ',
+  art: 'honeycomb',
 }
 
 export const productsSection = {

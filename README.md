@@ -194,7 +194,7 @@ Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở H
 |---|---|
 | Hero | tia nắng sớm toả từ mặt trời trong tranh, sương trôi ở chân núi, 1–3 con ong ghé cành hoa ban |
 | Nguồn gốc | núi xa xanh lam + sương, đồng hoa (cải vàng, tam giác mạch, hoa trắng) lay theo gió, đàn ong đi kiếm mật |
-| Giọt mật | giọt mật hình thành ở đầu dòng mật trong tranh gáo mật rồi nhỏ xuống |
+| Giọt mật | giọt mật hình thành ở đầu dòng mật trong tranh tổ ong rồi nhỏ xuống |
 | Sản phẩm | gần như tĩnh; rê chuột lên thẻ → vài hạt phấn bay lên |
 | CTA | tia nắng chiều cùng hướng, bụi nắng bay lên |
 | Cả trang | một lớp phấn hoa mỏng, một màu vàng ấm — dày ở Hero / Nguồn gốc, thưa ở phần nội dung |

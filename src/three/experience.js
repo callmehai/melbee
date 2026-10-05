@@ -16,7 +16,7 @@ import { HoneyParticles } from './effects/HoneyParticles.js'
  *
  *   Hero          tia nắng sớm toả từ mặt trời trong tranh + sương trôi ở chân núi + vài con ong ghé cành hoa ban
  *   Nguồn gốc     núi xa xanh lam + sương + đồng hoa lay theo gió + đàn ong đi kiếm mật
- *   Giọt mật      giọt mật hình thành ở đầu dòng mật trong tranh gáo mật rồi nhỏ xuống
+ *   Giọt mật      giọt mật hình thành ở đầu dòng mật trong tranh tổ ong rồi nhỏ xuống
  *   Sản phẩm      gần như tĩnh — vài hạt phấn khi rê chuột lên thẻ
  *   CTA           tia nắng chiều cùng hướng + bụi nắng bay lên
  *   Phấn hoa      một lớp mỏng, một màu, chạy xuyên trang — dày ở Hero/Nguồn gốc, thưa ở phần nội dung
@@ -51,8 +51,8 @@ export function createExperience(canvas, options) {
 
   // ── chủ thể: giọt mật & ong ───────────────────────────────
   if (fx.honeyDrop) {
-    // màu theo dòng mật trong tranh gáo mật (#A86D1C → #E9B24F → #C88A24)
-    const tone = { deep: '#a86d1c', mid: '#d9a443', light: '#f5d185', glow: 0.45 }
+    // màu theo dòng mật trong tranh tổ ong (gradient #9A6514 → #F2BE5C → #C88A24 dưới lớp phủ mờ)
+    const tone = { deep: '#b98235', mid: '#dbb267', light: '#f3d48f', glow: 0.4 }
     engine.add(new HoneyDrop(engine, P, { name: 'Giọt mật', anchor: anchors.introDrip, tone }))
   }
   if (fx.bees) {
