@@ -44,14 +44,15 @@ void main() {
 `
 
 /**
- * Tia nắng mờ phủ lên một section. Không dùng post-process: một mặt phẳng + shader,
- * opacity rất thấp, mỗi section một bản (hero, câu chuyện, nguồn gốc, CTA).
+ * Tia nắng mờ phủ lên một section. Không dùng post-process: một mặt phẳng + shader, opacity rất thấp.
+ * sun(): vị trí mặt trời trong tranh (px màn hình) → tia toả ra đúng từ đó, cùng hướng sáng với tranh.
  */
 export class LightRays extends Effect {
-  constructor(engine, palette, { section, strength = 0.1, onLight = false, source = [0.92, 1.04], direction = [-0.55, -1] }) {
+  constructor(engine, palette, { section, strength = 0.1, color = palette.rayWarm, sun, source = [0.92, 1.04], direction = [-0.55, -1] }) {
     super(engine, `Tia nắng · ${section}`)
     this.section = section
     this.strength = strength
+    this.sun = sun
     this.material = new ShaderMaterial({
       vertexShader: VERT,
       fragmentShader: FRAG,
@@ -64,7 +65,7 @@ export class LightRays extends Effect {
         uSize: { value: new Vector2(1, 1) },
         uSource: { value: new Vector2(...source) },
         uDirection: { value: new Vector2(...direction) },
-        uColor: { value: rawColor(onLight ? palette.rayOnLight : palette.rayWarm) },
+        uColor: { value: rawColor(color) },
       },
     })
     this.mesh = new Mesh(new PlaneGeometry(1, 1), this.material)
@@ -83,6 +84,8 @@ export class LightRays extends Effect {
     engine.toWorld(engine.W / 2, s.top + s.height / 2, 0, this.mesh.position)
     this.mesh.scale.set(engine.W, s.height, 1)
     this.material.uniforms.uSize.value.set(engine.W, s.height)
+    const sun = this.sun?.()
+    if (sun) this.material.uniforms.uSource.value.set(sun.x / engine.W, 1 - (sun.y - s.top) / s.height)
     this.material.uniforms.uIntensity.value = this.intensity
   }
 }

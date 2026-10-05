@@ -1,5 +1,5 @@
-// Hạt phấn hoa / bụi nắng: lõi tròn mềm + quầng sáng nhẹ (thay bloom post-process).
-// Màu đổi theo nền: hổ phách đậm trên nền sáng, kem vàng trên nền tối.
+// Hạt phấn hoa: lõi tròn mềm + quầng sáng nhẹ (thay bloom post-process).
+// uColorLight / uColorDark: màu trên nền sáng / tối (hiện dùng cùng một màu vàng ấm).
 uniform vec3 uColorLight;
 uniform vec3 uColorDark;
 uniform float uGlow;

@@ -15,9 +15,6 @@ export default function Intro() {
     <section id="gioi-thieu" data-scene="honey" ref={ref} className="section intro" aria-labelledby="intro-title">
       <div className="container intro__grid">
         <div className="intro__text">
-          <Reveal as="p" className="eyebrow" effect="fade">
-            {intro.eyebrow}
-          </Reveal>
           <Reveal as="h2" id="intro-title" className="intro__title" delay={0.1} duration={1.1}>
             {intro.title.map((l, i) => (
               <span key={i}>{l}</span>
@@ -35,7 +32,6 @@ export default function Intro() {
           <Reveal effect="scale" duration={1.2} className="intro__frame">
             <Media src={intro.image} alt={intro.imageAlt} art={intro.art} />
           </Reveal>
-          <span className="intro__hex" aria-hidden="true" />
         </motion.div>
       </div>
     </section>

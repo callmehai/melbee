@@ -44,7 +44,7 @@ export default function DebugPanel({ engine }) {
         section <b>{s.section}</b> · cuộn {pct(scroll.progress)} · v {s.scrollVelocity}px/s
       </div>
       <div>
-        gió {s.wind.toFixed(2)} · phấn {pct(s.mood.pollen)} · bụi {pct(s.mood.dust)}
+        gió {s.wind.toFixed(2)} · phấn {pct(s.mood.pollen)}
       </div>
       <div style={{ marginTop: 6 }}>hạt/đối tượng đang hiện: {particles}</div>
       <table style={{ width: '100%', marginTop: 4, borderCollapse: 'collapse' }}>

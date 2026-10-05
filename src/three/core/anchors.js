@@ -6,29 +6,35 @@ export function createAnchors(engine) {
   const q = (sel) => document.querySelector(sel)
   const els = {
     introFrame: q('.intro__frame'),
-    originPhotos: q('.origin__photos'),
-    timeline: q('.timeline'),
+    meadow: q('.origin__meadow'),
+    blooms: [...document.querySelectorAll('.hero__branch [data-bloom]')],
   }
-  const narrow = () => engine.W < 760
+  const center = (el) => {
+    const r = el.getBoundingClientRect()
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width }
+  }
 
   return {
     section: (name) => engine.scroll.get(name),
 
-    /** Chủ thể Hero: tổ ong + đàn ong lượn quanh, ở khoảng trống bên phải chữ. */
-    heroSubject() {
-      const s = engine.scroll.get('hero')
-      if (!s) return null
-      const n = narrow()
-      return {
-        sx: engine.W * (n ? 0.8 : 0.75),
-        sy: s.top + s.height * (n ? 0.19 : 0.4),
-        r: Math.min(engine.W, s.height) * (n ? 0.05 : 0.062),
-        visibility: s.visibility,
-        inView: s.inView,
-      }
+    /** Mặt trời trong tranh của một section (mốc data-sun trong SVG) — tia nắng toả ra từ đây. */
+    sun(name) {
+      const el = q(`[data-scene="${name}"] [data-sun]`)
+      return () => (el && el.getBoundingClientRect().width ? center(el) : null)
     },
 
-    /** Đầu dòng mật trong tranh tổ ong (mốc data-drip-tip trong SVG). */
+    /** Những bông hoa ban trên cành ở Hero (mốc data-bloom) — chỗ ong ghé. */
+    heroBlooms() {
+      const s = engine.scroll.get('hero')
+      if (!s || !els.blooms.length) return null
+      const targets = els.blooms.map((el) => {
+        const c = center(el)
+        return { x: c.x, y: c.y - s.top, z: 60 }
+      })
+      return { sx: 0, sy: s.top, targets, visibility: s.visibility, inView: s.inView }
+    },
+
+    /** Đầu dòng mật trong tranh gáo mật (mốc data-drip-tip trong SVG). */
     introDrip() {
       const tip = els.introFrame?.querySelector('[data-drip-tip]')
       if (!tip) return null
@@ -37,24 +43,22 @@ export function createAnchors(engine) {
       return { x: r.left + r.width / 2, y: r.top, width: r.width, inView: r.bottom > -80 && r.top < engine.H + 80 }
     },
 
-    /** Dải đồng cỏ: từ đáy ảnh "Nguồn gốc" tới đáy section — chỗ cho hoa, cỏ, núi xa, sương. */
+    /** Dải đồng hoa ở chân "Nguồn gốc" (.origin__meadow) — chỗ cho hoa, cỏ, núi xa, sương. */
     meadow() {
       const s = engine.scroll.get('origin')
-      if (!s) return null
-      const photos = els.originPhotos?.getBoundingClientRect()
-      const top = photos ? photos.bottom + 6 : s.bottom - 200
+      if (!s || !els.meadow) return null
+      const r = els.meadow.getBoundingClientRect()
+      if (r.height < 120) return null // không có lớp Three.js → dải này chỉ là khoảng thở
       return {
         left: 0,
-        top,
+        top: r.top,
         width: engine.W,
-        height: Math.max(40, s.bottom - top),
+        height: r.height,
         bottom: s.bottom,
         sectionTop: s.top,
-        inView: s.bottom > 0 && top < engine.H,
+        inView: r.bottom > 0 && r.top < engine.H,
         visibility: s.visibility,
       }
     },
-
-    timeline: () => els.timeline,
   }
 }

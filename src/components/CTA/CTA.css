@@ -1,8 +1,10 @@
 .cta {
   position: relative;
-  padding: clamp(110px, 16vw, 220px) 0;
+  min-height: clamp(640px, 108vh, 1100px);
+  padding: clamp(96px, 12vw, 160px) 0 0;
   overflow: hidden;
-  color: var(--ivory);
+  background: var(--cream);
+  color: var(--brown);
   text-align: center;
 }
 
@@ -12,14 +14,20 @@
   inset: 0;
 }
 
-.cta__shade {
+/* trời chiều bắt đầu từ đúng màu kem của section trên → không có đường cắt */
+.cta::before {
+  content: '';
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(25, 18, 12, 0.55), rgba(25, 18, 12, 0.82));
+  inset: 0 0 auto;
+  height: 45%;
+  background: linear-gradient(180deg, var(--cream) 0%, rgba(245, 235, 221, 0) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .cta__inner {
   position: relative;
+  z-index: 2;
 }
 
 .cta .section-heading {
@@ -30,7 +38,7 @@
   max-width: 520px;
   margin: 0 auto;
   font-size: 17px;
-  color: rgba(250, 247, 240, 0.8);
+  color: var(--brown-2);
 }
 
 .cta__buttons {

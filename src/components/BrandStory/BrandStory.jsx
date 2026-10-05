@@ -11,13 +11,13 @@ export default function BrandStory() {
   const ref = useRef(null)
   const reduced = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
-  const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+  const y = useTransform(scrollYProgress, [0, 1], ['-4%', '4%'])
 
   return (
     <section id="cau-chuyen" data-scene="story" ref={ref} className="section story" aria-labelledby="story-title">
       <div className="container story__grid">
         <div className="story__text">
-          <SectionHeading id="story-title" eyebrow={story.eyebrow} title={story.title} />
+          <SectionHeading id="story-title" title={story.title} />
           <div className="story__body">
             {story.paragraphs.map((p, i) => (
               <Reveal as="p" key={i} delay={0.1 * i} className={i === story.paragraphs.length - 1 ? 'story__last' : ''}>

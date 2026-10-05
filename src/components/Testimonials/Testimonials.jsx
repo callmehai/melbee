@@ -6,11 +6,14 @@ import { testimonials } from '../../data/testimonials.js'
 import { testimonialsSection } from '../../data/sections.js'
 import './Testimonials.css'
 
+// chia sẻ mẫu (sample: true) không hiện trên trang — section tự ẩn cho tới khi có chia sẻ thật
+const real = testimonials.filter((t) => !t.sample)
+
 export default function Testimonials() {
   const [i, setI] = useState(0)
   const [paused, setPaused] = useState(false)
   const reduced = useReducedMotion()
-  const n = testimonials.length
+  const n = real.length
   const go = useCallback((d) => setI((v) => (v + d + n) % n), [n])
 
   useEffect(() => {
@@ -20,7 +23,7 @@ export default function Testimonials() {
   }, [paused, reduced, n, go])
 
   if (!n) return null
-  const t = testimonials[i]
+  const t = real[i]
 
   return (
     <section data-scene="testimonials" className="section testimonials" aria-labelledby="t-title">
@@ -50,7 +53,6 @@ export default function Testimonials() {
                 <figcaption>
                   <b>{t.name}</b>
                   {t.role && <span>{t.role}</span>}
-                  {t.sample && <em className="tslider__sample">Nội dung mẫu</em>}
                 </figcaption>
               </motion.figure>
             </AnimatePresence>
@@ -61,7 +63,7 @@ export default function Testimonials() {
                 <ChevronLeft size={20} />
               </button>
               <div className="tslider__dots">
-                {testimonials.map((x, k) => (
+                {real.map((x, k) => (
                   <button key={x.id} type="button" className={k === i ? 'is-active' : ''} onClick={() => setI(k)} aria-label={`Chia sẻ ${k + 1}`} aria-current={k === i ? 'true' : undefined} />
                 ))}
               </div>

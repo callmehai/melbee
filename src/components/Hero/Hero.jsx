@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
 import Button from '../common/Button.jsx'
-import { Landscape } from '../Art/Art.jsx'
+import { BanBranch, Landscape } from '../Art/Art.jsx'
 import Pollen from './Pollen.jsx'
 import { useThreeStatus } from '../../three/store.js'
 import { hero } from '../../data/sections.js'
@@ -32,6 +32,7 @@ export default function Hero() {
   const textY = useTransform(scrollYProgress, [0, 1], [0, 140])
   const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
   const bgY = useTransform(scrollYProgress, [0, 1], [0, 160])
+  const branchY = useTransform(scrollYProgress, [0, 1], [0, -90])
 
   const hasVideo = hasAsset(hero.video)
   const hasImage = hasAsset(hero.image)
@@ -62,14 +63,18 @@ export default function Hero() {
             </motion.div>
           ) : (
             <Landscape
-              variant={hero.art === 'landscape' ? 'dawn' : 'dusk'}
+              variant="morning"
               className="hero__art"
               layerY={reduced ? undefined : [l0, l1, l2, l3, l4, l5]}
-              label="Minh hoạ núi rừng Tây Bắc lúc hoàng hôn"
+              label="Minh hoạ núi rừng Điện Biên buổi sáng mùa xuân"
             />
           )}
         </div>
         <div className="hero__shade" />
+        {/* cành hoa ban tiền cảnh — gần máy quay nhất nên trôi ngược lên khi cuộn */}
+        <motion.div className="hero__branch" style={reduced ? undefined : { y: branchY }}>
+          <BanBranch className="hero__branch-art" />
+        </motion.div>
         {/* phấn hoa 2D chỉ dùng khi lớp Three.js chưa chạy / không có WebGL */}
         {three !== 'running' && <Pollen />}
       </motion.div>
@@ -89,13 +94,13 @@ export default function Hero() {
         </motion.p>
         <motion.div className="hero__ctas" {...item(1.15)}>
           <Button href={hero.primaryCta.href}>{hero.primaryCta.label}</Button>
-          <Button href={hero.secondaryCta.href} variant="light">
+          <Button href={hero.secondaryCta.href} variant="outline">
             {hero.secondaryCta.label}
           </Button>
         </motion.div>
       </motion.div>
 
-      <motion.a href="#gioi-thieu" className="hero__scroll" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 1 }} aria-label="Cuộn xuống">
+      <motion.a href="#nguon-goc" className="hero__scroll" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 1 }} aria-label="Cuộn xuống">
         <span>Cuộn xuống</span>
         <ArrowDown size={16} aria-hidden="true" />
       </motion.a>

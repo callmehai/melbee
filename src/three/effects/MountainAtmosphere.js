@@ -43,10 +43,12 @@ void main() {
     float h1 = 0.6 + 0.3 * fbm(vec2(x * 1.7, 1.3), uSeed);
     float h2 = 0.36 + 0.26 * fbm(vec2(x * 2.6 + 4.0, 7.1), uSeed);
     float aa = 1.5 / uSize.y;
-    over(col, a, uFar, smoothstep(h1 + aa, h1 - aa, uv.y) * 0.6 * uRidges);
+    over(col, a, uFar, smoothstep(h1 + aa, h1 - aa, uv.y) * 0.55 * uRidges);
     // sương đọng ở chân dãy xa
-    over(col, a, uFog, smoothstep(h1, h1 - 0.25, uv.y) * smoothstep(h2 - 0.1, h2 + 0.1, uv.y) * 0.12 * uRidges);
-    over(col, a, uNear, smoothstep(h2 + aa, h2 - aa, uv.y) * 0.8 * uRidges);
+    over(col, a, uFog, smoothstep(h1, h1 - 0.25, uv.y) * smoothstep(h2 - 0.1, h2 + 0.1, uv.y) * 0.35 * uRidges);
+    over(col, a, uNear, smoothstep(h2 + aa, h2 - aa, uv.y) * 0.7 * uRidges);
+    // chân núi chìm hẳn vào sương → nửa dưới dải là nền của section, không có khối / cạnh cứng
+    a *= smoothstep(0.05, 0.5, uv.y);
   }
 
   vec2 fp = vec2(x * 1.6 - uWindOffset.x * 0.0012 - uTime * 0.012, uv.y * 2.6 + uTime * 0.01);
@@ -62,11 +64,11 @@ void main() {
 
 /**
  * Không khí núi rừng: sương + dãy núi xa, đặt trong một dải hình chữ nhật lấy từ DOM.
- * - Hero: chỉ sương ấm ở chân tranh (tranh đã có núi).
- * - Nguồn gốc: núi xa + sương ở dải đồng cỏ, nằm SAU hoa (z âm, có depth test).
+ * - Hero: chỉ sương sớm trôi ở chân tranh (tranh đã có núi).
+ * - Nguồn gốc: núi xa xanh lam + sương ở dải đồng hoa, nằm SAU hoa (z âm, có depth test).
  */
 export class MountainAtmosphere extends Effect {
-  constructor(engine, palette, { name, band, ridges = false, fog = 0.2, fogColor, z = 0, strength = 1, seed = 1 }) {
+  constructor(engine, palette, { name, band, ridges = false, fog = 0.2, fogColor = palette.mist, far = palette.ridgeFar, near = palette.ridgeNear, z = 0, strength = 1, seed = 1 }) {
     super(engine, name)
     this.band = band
     this.z = z
@@ -84,9 +86,9 @@ export class MountainAtmosphere extends Effect {
         uRidges: { value: ridges ? 1 : 0 },
         uFogAmount: { value: fog },
         uSeed: { value: seed },
-        uFar: { value: rawColor(palette.forestFar) },
-        uNear: { value: rawColor(palette.forestNear) },
-        uFog: { value: rawColor(fogColor || palette.forestFog) },
+        uFar: { value: rawColor(far) },
+        uNear: { value: rawColor(near) },
+        uFog: { value: rawColor(fogColor) },
       },
     })
     this.mesh = new Mesh(new PlaneGeometry(1, 1), this.material)

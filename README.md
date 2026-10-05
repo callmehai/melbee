@@ -1,4 +1,4 @@
-# Melbee — Mật Ong Tây Bắc
+# MelBee — Mật Ong Tây Bắc
 
 Website thương hiệu + giới thiệu sản phẩm + kể chuyện cho mật ong Tây Bắc.
 **Không phải web bán hàng**: không giỏ hàng, không thanh toán, không đăng nhập.
@@ -6,7 +6,7 @@ Mọi đơn hàng đi qua tin nhắn **Facebook** hoặc **Zalo**.
 
 - React + Vite, không backend, không database
 - Framer Motion (hiệu ứng), Lucide React (icon)
-- Font tự host, đủ dấu tiếng Việt: Cormorant Garamond (tiêu đề) + Be Vietnam Pro (nội dung)
+- Font tự host, đủ dấu tiếng Việt: Noto Serif Display (tiêu đề — dấu mũ xếp gọn, không lơ lửng) + Be Vietnam Pro (nội dung)
 - Chưa có ảnh thật thì trang tự dùng **hình minh hoạ vẽ bằng SVG** — không bao giờ có ảnh vỡ
 
 ---
@@ -103,8 +103,7 @@ không phải sửa code. Muốn dùng tên khác thì sửa đường dẫn tro
 | Nền khối CTA cuối trang | `public/assets/images/hero/` | `cta.jpg` |
 | Sản phẩm | `public/assets/images/products/` | `honey-01.jpg`, `honey-02.jpg`, … |
 | Giới thiệu & câu chuyện | `public/assets/images/story/` | `intro-macro.jpg`, `story.jpg` |
-| Nguồn gốc (bản đồ, núi, hoa, nuôi ong) | `public/assets/images/origin/` | `map.jpg`, `mountain.jpg`, `flowers.jpg`, `beekeeping.jpg` |
-| Quy trình | `public/assets/images/process/` | `01-mua-hoa.jpg` … `05-dong-chai.jpg` |
+| Nguồn gốc | `public/assets/images/origin/` | `beekeeping.jpg` |
 | Lifestyle | `public/assets/images/lifestyle/` | `water.jpg`, `tea.jpg`, `food.jpg`, `gift.jpg` |
 | Gallery | `public/assets/images/gallery/` | `01.jpg` … `08.jpg` |
 | Logo, icon | `public/assets/icons/` | — |
@@ -112,17 +111,25 @@ không phải sửa code. Muốn dùng tên khác thì sửa đường dẫn tro
 Ảnh `.jpg`, `.jpeg`, `.png`, `.webp`, `.svg` đều dùng được. Nên nén ảnh (≤ 400KB/ảnh) trước khi đưa lên.
 Ảnh mạng xã hội khi chia sẻ link: `public/og-image.jpg` (1200×630).
 
+### Phần tự ẩn khi chưa có nội dung thật
+Trang không hiện hình minh hoạ thay ảnh thật ở những chỗ cần ảnh thật:
+- **Sản phẩm**: chỉ sản phẩm đã có file ảnh mới hiện. Chép `honey-02.jpg`… vào là sản phẩm tự hiện.
+  Một sản phẩm → thẻ lớn nằm ngang; từ 2 sản phẩm → lưới. Nên chụp cùng kiểu ánh sáng với `honey-01.jpg`.
+- **Thưởng thức (lifestyle)**: hiện khi có từ 2 ảnh thật.
+- **Hình ảnh (gallery)**: hiện khi có từ 4 ảnh thật (hiện có 2: `04.jpg`, `06.jpg`).
+- **Khách hàng**: hiện khi có chia sẻ thật (xem bên dưới).
+
 ### Gallery
 `gallery.items` trong `src/data/sections.js`. Mỗi ảnh có `size`: `normal`, `tall` (cao gấp đôi) hoặc
 `wide` (rộng gấp đôi) để tạo bố cục kiểu tạp chí. Bấm ảnh mở lightbox (← → Esc, vuốt trên điện thoại).
 
 ### Câu chuyện, nguồn gốc, quy trình, lifestyle
 Đều nằm trong `src/data/sections.js` (`story`, `origin`, `process.steps`, `whyUs`, `lifestyle`).
-Quy trình thêm/bớt bước: thêm/xoá object trong `process.steps`.
+Quy trình thêm/bớt bước: thêm/xoá object trong `process.steps` (các bước nối nhau bằng một nét mật đầy dần theo cuộn).
 
 ### Chia sẻ khách hàng
-`src/data/testimonials.js`. Hiện là **nội dung mẫu** (`sample: true` → thẻ hiện nhãn "Nội dung mẫu") vì MelBee
-chưa mở bán. Khi có chia sẻ thật, được khách đồng ý: thay chữ và xoá `sample: true`.
+`src/data/testimonials.js`. Hiện là **nội dung mẫu** (`sample: true`) nên **không hiện** trên trang — MelBee
+chưa mở bán. Khi có chia sẻ thật, được khách đồng ý: thay chữ và xoá `sample: true` → section tự hiện.
 
 ---
 
@@ -132,7 +139,7 @@ chưa mở bán. Khi có chia sẻ thật, được khách đồng ý: thay ch�
 
 ```css
 --honey:  #c88a24;  /* vàng mật ong — nút, điểm nhấn */
---forest: #24352a;  /* xanh rừng — khối "Nguồn gốc" */
+--forest: #24352a;  /* xanh rừng — điểm nhấn */
 --brown:  #3a291d;  /* nâu gỗ — chữ chính */
 --cream:  #f5ebdd;  /* nền kem */
 --ivory:  #faf7f0;  /* nền chính */
@@ -147,13 +154,14 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
 - Hiệu ứng hiện khi cuộn: component `<Reveal effect="fade-up | fade | slide-left | slide-right | scale" delay={0.1}>`
   (`src/components/common/Reveal.jsx`) — chỉnh `VARIANTS` để đổi khoảng trượt/thời gian.
 - Hero: thứ tự xuất hiện chữ ở `src/components/Hero/Hero.jsx` (hàm `item(delay)`), tốc độ zoom nền
-  ở `Hero.css` (`slow-zoom`), số hạt phấn hoa `<Pollen count={40} />`.
+  ở `Hero.css` (`slow-zoom`), cành hoa ban tiền cảnh: `BanBranch` trong `src/components/Art/Art.jsx`.
 - Con trỏ con ong: `src/components/Cursor/` — ong vỗ cánh, quay đầu theo hướng chuột; lướt qua ảnh hiện
   nhãn "XEM" (gắn `data-cursor="view"` lên phần tử bất kỳ), lướt qua nút thì ong to lên.
   Chỉ bật trên máy có chuột, tự tắt trên điện thoại. Không muốn dùng: xoá `<Cursor />` trong `src/App.jsx`.
 - Người dùng bật *Reduce motion* trong hệ điều hành → hiệu ứng phức tạp tự tắt.
 - Tiêu đề tab (ngắn, vừa khung tab): `src/main.jsx`. Tiêu đề đầy đủ cho Google / mạng xã hội: `<title>` và `og:title` trong `index.html`.
-- Nút "Âm thanh" góc trái dưới — xem mục **Âm thanh nền** bên dưới. Bỏ nút: xoá `<SoundToggle />` trong `src/App.jsx`.
+- Nút âm thanh (tròn, trên thanh điều hướng — không che nội dung) — xem mục **Âm thanh nền** bên dưới.
+  Bỏ nút: xoá `<SoundToggle />` trong `src/components/Navbar/Navbar.jsx`.
 
 ---
 
@@ -172,41 +180,34 @@ Muốn mặc định tắt: `autoplay: false` trong `src/audio/config.js`.
 - Thiếu file → nút báo lỗi, trang vẫn chạy bình thường.
 - Mã: `src/audio/AudioManager.js`, nút: `src/components/SoundToggle/`.
 
----|---|---|
-| `ambient-forest.mp3` | Quiet forest ambience (#1220) | 40 giây, lặp liền |
-| `wind.mp3` | Wind blowing ambience (#2658) | 30 giây, lặp liền |
-| `river.mp3` | River water flow and surroundings (#2452) | 30 giây, lặp liền |
-
-- Âm lượng từng lớp, mức theo từng section: `src/audio/config.js` (`AUDIO_LAYERS`, `AUDIO_SCENES`, `AUDIO_CONFIG`).
-- Đổi section → tự crossfade ~1,5 giây. Cuộn nhanh (gió Three.js mạnh lên) → tiếng gió to lên nhẹ.
-- Thay file: giữ đúng tên, nên là đoạn lặp liền, MP3 48–64kbps. Thiếu file nào → lớp đó im, trang vẫn chạy.
-- Mã: `src/audio/AudioManager.js` (một AudioContext, 3 lớp), nút: `src/components/SoundToggle/`.
 
 ---
 
-## Lớp Three.js — "thế giới mật ong"
+## Lớp Three.js — một ngày xuân ở Điện Biên
 
 Một canvas WebGL **duy nhất** phủ cả trang (trong suốt, không chặn chuột, nằm dưới navbar và cửa sổ
 sản phẩm). Mỗi hiệu ứng tự bám vào section của nó qua thuộc tính `data-scene` trên thẻ `<section>`.
-Hành trình: **hoa → phấn → ong → mật → sản phẩm**.
+Three.js chỉ làm **không khí** — nắng, sương, phấn hoa, ong, hoa — không làm vật thể trình diễn.
+Một mặt trời, một hướng sáng (thấp bên phải): sáng sớm ở Hero, chiều tà ở CTA.
 
 | Section | Hiệu ứng |
 |---|---|
-| Hero | tia nắng, sương ấm, phấn hoa, giọt mật 3D lơ lửng, đàn ong lượn quanh |
-| Mật ong là gì | giọt mật rơi xuống cạnh khung ảnh khi cuộn tới, bay đi khi cuộn qua |
-| Sản phẩm | gần như tĩnh; rê chuột lên thẻ → quầng mật + vài hạt phấn bay lên |
-| Câu chuyện | bụi nắng dày, tia sáng chậm |
-| Nguồn gốc | núi xa + sương, cánh đồng hoa lay theo gió, vệt gió, đàn ong bay tới |
-| Quy trình | dòng mật chảy dọc trục timeline qua 5 bước |
-| Lifestyle / Gallery | phấn hoa / bụi nắng thưa |
-| CTA | hạt vàng bay lên, tia nắng ấm |
+| Hero | tia nắng sớm toả từ mặt trời trong tranh, sương trôi ở chân núi, 1–3 con ong ghé cành hoa ban |
+| Nguồn gốc | núi xa xanh lam + sương, đồng hoa (cải vàng, tam giác mạch, hoa trắng) lay theo gió, đàn ong đi kiếm mật |
+| Giọt mật | giọt mật hình thành ở đầu dòng mật trong tranh gáo mật rồi nhỏ xuống |
+| Sản phẩm | gần như tĩnh; rê chuột lên thẻ → vài hạt phấn bay lên |
+| CTA | tia nắng chiều cùng hướng, bụi nắng bay lên |
+| Cả trang | một lớp phấn hoa mỏng, một màu vàng ấm — dày ở Hero / Nguồn gốc, thưa ở phần nội dung |
+
+Ong bay kiểu đi kiếm mật: lao tới một bông → lơ lửng → đậu, khép cánh vài giây → sang bông gần đó.
+Ong chỉ ở nơi có hoa, cỡ ong nhỏ lại theo bề rộng màn hình.
 
 **Chỉnh ở `src/three/config.js`:**
 - `THREE_CONFIG.effects` — bật/tắt từng hiệu ứng; `enabled: false` tắt cả lớp Three.js.
-- Số lượng theo cấp chất lượng: `pollen`, `dust`, `bees`, `flowers`, `grass`, `honeyFlow`, `goldenParticles`, `windStreaks`.
-- `bloom`, `mouseParallax`, `maxParallaxRotation`, `wind`, `windScrollFactor`, `honeyShader`, `beeInteraction`, `autoQuality`, `maxPixelRatio`.
-- `SCENES` — "tâm trạng" từng section (mật độ phấn, bụi, gió; nền tối/sáng).
-- `PALETTE` — màu hạt, mật, hoa, núi.
+- Số lượng theo cấp chất lượng: `pollen`, `bees`, `flowers`, `grass`, `goldenParticles`.
+- `bloom`, `mouseParallax`, `maxParallaxRotation`, `wind`, `honeyShader`, `beeInteraction`, `autoQuality`, `maxPixelRatio`.
+- `SCENES` — "tâm trạng" từng section (mật độ phấn, gió).
+- `PALETTE` — màu phấn, mật, hoa, núi, sương.
 
 **Chất lượng:** tự chọn high / medium / low theo máy (CPU, RAM, cỡ màn hình), tự hạ cấp khi FPS thấp.
 Thử một cấp: thêm `?quality=low` vào URL. Bảng debug (chỉ khi chạy `npm run dev`): `?debug=true`.
@@ -238,8 +239,8 @@ src/
 │   ├── ThreeScene.jsx       canvas dùng chung + vòng đời engine
 │   ├── experience.js        ghép các hiệu ứng vào từng section
 │   ├── core/                Engine (renderer, camera, gió, cuộn, chuột), ScrollTracker, anchors
-│   ├── effects/             PollenField, WindParticles, LightRays, MountainAtmosphere,
-│   │                        FlowerField, BeeSwarm, HoneyDrop, HoneyFlow, HoneyParticles
+│   ├── effects/             PollenField, LightRays, MountainAtmosphere, FlowerField,
+│   │                        BeeSwarm, HoneyDrop, HoneyParticles
 │   ├── shaders/             honey, pollen, distortion, noise, space (.glsl)
 │   ├── utils/               noise, random, performance
 │   └── debug/               bảng debug (chỉ bản dev)

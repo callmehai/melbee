@@ -19,7 +19,7 @@
   --line-light: rgba(250, 247, 240, 0.18);
 
   /* Font — đều hỗ trợ đầy đủ tiếng Việt */
-  --font-serif: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-serif: 'Noto Serif Display', 'Times New Roman', serif;
   --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Bố cục */

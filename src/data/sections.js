@@ -4,21 +4,26 @@
  *
  * image: đường dẫn tính từ public/ (vd 'assets/images/hero/hero.jpg').
  *        Chưa có file → tự hiện hình minh hoạ theo `art`.
- * art:   hình minh hoạ dự phòng: landscape | landscape-dusk | honeycomb | blossom | bee |
+ * art:   hình minh hoạ dự phòng: landscape | landscape-dusk | honeycomb | dipper | blossom | bee |
  *        hive | frame | drip | jar | tea | water | food | gift | map
+ *
+ * Phần nào còn nội dung giữ chỗ thì tự ẩn, có nội dung thật là tự hiện lại:
+ *   - Sản phẩm: chỉ hiện sản phẩm đã có ảnh thật (src/data/products.js)
+ *   - Thưởng thức (lifestyle), Hình ảnh (gallery): hiện khi đủ ảnh thật
+ *   - Khách hàng: hiện khi có chia sẻ thật (bỏ `sample: true` trong src/data/testimonials.js)
  */
 
 export const nav = [
   { label: 'Trang chủ', href: '#trang-chu' },
-  { label: 'Sản phẩm', href: '#san-pham' },
-  { label: 'Câu chuyện', href: '#cau-chuyen' },
   { label: 'Nguồn gốc', href: '#nguon-goc' },
+  { label: 'Câu chuyện', href: '#cau-chuyen' },
   { label: 'Quy trình', href: '#quy-trinh' },
+  { label: 'Sản phẩm', href: '#san-pham' },
   { label: 'Liên hệ', href: '#lien-he' },
 ]
 
 export const hero = {
-  eyebrow: 'MelBee · Mật ong Điện Biên',
+  eyebrow: 'MelBee · Mùa hoa vùng cao',
   title: 'Mật Ong Tây Bắc',
   tagline: 'Mật ngọt từ hoa, tinh hoa từ rừng.',
   subtext: 'Mang mật ong từ vùng núi Điện Biên đến gần hơn với bạn — rõ ràng, chỉn chu và đáng tin cậy.',
@@ -27,11 +32,10 @@ export const hero = {
   image: 'assets/images/hero/hero.jpg',
   // Video nền (tuỳ chọn) — chỉ tải sau khi trang đã hiện xong
   video: 'assets/videos/hero.mp4',
-  art: 'landscape-dusk',
+  art: 'landscape',
 }
 
 export const intro = {
-  eyebrow: 'Mật ong là gì',
   title: ['Một giọt mật', 'mang theo cả mùa hoa'],
   paragraphs: [
     'Mật ong không chỉ là vị ngọt.',
@@ -39,8 +43,8 @@ export const intro = {
     'Mỗi sản phẩm được giới thiệu với mong muốn giữ lại sự nguyên bản và câu chuyện phía sau nó.',
   ],
   image: 'assets/images/story/intro-macro.jpg',
-  imageAlt: 'Cận cảnh mật ong chảy trên bánh tổ',
-  art: 'honeycomb',
+  imageAlt: 'Mật ong chảy từ gáo gỗ',
+  art: 'dipper',
 }
 
 export const productsSection = {
@@ -52,7 +56,6 @@ export const productsSection = {
 }
 
 export const story = {
-  eyebrow: 'Câu chuyện',
   title: 'Câu chuyện của chúng tôi',
   paragraphs: [
     'Giữa rất nhiều sản phẩm mật ong, điều người dùng cần không chỉ là một lời khẳng định “nguyên chất”, mà là sự an tâm về nguồn gốc và hành trình tạo nên sản phẩm.',
@@ -69,19 +72,14 @@ export const origin = {
   title: 'Nơi những giọt mật bắt đầu',
   lead: ['Không chỉ là nơi có mật ong.', 'Đó là vùng đất có câu chuyện để kể.'],
   text: 'Tây Bắc sở hữu hệ thực vật phong phú cùng nhiều mùa hoa đặc trưng — nền tảng tạo nên những dòng mật mang hương vị riêng, gắn với từng vùng nguyên liệu và từng thời điểm trong năm.',
-  image: 'assets/images/origin/map.jpg',
-  imageAlt: 'Bản đồ minh hoạ vùng núi Tây Bắc',
-  art: 'map',
+  image: 'assets/images/origin/beekeeping.jpg',
+  imageAlt: 'Cầu ong đầy mật trên tay người nuôi ong',
+  art: 'hive',
   highlights: [
     { icon: 'mountain', title: 'Núi', text: 'Những dãy núi cao, sương phủ quanh năm.' },
     { icon: 'leaf', title: 'Rừng', text: 'Thảm rừng tự nhiên là nhà của đàn ong.' },
     { icon: 'flower', title: 'Hoa', text: 'Hoa dại nở nối tiếp nhau theo mùa.' },
     { icon: 'heart-handshake', title: 'Con người', text: 'Người nuôi ong gắn bó với núi rừng.' },
-  ],
-  photos: [
-    { image: 'assets/images/origin/mountain.jpg', alt: 'Núi rừng Tây Bắc', art: 'landscape' },
-    { image: 'assets/images/origin/flowers.jpg', alt: 'Hoa dại trên sườn núi', art: 'blossom' },
-    { image: 'assets/images/origin/beekeeping.jpg', alt: 'Cầu ong đầy mật của người nuôi ong', art: 'hive' },
   ],
 }
 
@@ -123,7 +121,6 @@ export const process = {
 }
 
 export const whyUs = {
-  eyebrow: 'Giá trị',
   title: ['Điều gì làm nên', 'một giọt mật đáng trân trọng?'],
   // Không viết công dụng chữa bệnh / tăng miễn dịch nếu không có căn cứ.
   items: [
@@ -202,5 +199,5 @@ export const cta = {
   title: ['Muốn thử một chút', 'hương vị Tây Bắc?'],
   subtext: 'Nhắn tin cho chúng tôi để được tư vấn sản phẩm phù hợp.',
   image: 'assets/images/hero/cta.jpg',
-  art: 'landscape-dusk',
+  art: 'landscape-sunset',
 }

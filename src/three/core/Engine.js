@@ -18,7 +18,7 @@ import { FpsMonitor, isSoftwareRenderer, lowerQuality, pixelRatioFor } from '../
 
 const FOV = 35
 const BG_ROWS = 64 // số dải ngang mô tả nền sáng/tối dưới canvas
-const MOOD_KEYS = ['pollen', 'dust', 'wind']
+const MOOD_KEYS = ['pollen', 'wind']
 
 /**
  * MỘT renderer, MỘT scene, MỘT camera cho cả trang.
@@ -45,7 +45,7 @@ export class Engine {
     this.camera = new PerspectiveCamera(FOV, 1, 1, 10000)
     this.scroll = new ScrollTracker()
     this.effects = []
-    this.mood = { pollen: 0, dust: 0, wind: 0 }
+    this.mood = { pollen: 0, wind: 0 }
     this.wind = { x: 1, y: 0, strength: 0.2, offsetX: 0, offsetY: 0 }
     this.pointer = { x: -9999, y: -9999, nx: 0, ny: 0, inside: false }
     this.parallax = new Vector2()
@@ -218,7 +218,7 @@ export class Engine {
   /** Trộn "tâm trạng" các section theo phần màn hình mỗi section chiếm. */
   updateMood(dt) {
     let total = 0
-    const target = { pollen: 0, dust: 0, wind: 0 }
+    const target = { pollen: 0, wind: 0 }
     for (const s of this.scroll.sections) {
       if (!s.visibility) continue
       const scene = SCENES[s.name] || {}
@@ -228,13 +228,14 @@ export class Engine {
     for (const k of MOOD_KEYS) this.mood[k] = damp(this.mood[k], total ? target[k] / total : 0, 1.6, dt)
   }
 
-  /** Gió = gió nền theo section + gió giật + vận tốc cuộn. */
+  /**
+   * Gió = gió nền theo section + gió giật chậm. Không cộng tốc độ cuộn: cuộn nhanh không
+   * được "thưởng" thêm chuyển động — trang giữ một nhịp thở chậm.
+   */
   updateWind(dt) {
     const w = this.wind
-    const v = this.reduced ? 0 : Math.min(Math.abs(this.scroll.velocity) / 1500, 1.5)
     const gust = noise1(this.time * 0.15) * 0.5 + 0.5
-    const base = THREE_CONFIG.wind ? (0.1 + 0.4 * this.mood.wind) * (0.6 + 0.8 * gust) : 0.04
-    const strength = base + v * THREE_CONFIG.windScrollFactor
+    const strength = THREE_CONFIG.wind ? (0.1 + 0.4 * this.mood.wind) * (0.6 + 0.8 * gust) : 0.04
     w.strength = damp(w.strength, strength, strength > w.strength ? 4 : 1.2, dt)
     const angle = noise1(this.time * 0.07 + 40) * 0.25
     w.x = Math.cos(angle)

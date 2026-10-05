@@ -1,9 +1,10 @@
 /**
  * CHIA SẺ TỪ KHÁCH HÀNG
  *
- * ⚠️ Hiện là NỘI DUNG MẪU (sample: true → thẻ hiện nhãn "Nội dung mẫu").
+ * ⚠️ Hiện là NỘI DUNG MẪU (sample: true) → KHÔNG hiện trên trang; section "Khách hàng" tự ẩn.
  * MelBee chưa mở bán nên chưa có đánh giá thật. Khi có chia sẻ thật (được khách đồng ý):
- * thay name / role / quote và XOÁ dòng sample: true. Không bịa tên hoặc nhận xét rồi bỏ nhãn mẫu.
+ * thay name / role / quote và XOÁ dòng sample: true → section tự hiện lại.
+ * Không bịa tên hoặc nhận xét rồi bỏ dòng sample.
  *
  * name: tên hiển thị · role: thông tin ngắn (tuỳ chọn) · quote: nội dung chia sẻ
  */

@@ -12,8 +12,9 @@ const LABEL = {
 }
 
 /**
- * Nút nhạc nền. Mặc định BẬT: nhạc phát ở lần bấm/chạm đầu tiên trên trang
- * (trình duyệt không cho phát tiếng trước khi người xem tương tác). Bấm nút → tắt, và nhớ cho lần sau.
+ * Nút nhạc nền (nằm trên thanh điều hướng, không che nội dung). Mặc định BẬT: nhạc phát ở lần
+ * bấm/chạm đầu tiên trên trang (trình duyệt không cho phát tiếng trước khi người xem tương tác).
+ * Bấm nút → tắt, và nhớ cho lần sau.
  */
 export default function SoundToggle() {
   const [status, setStatus] = useState(audioManager.status)
@@ -43,10 +44,8 @@ export default function SoundToggle() {
       title={hint}
       data-cursor="cta"
     >
-      {on ? <Volume2 size={15} aria-hidden="true" /> : <VolumeOff size={15} aria-hidden="true" />}
-      <span className="sound-toggle__label" aria-hidden="true">
-        Âm thanh <i>·</i> {LABEL[status]}
-      </span>
+      {status === 'on' ? null : on ? <Volume2 size={16} aria-hidden="true" /> : <VolumeOff size={16} aria-hidden="true" />}
+      <span className="sr-only">Âm thanh · {LABEL[status]}</span>
       {status === 'on' && (
         <span className="sound-toggle__bars" aria-hidden="true">
           <i />

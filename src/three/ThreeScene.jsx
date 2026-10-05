@@ -20,7 +20,7 @@ export default function ThreeScene() {
     try {
       instance = createExperience(canvas, { ...detectDevice(), reducedMotion: motion.matches })
     } catch (err) {
-      if (import.meta.env.DEV) console.warn('[Melbee] Không khởi tạo được WebGL:', err)
+      if (import.meta.env.DEV) console.warn('[MelBee] Không khởi tạo được WebGL:', err)
       setThreeStatus('unavailable')
       return
     }

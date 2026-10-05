@@ -13,12 +13,15 @@ import Testimonials from './components/Testimonials/Testimonials.jsx'
 import CTA from './components/CTA/CTA.jsx'
 import Footer from './components/Footer/Footer.jsx'
 import Cursor from './components/Cursor/Cursor.jsx'
-import SoundToggle from './components/SoundToggle/SoundToggle.jsx'
 import ThreeCanvas from './three/ThreeCanvas.jsx'
 
 /**
  * Thứ tự các phần trên trang — đổi thứ tự / ẩn bớt ngay tại đây.
  * Nội dung chữ & ảnh nằm trong src/data và src/config.
+ *
+ * Trang kể một ngày xuân ở Điện Biên: bình minh trên núi (Hero) → vùng đất & đồng hoa
+ * (Nguồn gốc) → giọt mật → người nuôi ong → quy trình → hũ mật → chiều tà (CTA).
+ * Lifestyle, Gallery, Testimonials tự ẩn cho tới khi có ảnh / chia sẻ thật.
  */
 export default function App() {
   return (
@@ -30,11 +33,11 @@ export default function App() {
       <Navbar />
       <main id="noi-dung">
         <Hero />
-        <Intro />
-        <ProductShowcase />
-        <BrandStory />
         <OriginSection />
+        <Intro />
+        <BrandStory />
         <ProcessTimeline />
+        <ProductShowcase />
         <WhyUs />
         <Lifestyle />
         <Gallery />
@@ -44,7 +47,6 @@ export default function App() {
       <Footer />
       {/* lớp Three.js dùng chung cho cả trang — tự ẩn nếu không có WebGL */}
       <ThreeCanvas />
-      <SoundToggle />
       <Cursor />
     </MotionConfig>
   )

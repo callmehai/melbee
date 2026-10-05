@@ -5,11 +5,18 @@ import OrderMenu from '../common/OrderMenu.jsx'
 import { signalCardHover } from '../../three/signals.js'
 import './ProductCard.css'
 
-/** Thẻ sản phẩm: không giỏ hàng — chỉ "Xem chi tiết" và "Nhắn tin đặt hàng". */
-function ProductCard({ product, onOpen, index = 0 }) {
+/**
+ * Thẻ sản phẩm: không giỏ hàng — chỉ "Xem chi tiết" và "Nhắn tin đặt hàng".
+ * feature: thẻ lớn nằm ngang (khi trang chỉ có một sản phẩm) — hiện thêm mô tả và hương vị.
+ */
+function ProductCard({ product, onOpen, feature = false, badge = false, lead }) {
+  const meta = [
+    product.size && ['Quy cách', product.size],
+    product.price && ['Giá', product.price],
+  ].filter(Boolean)
   return (
     <article
-      className="product-card"
+      className={`product-card ${feature ? 'is-feature' : ''}`}
       aria-labelledby={`p-${product.id}`}
       onMouseEnter={(e) => signalCardHover(e.currentTarget.querySelector('.product-card__visual'), true)}
       onMouseLeave={(e) => signalCardHover(e.currentTarget.querySelector('.product-card__visual'), false)}
@@ -20,38 +27,34 @@ function ProductCard({ product, onOpen, index = 0 }) {
           alt={product.name}
           art="jar"
           artProps={{ tone: product.tone, name: product.name }}
-          tag="Ảnh sản phẩm đang cập nhật"
         />
-        <span className="product-card__overlay" aria-hidden="true">
-          <span>
-            Xem chi tiết <ArrowUpRight size={15} />
-          </span>
-        </span>
-        {product.featured && <span className="product-card__badge">Nổi bật</span>}
-        <span className="product-card__no" aria-hidden="true">
-          {String(index + 1).padStart(2, '0')}
-        </span>
+        {badge && <span className="product-card__badge">Nổi bật</span>}
       </button>
 
       <div className="product-card__body">
+        {lead}
         <h3 id={`p-${product.id}`} className="product-card__name">
           {product.name}
         </h3>
         <p className="product-card__subtitle">{product.subtitle}</p>
-        <dl className="product-card__meta">
-          {product.size && (
-            <div>
-              <dt>Quy cách</dt>
-              <dd>{product.size}</dd>
-            </div>
-          )}
-          {product.price && (
-            <div>
-              <dt>Giá</dt>
-              <dd>{product.price}</dd>
-            </div>
-          )}
-        </dl>
+        {feature && <p className="product-card__desc">{product.description}</p>}
+        {feature && product.flavor?.length > 0 && (
+          <ul className="product-card__tags" aria-label="Hương vị">
+            {product.flavor.map((f) => (
+              <li key={f}>{f}</li>
+            ))}
+          </ul>
+        )}
+        {meta.length > 0 && (
+          <dl className="product-card__meta">
+            {meta.map(([k, v]) => (
+              <div key={k}>
+                <dt>{k}</dt>
+                <dd>{v}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         <div className="product-card__actions">
           <button type="button" className="arrow-link product-card__detail" onClick={() => onOpen(product)} data-cursor="cta">
             <span>Xem chi tiết</span>

@@ -2,6 +2,7 @@ import SectionHeading from '../common/SectionHeading.jsx'
 import Reveal from '../common/Reveal.jsx'
 import Media from '../common/Media.jsx'
 import { lifestyle } from '../../data/sections.js'
+import { hasAsset } from '../../lib/assets.js'
 import './Lifestyle.css'
 
 function Item({ it, i }) {
@@ -24,8 +25,12 @@ function Item({ it, i }) {
 }
 
 /** Bố cục tạp chí: 2 cột độc lập, cột phải lệch xuống — không phần tử nào chồng lên chữ. */
+// chỉ hiện khi có ảnh thật (từ 2 ảnh) — không dùng hình minh hoạ
+const real = lifestyle.items.filter((it) => hasAsset(it.image))
+
 export default function Lifestyle() {
-  const items = lifestyle.items.map((it, i) => ({ it, i }))
+  if (real.length < 2) return null
+  const items = real.map((it, i) => ({ it, i }))
   const left = items.filter(({ i }) => i % 2 === 0)
   const right = items.filter(({ i }) => i % 2 === 1)
   return (

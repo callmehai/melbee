@@ -2,9 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 
 // Font tự host, có đủ dấu tiếng Việt
-import '@fontsource/cormorant-garamond/500.css'
-import '@fontsource/cormorant-garamond/600.css'
-import '@fontsource/cormorant-garamond/500-italic.css'
+import '@fontsource/noto-serif-display/400.css'
+import '@fontsource/noto-serif-display/500.css'
+import '@fontsource/noto-serif-display/400-italic.css'
 import '@fontsource/be-vietnam-pro/300.css'
 import '@fontsource/be-vietnam-pro/400.css'
 import '@fontsource/be-vietnam-pro/500.css'
@@ -15,7 +15,7 @@ import App from './App.jsx'
 import { zaloIsPlaceholder } from './config/brand.js'
 
 if (import.meta.env.DEV && zaloIsPlaceholder) {
-  console.info('[Melbee] Link Zalo đang là placeholder — thay trong src/config/brand.js')
+  console.info('[MelBee] Link Zalo đang là placeholder — thay trong src/config/brand.js')
 }
 
 // tiêu đề tab ngắn cho vừa khung tab; <title> + og:title trong index.html giữ câu đầy đủ cho Google, mạng xã hội

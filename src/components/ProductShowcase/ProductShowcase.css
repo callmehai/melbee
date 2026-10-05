@@ -12,6 +12,25 @@
   width: 100%;
 }
 
+/* chỉ một sản phẩm: ảnh lớn bên trái, thông tin bên phải */
+.products__grid.is-single {
+  grid-template-columns: 1fr;
+  max-width: 1080px;
+}
+
+.products .section-heading {
+  margin-bottom: clamp(36px, 5vw, 64px);
+}
+
+.products.is-single {
+  padding-top: clamp(64px, 7vw, 96px);
+  padding-bottom: clamp(64px, 7vw, 96px);
+}
+
+.products.is-single .products__note {
+  margin-top: 40px;
+}
+
 .products__note {
   margin-top: 56px;
   text-align: center;
@@ -31,4 +50,9 @@
   .products__grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* nền ngà của Quy trình chuyển dần sang kem — không có đường cắt */
+.products {
+  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 38%);
 }

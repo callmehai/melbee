@@ -2,7 +2,9 @@
  * SẢN PHẨM — thêm một sản phẩm = thêm một object vào mảng.
  *
  * image: đường dẫn tính từ public/, ví dụ 'assets/images/products/honey-01.jpg'.
- *        Chưa có file → tự hiện hình minh hoạ hũ mật (màu theo `tone`).
+ *        CHỈ sản phẩm đã có file ảnh thật mới hiện trên trang — chép ảnh vào là sản phẩm tự hiện.
+ * price, size: bỏ trống khi chưa có thông tin → thẻ không hiện dòng đó.
+ * featured: nhãn "Nổi bật" — chỉ nên bật cho 1 sản phẩm (nhãn chỉ hiện khi trang có từ 2 sản phẩm).
  * tone:  màu mật cho hình minh hoạ: 'light' | 'amber' | 'dark' | 'comb'
  *
  * ⚠️ Đây là DỮ LIỆU MẪU — hãy thay tên, mô tả, quy cách, giá bằng thông tin thật.
@@ -21,8 +23,6 @@ export const products = [
     usage: ['Pha cùng nước ấm', 'Dùng cùng trà', 'Rưới lên bánh, sữa chua'],
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
-    price: 'Liên hệ',
-    size: 'Đang cập nhật',
     featured: true,
     facebookMessage: true,
     zaloMessage: true,
@@ -40,7 +40,7 @@ export const products = [
     tone: 'light',
     price: 'Liên hệ',
     size: '500ml',
-    featured: true,
+    featured: false,
     facebookMessage: true,
     zaloMessage: true,
   },
@@ -57,7 +57,7 @@ export const products = [
     tone: 'comb',
     price: 'Liên hệ',
     size: 'Hộp 300g',
-    featured: true,
+    featured: false,
     facebookMessage: true,
     zaloMessage: true,
   },

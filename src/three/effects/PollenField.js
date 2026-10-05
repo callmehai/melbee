@@ -65,54 +65,34 @@ void main() {
   gl_PointSize = aSize * uSize * uPixelRatio * (uD / -mv.z);
 
   float shown = smoothstep(aSeed.w, aSeed.w + 0.06, uDensity);
-  float twinkle = 0.65 + 0.35 * sin(t * (0.6 + aSeed.y) + aSeed.x * 4.0);
+  float twinkle = 0.88 + 0.12 * sin(t * (0.4 + aSeed.y) + aSeed.x * 4.0); // rất nhẹ — không nhấp nháy như sao
   vDark = backgroundDarkness(uBg, gl_Position);
   vAlpha = uOpacity * shown * twinkle * mix(0.45, 1.0, zt);
 }
 `
 
-const VARIANTS = {
-  // phấn hoa: hạt to nhỏ khác nhau, có quầng sáng
-  pollen: {
-    countKey: 'pollen',
-    moodKey: 'pollen',
-    seed: 7,
-    size: [2.2, 7.5],
-    opacity: 0.6,
-    rise: 3,
-    swirl: 22,
-    depth: [-900, 380],
-    parallax: [0.25, 1.25],
-    colors: ['pollenOnLight', 'pollenOnDark'],
-    glow: 1,
-  },
-  // bụi nắng: rất nhỏ, chậm, gần như trung tính
-  dust: {
-    countKey: 'dust',
-    moodKey: 'dust',
-    seed: 21,
-    size: [1, 2.6],
-    opacity: 0.4,
-    rise: 1.2,
-    swirl: 12,
-    depth: [-600, 200],
-    parallax: [0.35, 0.9],
-    colors: ['dustOnLight', 'dustOnDark'],
-    glow: 0,
-  },
+// phấn hoa: ít hạt, to, chậm, một màu vàng ấm trên mọi nền (không còn lớp bụi riêng)
+const V = {
+  seed: 7,
+  size: [4, 10],
+  opacity: 0.55,
+  rise: 2,
+  swirl: 18,
+  depth: [-700, 320],
+  parallax: [0.3, 1.15],
+  glow: 1,
 }
 
 /**
- * Phấn hoa / bụi nắng toàn trang. Toàn bộ chuyển động tính trên GPU từ seed cố định
+ * Phấn hoa toàn trang. Toàn bộ chuyển động tính trên GPU từ seed cố định
  * (BufferAttribute) — mỗi khung hình chỉ cập nhật vài uniform.
  * Mật độ đổi theo section bằng "thứ hạng" từng hạt, không phải thêm/bớt bộ đệm.
  */
 export class PollenField extends Effect {
-  constructor(engine, palette, variant = 'pollen') {
-    super(engine, variant === 'dust' ? 'Bụi nắng' : 'Phấn hoa')
-    const v = VARIANTS[variant]
-    this.v = v
-    const max = THREE_CONFIG[v.countKey].high
+  constructor(engine, palette) {
+    super(engine, 'Phấn hoa')
+    const v = V
+    const max = THREE_CONFIG.pollen.high
     const rnd = createRandom(v.seed)
     const pos = new Float32Array(max * 3)
     const seed = new Float32Array(max * 4)
@@ -150,18 +130,18 @@ export class PollenField extends Effect {
         uRise: { value: v.rise },
         uSwirl: { value: v.swirl },
         uGlow: { value: THREE_CONFIG.bloom ? v.glow : 0 },
-        uColorLight: { value: rawColor(palette[v.colors[0]]) },
-        uColorDark: { value: rawColor(palette[v.colors[1]]) },
+        uColorLight: { value: rawColor(palette.pollen) },
+        uColorDark: { value: rawColor(palette.pollen) },
       },
     })
     this.points = new Points(geo, this.material)
     this.points.frustumCulled = false
-    this.points.renderOrder = variant === 'dust' ? 5 : 10
+    this.points.renderOrder = 10
     this.group.add(this.points)
   }
 
   setQuality(q, engine) {
-    this.count = THREE_CONFIG[this.v.countKey][engine.reduced ? 'low' : q]
+    this.count = THREE_CONFIG.pollen[engine.reduced ? 'low' : q]
     this.points.geometry.setDrawRange(0, this.count)
   }
 
@@ -170,7 +150,7 @@ export class PollenField extends Effect {
   }
 
   update(dt, engine) {
-    this.intensity = damp(this.intensity, engine.mood[this.v.moodKey], 2, dt)
+    this.intensity = damp(this.intensity, engine.mood.pollen, 2, dt)
     this.material.uniforms.uDensity.value = this.intensity
     this.group.visible = this.intensity > 0.01 && this.count > 0
   }

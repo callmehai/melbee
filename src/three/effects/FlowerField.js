@@ -29,6 +29,7 @@ uniform float uHeight;
 uniform vec3 uStemDark;
 uniform vec3 uStemLight;
 uniform vec3 uCenter;
+uniform vec2 uRows; // hàng xa / hàng gần mọc ở đâu trong dải (0 = mép trên, 1 = mép dưới)
 
 attribute float aPart; // 0 thân/lá, 1 cánh (hoặc ngọn cỏ), 2 nhuỵ
 attribute vec4 aInst; // vị trí x (0–1), độ sâu (0–1), tỉ lệ cao, pha
@@ -37,12 +38,14 @@ attribute float aRot;
 
 varying vec3 vColor;
 varying float vFog;
+varying float vGround;
 
 void main() {
   float zt = aInst.y;
   float z = mix(uDepthRange.x, uDepthRange.y, zt);
   float sx = uBand.x + aInst.x * uBand.z;
-  float sy = uBand.y + uBand.w * mix(0.6, 1.04, zt); // hàng xa mọc cao hơn (đường chân trời)
+  float rowY = mix(uRows.x, uRows.y, zt); // hàng xa mọc cao hơn (đường chân trời)
+  float sy = uBand.y + uBand.w * rowY;
   vec3 base = screenToWorld(domToCentered(vec2(sx, sy), uViewport), z, uD);
 
   // mọc lên lần lượt từ trái sang phải khi section vào màn hình
@@ -70,17 +73,22 @@ void main() {
   vec3 col = aPart < 0.5 ? mix(uStemDark, uStemLight, position.y) : (aPart < 1.5 ? aColor : uCenter);
   vColor = col * (0.55 + 0.45 * clamp(position.y * 1.2, 0.0, 1.0));
   vFog = 1.0 - zt;
+  // gốc cây ở hàng gần tan dần vào màu nền chân đồng → không có đường cắt ngang
+  vGround = smoothstep(0.72, 1.0, rowY) * (1.0 - smoothstep(0.0, 0.45, position.y));
 }
 `
 
 const FRAG = /* glsl */ `
 uniform vec3 uFogColor;
+uniform vec3 uGround;
 uniform vec2 uClip; // đáy, đỉnh section theo toạ độ gl_FragCoord.y
 varying vec3 vColor;
 varying float vFog;
+varying float vGround;
 void main() {
   if (gl_FragCoord.y < uClip.x || gl_FragCoord.y > uClip.y) discard;
-  gl_FragColor = vec4(mix(vColor, uFogColor, vFog * 0.6), 1.0);
+  vec3 c = mix(vColor, uFogColor, vFog * 0.7);
+  gl_FragColor = vec4(mix(c, uGround, vGround), 1.0);
 }
 `
 
@@ -92,7 +100,7 @@ function quad(out, a, b, c, d, part) {
   }
 }
 
-/** Hoa low-poly: thân 2 dải bắt chéo (nhìn có khối), 2 lá, 6 cánh hướng về camera, nhuỵ. */
+/** Hoa low-poly: thân 2 dải bắt chéo (nhìn có khối), 2 lá, một cụm 3 bông nhỏ hướng về camera. */
 function flowerGeometry() {
   const out = { pos: [], part: [] }
   const SEG = 5
@@ -117,28 +125,32 @@ function flowerGeometry() {
     const mid2 = [dir * 0.09, y + 0.02, -0.02]
     quad(out, [0, y, 0], mid2, tip, mid, 0)
   }
-  // cánh hoa: 5 đỉnh (đầu cánh bo tròn) quanh tâm, mặt hoa ngửa về phía trước-lên
-  const R = 0.13
+  // cụm hoa nhỏ (kiểu cải, tam giác mạch): 1 bông chính trên ngọn + 2 bông phụ có cuống ngắn
   const tilt = -0.55
-  const rot = ([x, y, z]) => [x, y * Math.cos(tilt) - z * Math.sin(tilt) + 1, y * Math.sin(tilt) + z * Math.cos(tilt)]
-  const PETALS = 6
-  for (let k = 0; k < PETALS; k++) {
-    const a = (k / PETALS) * Math.PI * 2
-    const ca = Math.cos(a)
-    const sa = Math.sin(a)
-    const at = (ang, r, z) => rot([Math.cos(ang) * r, Math.sin(ang) * r, z])
-    const p0 = rot([0, 0, 0])
-    const p1 = at(a - 0.5, R * 0.55, 0.01)
-    const p2 = at(a - 0.2, R, 0.02)
-    const p3 = at(a + 0.2, R, 0.02)
-    const p4 = at(a + 0.5, R * 0.55, 0.01)
-    const tip = rot([ca * R * 1.06, sa * R * 1.06, 0.02])
-    quad(out, p0, p1, p2, tip, 1)
-    quad(out, p0, tip, p3, p4, 1)
+  const head = (cx, cy, R, petals) => {
+    const rot = ([x, y, z]) => [cx + x, y * Math.cos(tilt) - z * Math.sin(tilt) + cy, y * Math.sin(tilt) + z * Math.cos(tilt)]
+    for (let k = 0; k < petals; k++) {
+      const a = (k / petals) * Math.PI * 2
+      const at = (ang, r, z) => rot([Math.cos(ang) * r, Math.sin(ang) * r, z])
+      const p0 = rot([0, 0, 0])
+      const tip = rot([Math.cos(a) * R * 1.04, Math.sin(a) * R * 1.04, 0.02])
+      quad(out, p0, at(a - 0.55, R * 0.6, 0.01), at(a - 0.22, R, 0.02), tip, 1)
+      quad(out, p0, tip, at(a + 0.22, R, 0.02), at(a + 0.55, R * 0.6, 0.01), 1)
+    }
+    const C = R * 0.18
+    quad(out, rot([-C, -C, 0.03]), rot([C, -C, 0.03]), rot([C, C, 0.03]), rot([-C, C, 0.03]), 2)
   }
-  // nhuỵ
-  const C = 0.035
-  quad(out, rot([-C, -C, 0.03]), rot([C, -C, 0.03]), rot([C, C, 0.03]), rot([-C, C, 0.03]), 2)
+  // cuống bông phụ
+  for (const [x0, y0, x1, y1] of [
+    [0, 0.7, -0.075, 0.8],
+    [0, 0.62, 0.07, 0.72],
+  ]) {
+    const w = 0.008
+    quad(out, [x0 - w, y0, 0], [x0 + w, y0, 0], [x1 + w, y1, 0], [x1 - w, y1, 0], 0)
+  }
+  head(0, 1, 0.075, 5)
+  head(-0.075, 0.8, 0.055, 5)
+  head(0.07, 0.72, 0.05, 4)
   return out
 }
 
@@ -168,8 +180,10 @@ function instanced(src, max) {
 }
 
 /**
- * Cánh đồng hoa Tây Bắc ở chân section "Nguồn gốc" (instancing: 1 draw call cho hoa, 1 cho cỏ).
- * Hoa trắng (ban), hồng (tam giác mạch), vàng (cải), tím nhạt; cỏ nhiều sắc xanh.
+ * Đồng hoa vùng cao ở chân section "Nguồn gốc" (instancing: 1 draw call cho hoa, 1 cho cỏ).
+ * Cải vàng, tam giác mạch hồng phấn, hoa trắng; cỏ nhiều sắc xanh. Hàng xa nhạt dần vào sương,
+ * gốc hàng gần tan vào màu nền → đồng hoa không bị cắt ngang ở cạnh section.
+ * heads(): vị trí các cụm hoa trên màn hình — đàn ong dùng để ghé đúng bông hoa.
  */
 export class FlowerField extends Effect {
   constructor(engine, palette, { band }) {
@@ -196,7 +210,9 @@ export class FlowerField extends Effect {
           uStemDark: { value: rawColor(palette.stemDark) },
           uStemLight: { value: rawColor(palette.stemLight) },
           uCenter: { value: rawColor(palette.flowerCenter) },
-          uFogColor: { value: rawColor(palette.forestFar) },
+          uFogColor: { value: rawColor(palette.meadowFar) },
+          uGround: { value: rawColor(palette.meadowGround) },
+          uRows: { value: new Vector2(0.42, 0.97) },
           uClip: { value: new Vector2() },
         },
       })
@@ -214,7 +230,8 @@ export class FlowerField extends Effect {
       fCol.set(toRgb(rnd.pick(palette.petals)), i * 3)
       fRot[i] = rnd.range(-0.6, 0.6)
     }
-    this.flowerMat = makeMaterial(0.78)
+    this.flowerMat = makeMaterial(0.5)
+    this.fInst = fInst
     this.flowers = new Mesh(fGeo, this.flowerMat)
 
     // cỏ
@@ -228,7 +245,7 @@ export class FlowerField extends Effect {
       gCol.set(toRgb(rnd.pick(palette.grass)), i * 3)
       gRot[i] = rnd.range(-1.2, 1.2)
     }
-    this.grassMat = makeMaterial(0.7)
+    this.grassMat = makeMaterial(0.34)
     this.grass = new Mesh(gGeo, this.grassMat)
 
     for (const m of [this.flowers, this.grass]) {
@@ -245,8 +262,36 @@ export class FlowerField extends Effect {
     this.count = this.flowers.geometry.instanceCount
   }
 
+  /**
+   * Toạ độ màn hình (so với mép trên dải) của các cụm hoa hàng gần đang hiện — cùng công thức với shader
+   * (bỏ qua độ lay gió). z để ong đậu cùng độ sâu với hoa → to nhỏ đúng phối cảnh.
+   */
+  heads() {
+    const b = this.lastBand
+    if (!b) return []
+    const u = this.flowerMat.uniforms
+    const [z0, z1] = [u.uDepthRange.value.x, u.uDepthRange.value.y]
+    const [r0, r1] = [u.uRows.value.x, u.uRows.value.y]
+    const D = this.engine.D
+    const out = []
+    const n = this.flowers.geometry.instanceCount
+    for (let i = 0; i < n; i++) {
+      const x = this.fInst[i * 4]
+      const zt = this.fInst[i * 4 + 1]
+      if (zt < 0.4) continue // hàng xa quá nhỏ — ong chỉ ghé hàng giữa và gần
+      const z = z0 + (z1 - z0) * zt
+      const grow = Math.min(1, Math.max(0, this.grow * 1.7 - x * 0.7))
+      const g = 1 - Math.pow(1 - grow, 3)
+      const h = b.height * u.uHeight.value * this.fInst[i * 4 + 2] * (0.6 + 0.4 * zt) * g
+      const rowY = b.height * (r0 + (r1 - r0) * zt)
+      out.push({ x: b.left + x * b.width, y: rowY - h * (D / (D - z)), z })
+    }
+    return out
+  }
+
   update(dt, engine) {
     const b = this.band()
+    this.lastBand = b
     const on = THREE_CONFIG.effects.flowers && b?.inView
     this.group.visible = !!on
     this.intensity = on ? 1 : 0

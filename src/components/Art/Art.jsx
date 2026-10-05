@@ -95,12 +95,36 @@ const LANDSCAPES = {
     ridges: ['#9B6A3E', '#77502F', '#563B25', '#3C2A1C', '#2A1E15', '#1C1510'],
     mist: '#F3C987',
   },
+  // Bình minh xuân trên núi Điện Biên: nắng thấp bên phải, sương xanh lam giữa các lớp núi.
+  morning: {
+    sky: ['#CBD7D9', '#DEE3DD', '#EFE8D7', '#F7E2C0'],
+    sun: '#FFF3DA',
+    glow: '#F9D597',
+    sunPos: [1270, 610],
+    sunR: 58,
+    ridges: ['#BAC7CA', '#A3B4B4', '#8AA09A', '#6E887C', '#557064', '#435E50'],
+    mist: '#F6F2E8',
+    fadeTo: '#EEF0E7', // màu đầu section kế tiếp (Nguồn gốc) → không có đường cắt
+  },
+  // Chiều tà của chính ngày ấy: cùng hướng nắng (thấp bên phải), núi gần hoà vào footer.
+  sunset: {
+    sky: ['#F5EBDD', '#F4DDBC', '#EFBF8A', '#DE9563'],
+    sun: '#FFE6B8',
+    glow: '#F6B26E',
+    sunPos: [1250, 720],
+    sunR: 60,
+    ridges: ['#C99278', '#A8735F', '#83564A', '#5E3D35', '#3B2A25', '#1E1C18'],
+    mist: '#F2C79A',
+    // núi thấp hơn → nửa trên là trời cho chữ
+    bases: [680, 730, 785, 845, 905, 965],
+    amps: [70, 80, 85, 80, 70, 50],
+  },
 }
 
 export const Landscape = memo(function Landscape({ variant = 'dawn', className, layerY, label = 'Núi rừng Tây Bắc' }) {
   const L = LANDSCAPES[variant] || LANDSCAPES.dawn
-  const bases = [520, 590, 660, 740, 830, 930]
-  const amps = [90, 110, 120, 110, 100, 70]
+  const bases = L.bases || [520, 590, 660, 740, 830, 930]
+  const amps = L.amps || [90, 110, 120, 110, 100, 70]
   return (
     <Frame viewBox="0 0 1600 1000" className={className} label={label} grain={0.14} align="xMidYMax">
       {(id) => (
@@ -112,19 +136,27 @@ export const Landscape = memo(function Landscape({ variant = 'dawn', className, 
               ))}
             </linearGradient>
             <radialGradient id={`sun${id}`} cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" stopColor={L.sun} stopOpacity="1" />
-              <stop offset="0.35" stopColor={L.sun} stopOpacity="0.55" />
-              <stop offset="1" stopColor={L.sun} stopOpacity="0" />
+              <stop offset="0" stopColor={L.glow || L.sun} stopOpacity="1" />
+              <stop offset="0.35" stopColor={L.glow || L.sun} stopOpacity="0.5" />
+              <stop offset="1" stopColor={L.glow || L.sun} stopOpacity="0" />
             </radialGradient>
             <linearGradient id={`mist${id}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor={L.mist} stopOpacity="0" />
               <stop offset="0.6" stopColor={L.mist} stopOpacity="0.55" />
               <stop offset="1" stopColor={L.mist} stopOpacity="0" />
             </linearGradient>
+            {L.fadeTo && (
+              <linearGradient id={`fade${id}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor={L.fadeTo} stopOpacity="0" />
+                <stop offset="0.55" stopColor={L.fadeTo} stopOpacity="0.85" />
+                <stop offset="1" stopColor={L.fadeTo} stopOpacity="1" />
+              </linearGradient>
+            )}
           </defs>
           <rect width="1600" height="1000" fill={`url(#sky${id})`} />
-          <circle cx={L.sunPos[0]} cy={L.sunPos[1]} r="320" fill={`url(#sun${id})`} />
-          <circle cx={L.sunPos[0]} cy={L.sunPos[1]} r="74" fill={L.sun} opacity="0.95" />
+          <circle cx={L.sunPos[0]} cy={L.sunPos[1]} r={L.glow ? 460 : 320} fill={`url(#sun${id})`} />
+          {/* data-sun: lớp Three.js toả tia nắng đúng từ mặt trời này */}
+          <circle data-sun cx={L.sunPos[0]} cy={L.sunPos[1]} r={L.sunR || 74} fill={L.sun} opacity="0.95" />
           {L.ridges.map((c, i) => {
             const path = <path d={ridgePath(11 + i * 7, bases[i], amps[i])} fill={c} />
             const mist = i < L.ridges.length - 1 && (
@@ -143,6 +175,156 @@ export const Landscape = memo(function Landscape({ variant = 'dawn', className, 
               </g>
             )
           })}
+          {L.fadeTo && <rect x="-60" y="820" width="1720" height="190" fill={`url(#fade${id})`} />}
+        </>
+      )}
+    </Frame>
+  )
+})
+
+/* ── CÀNH HOA BAN (tiền cảnh Hero) ───────────────────────── */
+// Hoa ban Điện Biên: 5 cánh thuôn tách rời, trắng hơi hồng, gân tím nhạt, nhị cong dài.
+function BanFlower({ x, y, s = 1, rot = 0, id, bloom = false }) {
+  const petals = [0, 72, 144, 216, 288]
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${s})`}>
+      {petals.map((a, i) => (
+        <g key={i} transform={`rotate(${a + (i % 2 ? 4 : -3)})`}>
+          <path
+            d="M0 -6 C 13 -12, 17 -34, 12 -46 C 8 -55, -8 -55, -12 -46 C -17 -34, -13 -12, 0 -6 Z"
+            fill={i === 0 ? `url(#bp${id})` : `url(#bw${id})`}
+          />
+          <path d="M0 -8 L0 -44 M0 -18 L-6 -36 M0 -18 L6 -36 M0 -28 L-8 -42 M0 -28 L8 -42" stroke={i === 0 ? '#B9839B' : '#D5B4C1'} strokeWidth="0.9" fill="none" opacity="0.8" />
+        </g>
+      ))}
+      <g stroke="#C7A35A" strokeWidth="1.1" fill="none" strokeLinecap="round">
+        <path d="M0 0 C 6 14, 16 22, 30 24" />
+        <path d="M0 0 C 2 16, 8 28, 18 36" />
+        <path d="M0 0 C 10 8, 24 10, 36 8" />
+      </g>
+      <circle cx="30" cy="24" r="2" fill="#B98A2E" />
+      <circle cx="18" cy="36" r="2" fill="#B98A2E" />
+      <circle cx="36" cy="8" r="2" fill="#B98A2E" />
+      <circle r="4" fill="#E7D7A6" />
+      {/* mốc vô hình: lớp Three.js cho ong ghé đúng bông hoa này */}
+      {bloom && <circle data-bloom r="6" fill="none" />}
+    </g>
+  )
+}
+
+function BanLeaf({ x, y, s = 1, rot = 0 }) {
+  // lá hoa ban xẻ đôi ở đầu (hình móng bò)
+  return (
+    <g transform={`translate(${x} ${y}) rotate(${rot}) scale(${s})`}>
+      <path d="M0 0 C -26 -6, -40 -34, -30 -52 C -24 -60, -10 -58, -3 -46 L0 -40 L3 -46 C 10 -58, 24 -60, 30 -52 C 40 -34, 26 -6, 0 0 Z" fill="#6F8A62" />
+      <path d="M0 0 L0 -40" stroke="#58704E" strokeWidth="1.2" />
+    </g>
+  )
+}
+
+export const BanBranch = memo(function BanBranch({ className }) {
+  const id = useId().replace(/:/g, '')
+  return (
+    <svg className={className} viewBox="0 0 600 460" aria-hidden="true">
+      <defs>
+        <linearGradient id={`bw${id}`} x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#F3DCE2" />
+          <stop offset="0.5" stopColor="#FBF4F0" />
+          <stop offset="1" stopColor="#FFFDF8" />
+        </linearGradient>
+        <linearGradient id={`bp${id}`} x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stopColor="#E3B3C4" />
+          <stop offset="1" stopColor="#F8E6EC" />
+        </linearGradient>
+      </defs>
+      <g stroke="#5B4232" fill="none" strokeLinecap="round">
+        <path d="M640 40 C 540 70, 470 110, 400 170 C 340 220, 280 250, 190 290" strokeWidth="9" />
+        <path d="M400 170 C 380 220, 372 270, 352 320" strokeWidth="5" />
+        <path d="M300 236 C 270 200, 236 180, 196 170" strokeWidth="4.5" />
+        <path d="M520 86 C 500 130, 490 160, 470 200" strokeWidth="4" />
+        <path d="M190 290 C 160 302, 130 318, 104 342" strokeWidth="4" />
+      </g>
+      <BanLeaf x={472} y={110} s={1.1} rot={-30} />
+      <BanLeaf x={340} y={226} s={0.9} rot={150} />
+      <BanLeaf x={232} y={270} s={1} rot={-62} />
+      <BanLeaf x={470} y={200} s={0.8} rot={170} />
+      <BanFlower id={id} x={196} y={168} s={1.05} rot={-14} bloom />
+      <BanFlower id={id} x={352} y={322} s={1.15} rot={20} bloom />
+      <BanFlower id={id} x={104} y={344} s={0.95} rot={8} bloom />
+      <BanFlower id={id} x={470} y={202} s={0.8} rot={40} />
+      <BanFlower id={id} x={292} y={262} s={0.7} rot={-30} />
+      {[
+        [560, 70, -20],
+        [150, 312, 30],
+        [404, 250, 10],
+      ].map(([x, y, r], i) => (
+        <ellipse key={i} cx={x} cy={y} rx="6" ry="13" fill="#E9C8D2" stroke="#BFA0A8" strokeWidth="0.8" transform={`rotate(${r} ${x} ${y})`} />
+      ))}
+    </svg>
+  )
+})
+
+/* ── GÁO MẬT (khung "Giọt mật") ──────────────────────────── */
+// Nắng từ phía trên bên phải; dòng mật mảnh rơi xuống, giọt mật 3D (lớp Three.js) nhỏ từ đầu dòng.
+export const Dipper = memo(function Dipper({ className, label = 'Mật ong chảy từ gáo gỗ' }) {
+  return (
+    <Frame className={className} label={label} grain={0.12}>
+      {(id) => (
+        <>
+          <defs>
+            <radialGradient id={`bg${id}`} cx="0.78" cy="0.12" r="1.1">
+              <stop offset="0" stopColor="#FCF3E1" />
+              <stop offset="0.55" stopColor="#F1DDB8" />
+              <stop offset="1" stopColor="#D9B57E" />
+            </radialGradient>
+            <linearGradient id={`w${id}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#B48858" />
+              <stop offset="1" stopColor="#7E5733" />
+            </linearGradient>
+            <linearGradient id={`m${id}`} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stopColor="#A86D1C" />
+              <stop offset="0.5" stopColor="#E9B24F" />
+              <stop offset="1" stopColor="#C88A24" />
+            </linearGradient>
+            <radialGradient id={`c${id}`} cx="0.65" cy="0.3" r="0.8">
+              <stop offset="0" stopColor="#F6CF7C" />
+              <stop offset="0.6" stopColor="#D69A33" />
+              <stop offset="1" stopColor="#A86D1C" />
+            </radialGradient>
+          </defs>
+          <rect width="800" height="800" fill={`url(#bg${id})`} />
+          <g transform="rotate(-28 400 260)">
+            {/* cán gỗ */}
+            <rect x="452" y="248" width="420" height="24" rx="12" fill={`url(#w${id})`} />
+            <rect x="452" y="250" width="420" height="7" rx="3.5" fill="#D9B88E" opacity="0.55" />
+            {/* đầu gáo: các đĩa gỗ xếp dọc trục, rãnh tối xen giữa */}
+            {[
+              [320, 38],
+              [350, 52],
+              [380, 58],
+              [410, 58],
+              [440, 50],
+            ].map(([x, r], i) => (
+              <g key={i}>
+                <ellipse cx={x} cy="260" rx="15" ry={r} fill={`url(#w${id})`} />
+                <ellipse cx={x - 3} cy={260 - r * 0.35} rx="6" ry={r * 0.4} fill="#E2C499" opacity="0.4" />
+                <ellipse cx={x + 14} cy="260" rx="3" ry={r * 0.82} fill="#5E3F22" opacity="0.55" />
+              </g>
+            ))}
+            <rect x="440" y="246" width="20" height="28" rx="6" fill="#8E6440" />
+            {/* mật phủ nửa dưới đầu gáo */}
+            <path
+              d="M306 262 C 310 300, 340 318, 380 320 C 420 322, 450 306, 456 270 C 440 290, 420 296, 400 300 C 370 304, 330 296, 306 262 Z"
+              fill={`url(#c${id})`}
+              opacity="0.95"
+            />
+            <path d="M330 288 C 350 300, 380 304, 410 300" stroke="#FFF1C8" strokeWidth="4" strokeLinecap="round" fill="none" opacity="0.55" />
+          </g>
+          {/* dòng mật mảnh rơi thẳng từ đáy đầu gáo */}
+          <path d="M425 300 C 420 350, 432 400, 428 452 C 426 480, 430 500, 428 518" stroke={`url(#m${id})`} strokeWidth="9" strokeLinecap="round" fill="none" />
+          <path d="M424 316 C 421 360, 429 404, 426 450" stroke="#FFF0C4" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.5" />
+          {/* mốc vô hình ở đầu dòng mật — giọt mật 3D hình thành và nhỏ xuống đúng chỗ này */}
+          <rect data-drip-tip x="412" y="518" width="32" height="20" fill="none" />
         </>
       )}
     </Frame>
@@ -208,8 +390,6 @@ export const Honeycomb = memo(function Honeycomb({ className, label = 'Cận c�
           ))}
           <path d="M-20 -20 L820 -20 L820 90 C 700 110, 640 70, 560 120 C 520 145, 520 260, 498 300 C 486 322, 470 322, 462 300 C 448 250, 455 150, 400 130 C 300 95, 120 140, -20 100 Z" fill={`url(#d${id})`} opacity="0.95" />
           <ellipse cx="480" cy="295" rx="6" ry="10" fill="#FFF3D0" opacity="0.6" />
-          {/* mốc vô hình ở đầu dòng mật — lớp Three.js cho giọt mật 3D nhỏ xuống đúng chỗ này */}
-          <rect data-drip-tip x="462" y="300" width="36" height="22" fill="none" />
           <rect width="800" height="800" fill={`url(#v${id})`} />
         </>
       )}
@@ -506,8 +686,8 @@ export const Jar = memo(function Jar({ tone = 'amber', name = 'Mật ong', class
           {/* nhãn */}
           <rect x="300" y="400" width="200" height="150" rx="4" fill="#F7EFE0" />
           <rect x="310" y="410" width="180" height="130" rx="2" fill="none" stroke={C.honey} strokeWidth="1.5" />
-          <text x="400" y="452" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontSize="30" fontWeight="600" letterSpacing="5" fill={C.brown}>
-            MELBEE
+          <text x="400" y="452" textAnchor="middle" fontFamily="Noto Serif Display, serif" fontSize="30" fontWeight="600" letterSpacing="5" fill={C.brown}>
+            MelBee
           </text>
           <line x1="360" y1="468" x2="440" y2="468" stroke={C.honey} />
           <text x="400" y="498" textAnchor="middle" fontFamily="Be Vietnam Pro, sans-serif" fontSize={fs} letterSpacing="1.5" fill={C.brown}>
@@ -656,8 +836,8 @@ export const Gift = memo(function Gift({ className, label = 'Hộp quà mật on
           <rect x="140" y="400" width="520" height="250" fill="#C9A26F" />
           <rect x="380" y="400" width="40" height="250" fill="#7A5634" opacity="0.7" />
           <path d="M400 420 C 340 360, 300 420, 400 430 C 500 420, 460 360, 400 420 Z" fill="#7A5634" />
-          <text x="400" y="560" textAnchor="middle" fontFamily="Cormorant Garamond, serif" fontSize="40" fontWeight="600" letterSpacing="8" fill="#3A291D" opacity="0.8">
-            MELBEE
+          <text x="400" y="560" textAnchor="middle" fontFamily="Noto Serif Display, serif" fontSize="40" fontWeight="600" letterSpacing="8" fill="#3A291D" opacity="0.8">
+            MelBee
           </text>
           <path d="M600 330 C 640 260, 680 230, 720 210" stroke={C.forest2} strokeWidth="4" fill="none" />
           <Flower x={720} y={205} s={0.7} />
@@ -702,7 +882,7 @@ export const MapArt = memo(function MapArt({ className, label = 'Bản đồ min
             <path d="M0 -6 C -18 -6, -24 -30, 0 -50 C 24 -30, 18 -6, 0 -6 Z" transform="translate(0 0)" fill={C.brown} />
             <circle cy="-32" r="7" fill={C.honeyPale} />
           </g>
-          <text x="436" y="470" fontFamily="Cormorant Garamond, serif" fontSize="34" fontStyle="italic" fill={C.brown}>
+          <text x="436" y="470" fontFamily="Noto Serif Display, serif" fontSize="34" fontStyle="italic" fill={C.brown}>
             Tây Bắc
           </text>
           <g transform="translate(680 130)" stroke={C.brown} fill="none">
@@ -722,8 +902,11 @@ export const MapArt = memo(function MapArt({ className, label = 'Bản đồ min
 
 const ARTS = {
   landscape: (p) => <Landscape variant="dawn" {...p} />,
+  'landscape-morning': (p) => <Landscape variant="morning" {...p} />,
+  'landscape-sunset': (p) => <Landscape variant="sunset" {...p} />,
   'landscape-dusk': (p) => <Landscape variant="dusk" {...p} />,
   honeycomb: (p) => <Honeycomb {...p} />,
+  dipper: (p) => <Dipper {...p} />,
   blossom: (p) => <Blossom {...p} />,
   bee: (p) => <Bee {...p} />,
   hive: (p) => <Hive {...p} />,

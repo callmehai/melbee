@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 
-/** Phấn hoa lơ lửng rất nhẹ (canvas 2D, ~40 hạt). Tắt khi prefers-reduced-motion. */
-export default function Pollen({ count = 40 }) {
+/** Phấn hoa lơ lửng rất nhẹ (canvas 2D, ~18 hạt, cùng màu vàng ấm với lớp Three.js). Tắt khi prefers-reduced-motion. */
+export default function Pollen({ count = 18 }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function Pollen({ count = 40 }) {
     const parts = Array.from({ length: count }, () => ({
       x: Math.random(),
       y: Math.random(),
-      r: 0.6 + Math.random() * 1.5,
+      r: 1 + Math.random() * 1.6,
       vy: 0.00008 + Math.random() * 0.00018,
       ph: Math.random() * Math.PI * 2,
       a: 0.2 + Math.random() * 0.45,
@@ -53,8 +53,8 @@ export default function Pollen({ count = 40 }) {
         const y = p.y * h
         const tw = 0.6 + 0.4 * Math.sin(t * 0.002 + p.ph * 3)
         const g = ctx.createRadialGradient(x, y, 0, x, y, p.r * 3)
-        g.addColorStop(0, `rgba(255, 214, 140, ${p.a * tw})`)
-        g.addColorStop(1, 'rgba(255, 214, 140, 0)')
+        g.addColorStop(0, `rgba(214, 160, 58, ${p.a * tw})`)
+        g.addColorStop(1, 'rgba(214, 160, 58, 0)')
         ctx.fillStyle = g
         ctx.beginPath()
         ctx.arc(x, y, p.r * 3, 0, Math.PI * 2)

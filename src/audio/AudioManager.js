@@ -115,7 +115,7 @@ class AudioManager {
       this.mix(true)
       return true
     } catch (err) {
-      if (import.meta.env.DEV) console.warn(`[Melbee] Âm thanh "${name}" không tải được — bỏ qua lớp này.`, err)
+      if (import.meta.env.DEV) console.warn(`[MelBee] Âm thanh "${name}" không tải được — bỏ qua lớp này.`, err)
       return false
     }
   }
@@ -134,7 +134,7 @@ class AudioManager {
     try {
       this.ctx.createMediaElementSource(el).connect(layer.gain)
     } catch (err) {
-      if (import.meta.env.DEV) console.warn(`[Melbee] Không nối được "${name}" vào Web Audio.`, err)
+      if (import.meta.env.DEV) console.warn(`[MelBee] Không nối được "${name}" vào Web Audio.`, err)
       return Promise.resolve(false)
     }
     const playing = el.play()
@@ -143,7 +143,7 @@ class AudioManager {
       const fail = (err) => {
         if (failed) return
         failed = true
-        if (import.meta.env.DEV) console.warn(`[Melbee] Âm thanh "${name}" không tải được — bỏ qua lớp này.`, err)
+        if (import.meta.env.DEV) console.warn(`[MelBee] Âm thanh "${name}" không tải được — bỏ qua lớp này.`, err)
         layer.ok = false
         resolve(false)
       }
@@ -251,7 +251,7 @@ class AudioManager {
         this.master.gain.setTargetAtTime(1, now, AUDIO_CONFIG.fadeIn / 3)
         this.setStatus('on')
       } catch (err) {
-        if (import.meta.env.DEV) console.warn('[Melbee] Không bật được âm thanh:', err)
+        if (import.meta.env.DEV) console.warn('[MelBee] Không bật được âm thanh:', err)
         // dọn để lần bấm sau thử tải lại từ đầu
         this.dispose()
         this.setStatus('error')

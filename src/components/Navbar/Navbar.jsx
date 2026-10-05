@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import Logo from '../common/Logo.jsx'
 import OrderMenu from '../common/OrderMenu.jsx'
+import SoundToggle from '../SoundToggle/SoundToggle.jsx'
 import { FacebookIcon, ZaloIcon } from '../common/BrandIcons.jsx'
 import { nav } from '../../data/sections.js'
 import { brand } from '../../config/brand.js'
@@ -23,13 +24,15 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // làm nổi mục menu của section đang xem
+  // làm nổi mục menu của section đang xem; section không có trong menu → không mục nào sáng
   useEffect(() => {
-    const els = nav.map((n) => document.querySelector(n.href)).filter(Boolean)
+    const els = [...document.querySelectorAll('main > section, footer')]
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive('#' + e.target.id)
+          if (!e.isIntersecting) return
+          const href = '#' + e.target.id
+          setActive(nav.some((n) => n.href === href) ? href : null)
         })
       },
       { rootMargin: '-45% 0px -50% 0px' }
@@ -51,7 +54,7 @@ export default function Navbar() {
     <header className={`nav ${solid ? 'is-solid' : ''} ${open ? 'is-open' : ''}`}>
       <div className="container nav__inner">
         <a href="#trang-chu" className="nav__brand" aria-label={`${brand.name} — về đầu trang`} onClick={() => setOpen(false)}>
-          <Logo light={!solid} />
+          <Logo />
         </a>
 
         <nav className="nav__links" aria-label="Điều hướng chính">
@@ -66,8 +69,10 @@ export default function Navbar() {
           </ul>
         </nav>
 
+        <SoundToggle />
+
         <div className="nav__cta">
-          <OrderMenu size="sm" variant={solid ? 'solid' : 'light'} />
+          <OrderMenu size="sm" variant="solid" />
         </div>
 
         <button

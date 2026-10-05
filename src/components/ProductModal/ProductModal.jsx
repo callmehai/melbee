@@ -38,20 +38,22 @@ export default function ProductModal({ product, onClose }) {
             {product.name}
           </h2>
 
-          <dl className="pmodal__facts">
-            {product.size && (
-              <div>
-                <dt>Quy cách</dt>
-                <dd>{product.size}</dd>
-              </div>
-            )}
-            {product.price && (
-              <div>
-                <dt>Giá</dt>
-                <dd>{product.price}</dd>
-              </div>
-            )}
-          </dl>
+          {(product.size || product.price) && (
+            <dl className="pmodal__facts">
+              {product.size && (
+                <div>
+                  <dt>Quy cách</dt>
+                  <dd>{product.size}</dd>
+                </div>
+              )}
+              {product.price && (
+                <div>
+                  <dt>Giá</dt>
+                  <dd>{product.price}</dd>
+                </div>
+              )}
+            </dl>
+          )}
 
           <p className="pmodal__desc">{product.description}</p>
 

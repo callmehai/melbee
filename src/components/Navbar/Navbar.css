@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   z-index: 50;
-  color: var(--ivory);
+  color: var(--brown);
   transition:
     background-color 0.5s var(--ease),
     color 0.5s var(--ease),
@@ -13,10 +13,10 @@
 }
 
 .nav.is-solid {
-  background: rgba(250, 247, 240, 0.92);
+  /* gần như đặc: chữ nội dung không hiện xuyên qua logo */
+  background: rgba(250, 247, 240, 0.97);
   backdrop-filter: blur(14px) saturate(1.2);
   -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  color: var(--brown);
   box-shadow: 0 1px 0 var(--line);
 }
 
@@ -55,11 +55,10 @@
 .logo__text b {
   display: block;
   font-family: var(--font-serif);
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1;
-  text-transform: uppercase;
 }
 
 .logo__text small {
@@ -132,7 +131,7 @@
     display: none;
   }
 
-  .nav__cta {
+  .nav .sound-toggle {
     margin-left: auto;
   }
 }
@@ -144,6 +143,7 @@
 
   .nav__burger {
     display: grid;
+    margin-left: 4px;
   }
 }
 
