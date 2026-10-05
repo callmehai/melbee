@@ -11,7 +11,7 @@ const LABEL = {
 }
 
 /**
- * Nút âm thanh núi rừng. Mặc định TẮT — trang không bao giờ tự phát tiếng;
+ * Nút nhạc nền. Mặc định TẮT — trang không bao giờ tự phát tiếng;
  * chỉ khi người xem bấm mới tải và bật âm thanh.
  */
 export default function SoundToggle() {
@@ -20,7 +20,7 @@ export default function SoundToggle() {
   useEffect(() => () => audioManager.dispose(), [])
 
   const on = status === 'on' || status === 'loading'
-  const hint = on ? 'Tắt âm thanh núi rừng' : status === 'error' ? 'Không tải được âm thanh — bấm để thử lại' : 'Bật âm thanh núi rừng (tiếng rừng, gió, suối rất nhẹ)'
+  const hint = on ? 'Tắt nhạc nền' : status === 'error' ? 'Không tải được âm thanh — bấm để thử lại' : 'Bật nhạc nền'
 
   return (
     <button

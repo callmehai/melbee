@@ -6,13 +6,14 @@ const LAYERS = Object.keys(AUDIO_LAYERS)
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 
 /**
- * Quản lý toàn bộ âm thanh nền: 3 lớp (rừng, gió, suối) trong MỘT AudioContext.
+ * Quản lý toàn bộ âm thanh nền (các lớp khai báo ở config.js) trong MỘT AudioContext.
  *
  * - Không phát gì cho tới khi người xem bấm nút (chính sách autoplay của trình duyệt).
  * - Tải file ở lần bật đầu tiên; lớp nào tải lỗi thì im lặng, không làm hỏng trang.
- * - Lặp liền mạch bằng AudioBufferSourceNode (thẻ <audio> loop MP3 hay bị hở một nhịp ở chỗ nối).
- * - Đổi section → crossfade; gió mạnh (cuộn nhanh, theo lớp Three.js) → lớp gió to lên nhẹ.
- * - Tắt tiếng → giảm dần về 0 rồi tạm dừng ngữ cảnh (không huỷ); tab ẩn → tạm dừng.
+ * - Lớp stream (bài nhạc dài): phát từ thẻ <audio> qua MediaElementSource — không giải mã cả bài vào RAM.
+ *   Lớp thường (đoạn tiếng thiên nhiên ngắn): AudioBufferSourceNode, lặp liền mạch tuyệt đối.
+ * - Đổi section → crossfade; gió mạnh (cuộn nhanh, theo lớp Three.js) → lớp "wind" to lên nhẹ.
+ * - Tắt tiếng → giảm dần về 0 rồi tạm dừng (không huỷ); tab ẩn → tạm dừng, quay lại → phát tiếp.
  */
 class AudioManager {
   constructor() {
@@ -52,9 +53,10 @@ class AudioManager {
     if (this.ctx) return this.loading
     const Ctx = window.AudioContext || window.webkitAudioContext
     if (!Ctx || !AUDIO_CONFIG.enabled) return Promise.reject(new Error('Web Audio không khả dụng'))
-    // tần số lấy mẫu thấp vừa đủ cho tiếng thiên nhiên → bộ nhớ giải mã nhỏ
+    // chỉ có tiếng thiên nhiên → tần số lấy mẫu thấp cho bộ nhớ giải mã nhỏ; có nhạc → giữ chất lượng gốc
+    const hasMusic = LAYERS.some((n) => AUDIO_LAYERS[n].stream)
     try {
-      this.ctx = new Ctx({ sampleRate: this.mobile ? 22050 : 32000 })
+      this.ctx = hasMusic ? new Ctx() : new Ctx({ sampleRate: this.mobile ? 22050 : 32000 })
     } catch {
       this.ctx = new Ctx()
     }
@@ -75,6 +77,7 @@ class AudioManager {
   }
 
   async loadLayer(name) {
+    if (AUDIO_LAYERS[name].stream) return this.loadStream(name)
     try {
       const res = await fetch(asset(AUDIO_LAYERS[name].file))
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
@@ -95,6 +98,54 @@ class AudioManager {
     } catch (err) {
       if (import.meta.env.DEV) console.warn(`[Melbee] Âm thanh "${name}" không tải được — bỏ qua lớp này.`, err)
       return false
+    }
+  }
+
+  /**
+   * Lớp phát trực tiếp từ file. play() được gọi ngay trong cú bấm (init chạy đồng bộ trong click)
+   * để Safari/iOS không chặn.
+   */
+  loadStream(name) {
+    const el = new Audio()
+    el.src = asset(AUDIO_LAYERS[name].file)
+    el.loop = true
+    el.preload = 'auto'
+    const layer = this.layers[name]
+    layer.media = el
+    try {
+      this.ctx.createMediaElementSource(el).connect(layer.gain)
+    } catch (err) {
+      if (import.meta.env.DEV) console.warn(`[Melbee] Không nối được "${name}" vào Web Audio.`, err)
+      return Promise.resolve(false)
+    }
+    const playing = el.play()
+    return new Promise((resolve) => {
+      let failed = false
+      const fail = (err) => {
+        if (failed) return
+        failed = true
+        if (import.meta.env.DEV) console.warn(`[Melbee] Âm thanh "${name}" không tải được — bỏ qua lớp này.`, err)
+        layer.ok = false
+        resolve(false)
+      }
+      el.addEventListener('error', () => fail(el.error), { once: true })
+      Promise.resolve(playing)
+        .then(() => {
+          layer.ok = true
+          if (this.muted) el.pause()
+          this.mix(true)
+          resolve(true)
+        })
+        .catch(fail)
+    })
+  }
+
+  /** Phát / dừng các lớp stream theo trạng thái bật tắt. */
+  playMedia(on) {
+    for (const l of Object.values(this.layers)) {
+      if (!l.media || !l.ok) continue
+      if (on) l.media.play().catch(() => {})
+      else l.media.pause()
     }
   }
 
@@ -128,6 +179,7 @@ class AudioManager {
       if (!this.ctx || this.muted) return
       if (document.hidden) this.ctx.suspend()
       else this.ctx.resume()
+      this.playMedia(!document.hidden)
     }
     document.addEventListener('visibilitychange', onVisibility)
     this.cleanups.push(() => document.removeEventListener('visibilitychange', onVisibility))
@@ -150,7 +202,7 @@ class AudioManager {
   }
 
   setScene(name) {
-    if (!AUDIO_SCENES[name] || name === this.scene) return
+    if (!name || name === this.scene) return // section không có trong bảng → dùng volume mặc định
     this.scene = name
     this.mix()
   }
@@ -174,6 +226,7 @@ class AudioManager {
         await this.init()
         if (this.muted) return
         await this.ctx.resume()
+        this.playMedia(true)
         const now = this.ctx.currentTime
         this.master.gain.cancelScheduledValues(now)
         this.master.gain.setTargetAtTime(1, now, AUDIO_CONFIG.fadeIn / 3)
@@ -193,7 +246,11 @@ class AudioManager {
     this.master.gain.setTargetAtTime(0, now, AUDIO_CONFIG.fadeOut / 3)
     clearTimeout(this.suspendTimer)
     // giảm hẳn rồi mới tạm dừng ngữ cảnh (tiết kiệm CPU, giữ nguyên vị trí phát)
-    this.suspendTimer = setTimeout(() => this.muted && this.ctx?.suspend(), AUDIO_CONFIG.fadeOut * 1000 + 300)
+    this.suspendTimer = setTimeout(() => {
+      if (!this.muted) return
+      this.playMedia(false)
+      this.ctx?.suspend()
+    }, AUDIO_CONFIG.fadeOut * 1000 + 300)
   }
 
   toggle() {
@@ -211,6 +268,11 @@ class AudioManager {
         // đã dừng
       }
       l.source?.disconnect()
+      if (l.media) {
+        l.media.pause()
+        l.media.removeAttribute('src')
+        l.media.load()
+      }
     }
     this.layers = {}
     this.ctx?.close()

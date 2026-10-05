@@ -164,11 +164,18 @@ Font: cài font khác từ [Fontsource](https://fontsource.org) (chọn font có
 
 ## Âm thanh nền
 
-Tiếng rừng + gió + suối thật (Mixkit, giấy phép miễn phí, dùng thương mại được, không cần ghi nguồn), rất nhẹ.
+Nhạc nền `public/assets/audio/music.mp3` — Mixkit "Wedding 01" (#657, giấy phép miễn phí, dùng thương mại được,
+không cần ghi nguồn), đã cắt khoảng lặng đầu/cuối, chuẩn hoá độ to, nén 128kbps (~2,2MB, 2 phút 23 giây, lặp lại).
 **Mặc định tắt** — chỉ tải và phát khi người xem bấm nút "Âm thanh".
 
-| File (`public/assets/audio/`) | Nguồn Mixkit | Dài |
-|---|---|---|
+- Âm lượng, mức theo từng section: `src/audio/config.js` (`AUDIO_LAYERS`, `AUDIO_SCENES`). Đổi section → tự chuyển ~1,5 giây.
+- Đổi bài: chép file MP3 mới đè lên `music.mp3` (hoặc đổi đường dẫn trong `config.js`).
+- Tiếng rừng / gió / suối (Mixkit) vẫn còn trong `public/assets/audio/` — cách bật lại ghi ở đầu `config.js`;
+  không dùng nữa thì xoá 3 file `ambient-forest.mp3`, `wind.mp3`, `river.mp3`.
+- Thiếu file → nút báo lỗi, trang vẫn chạy bình thường.
+- Mã: `src/audio/AudioManager.js`, nút: `src/components/SoundToggle/`.
+
+---|---|---|
 | `ambient-forest.mp3` | Quiet forest ambience (#1220) | 40 giây, lặp liền |
 | `wind.mp3` | Wind blowing ambience (#2658) | 30 giây, lặp liền |
 | `river.mp3` | River water flow and surroundings (#2452) | 30 giây, lặp liền |
