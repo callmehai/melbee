@@ -5,7 +5,8 @@ import './Button.css'
 
 /** Nút/đường dẫn dùng chung. variant: solid | outline | ghost | light | facebook | zalo | zalo-solid */
 export default function Button({ href, children, variant = 'solid', icon, external, className = '', ...rest }) {
-  const isExternal = external ?? /^https?:/.test(href || '')
+  // chỉ link sang website khác (Zalo, Facebook…) mới mở tab mới — link trang trong web (page()) cũng là https:// nhưng cùng tên miền
+  const isExternal = external ?? (/^https?:/.test(href || '') && new URL(href).origin !== window.location.origin)
   const Tag = href ? 'a' : 'button'
   return (
     <Tag
