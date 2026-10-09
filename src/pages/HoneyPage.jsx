@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { Shell, Crumbs, Photo, HoneyCard, OrderButtons, priceOf } from './common.jsx'
+import { Shell, Crumbs, Photo, HoneyCard, OrderButtons, jarPrice, vnd } from './common.jsx'
 import { honeys, sizes, commonInfo } from '../data/catalog.js'
 import { page } from '../lib/site.js'
 import Reveal from '../components/common/Reveal.jsx'
@@ -83,7 +83,7 @@ export default function HoneyPage({ id }) {
   const honey = honeys.find((h) => h.id === id) || honeys[0]
   const others = honeys.filter((h) => h.id !== honey.id)
   const [size, setSize] = useState(sizes[1])
-  const price = priceOf(honey, size)
+  const price = jarPrice(honey, size)
 
   return (
     <Shell current="products">
@@ -119,9 +119,15 @@ export default function HoneyPage({ id }) {
           </fieldset>
 
           <p className="price">
-            <b>{price.value}</b>
-            {price.unit && <em>{price.unit}</em>}
-            {!honey.prices?.[size] && <span>Nhắn MelBee để được báo giá lọ {size}</span>}
+            <b>{price || 'Liên hệ'}</b>
+            {price ? (
+              <>
+                <em>/ lọ {size}</em>
+                {honey.pricePerLiter && <span>{vnd(honey.pricePerLiter)} / lít</span>}
+              </>
+            ) : (
+              <span>Nhắn MelBee để được báo giá lọ {size}</span>
+            )}
           </p>
 
           <OrderButtons />

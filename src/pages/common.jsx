@@ -81,11 +81,13 @@ export function Photo({ src, alt, className = '', eager = false }) {
   )
 }
 
-/** Giá hiện cho một dung tích: giá lọ nếu có, không thì giá theo lít, không nữa thì "Liên hệ". */
-export function priceOf(honey, size) {
-  if (honey.prices?.[size]) return { value: honey.prices[size], unit: `/ lọ ${size}` }
-  if (honey.pricePerLiter) return { value: honey.pricePerLiter, unit: '/ lít' }
-  return { value: 'Liên hệ', unit: '' }
+export const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`
+
+/** Giá một lọ: giá đặt riêng nếu có, không thì tự tính từ giá lít (làm tròn tới nghìn), không nữa thì null. */
+export function jarPrice(honey, size) {
+  if (honey.prices?.[size]) return honey.prices[size]
+  if (!honey.pricePerLiter) return null
+  return vnd(Math.round((honey.pricePerLiter * parseInt(size, 10)) / 1000 / 1000) * 1000)
 }
 
 /** Khoảng dung tích "280 – 730ml" */
@@ -93,9 +95,9 @@ export const sizeRange = (sizes) => `${sizes[0].replace('ml', '')} – ${sizes[s
 
 /** Thẻ một loại mật — cả thẻ là link sang trang chi tiết. */
 export function HoneyCard({ honey, sizes, compact = false }) {
-  // giá lọ nhỏ nhất đã có giá; chưa có giá lọ thì giá theo lít
-  const from = sizes.find((s) => honey.prices?.[s])
-  const price = from ? `từ ${honey.prices[from]}` : honey.pricePerLiter ? `${honey.pricePerLiter}/lít` : 'Liên hệ'
+  // giá lọ nhỏ nhất
+  const from = jarPrice(honey, sizes[0])
+  const price = from ? `từ ${from}` : 'Liên hệ'
   return (
     <a className={`hcard ${compact ? 'is-compact' : ''}`} href={page(`san-pham/${honey.id}/`)} id={honey.id}>
       <Photo src={honey.image} alt={honey.name} />
