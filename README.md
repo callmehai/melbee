@@ -22,6 +22,8 @@ npm run build    # bản production → thư mục dist/
 npm run preview  # xem thử bản build
 ```
 
+**Tên miền**: https://melbeetaybac.com (mua ở Namecheap, DNS trỏ về GitHub Pages: 4 bản ghi A `185.199.108–111.153` cho `@`, CNAME `www` → `callmehai.github.io`). Nhớ bật tự gia hạn — mã QR trên hộp quà trỏ về tên miền này.
+
 **Deploy**: đã cấu hình GitHub Pages — mỗi lần `git push` lên nhánh `main`, GitHub Actions tự build
 và đăng lại (~30 giây). Muốn dùng Vercel/Netlify: import repo, build `npm run build`, output `dist`.
 
