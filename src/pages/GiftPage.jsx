@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react'
-import { Shell, PageHead, Photo, OrderButtons, NextBand } from './common.jsx'
+import { Shell, PageHead, OrderButtons, NextBand } from './common.jsx'
+import GiftBox3D from './giftbox3d/GiftBox3D.jsx'
 import { giftSet, giftMessage, honeys } from '../data/catalog.js'
 import { asset, hasAsset } from '../lib/assets.js'
 import { page } from '../lib/site.js'
@@ -18,8 +19,8 @@ export default function GiftPage() {
 
       <div className="container gift-main">
         <figure className="gift-main__fig">
-          <Photo src={hasPhoto ? giftSet.photo : giftSet.designFront} alt={`${giftSet.name} — mặt hộp`} className="gift-main__photo" eager />
-          {!hasPhoto && <figcaption>Bản thiết kế mặt hộp · ảnh chụp sắp ra mắt</figcaption>}
+          <GiftBox3D fallback={<img src={asset(hasPhoto ? giftSet.photo : giftSet.designFront)} alt={`${giftSet.name} — mặt hộp`} />} />
+          <figcaption>Hộp 3D dựng theo bản thiết kế in (22 × 15 × 10 cm){hasPhoto ? '' : ' · ảnh chụp sắp ra mắt'}</figcaption>
         </figure>
 
         <div className="gift-main__info">
