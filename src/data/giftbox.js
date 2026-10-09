@@ -5,11 +5,12 @@
  * Hộp lục giác như một ô tổ ong, hũ lục giác như hũ thật của MelBee.
  * ⚠️ PHÍ HỘP LÀ GIÁ TẠM để duyệt giao diện, chưa phải giá bán.
  */
+// Khối "Hộp quà" trang chủ — set quà thật 2 lọ 380ml (src/components/GiftSet, dữ liệu ở src/data/catalog.js).
+// Phần còn lại của file (hộp lục giác, màu hộp, phí hộp tạm) là của bản hộp tưởng tượng cũ, đã tắt.
 export const giftSection = {
   eyebrow: 'Hộp quà',
-  title: ['Gói một hộp quà', 'mang theo núi rừng'],
-  subtitle:
-    'Chọn kiểu hộp, màu hộp, loại mật bên trong và vài dòng trên thiệp. Gửi mẫu hộp cho MelBee qua tin nhắn để được tư vấn và báo giá.',
+  title: ['Một hộp quà', 'mang theo núi rừng'],
+  subtitle: 'Chọn hai loại mật cho hộp quà, xoay hộp để ngắm và mở nắp xem lời gửi bên trong. Gửi đơn cho MelBee qua tin nhắn.',
   hint: { mouse: 'Kéo để xoay mọi hướng · bấm để mở nắp', touch: 'Vuốt để xoay · chạm để mở nắp' },
   note: 'Tạm tính theo giá tham khảo — MelBee xác nhận giá khi nhắn tin.',
 }

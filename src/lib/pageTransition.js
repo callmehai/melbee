@@ -1,11 +1,9 @@
 /**
- * Xong hiệu ứng chuyển trang (View Transitions) chưa? Việc nặng (lớp 3D) chờ cái này rồi mới chạy,
- * không thì nó chiếm luồng chính đúng lúc trang mới đang trồi lên → hiệu ứng giật.
- * Vào thẳng trang / tải lại / trình duyệt không hỗ trợ: xong ngay.
- * pagereveal bắn ở khung hình đầu tiên — script module thường chạy trước đó; không kịp thì dự phòng 1,5s.
+ * Chờ hiệu ứng chuyển trang (View Transitions) đang chạy xong. Việc nặng (lớp 3D) gọi hàm này ngay trước
+ * khi chạy, không thì nó chiếm luồng chính đúng lúc trang mới đang trồi lên → hiệu ứng giật.
+ * Không có hiệu ứng nào đang chạy (vào thẳng trang, tải lại, trình duyệt không hỗ trợ) → xong ngay.
  */
-export const pageTransitionDone = new Promise((resolve) => {
-  if (!('onpagereveal' in window)) return resolve()
-  window.addEventListener('pagereveal', (e) => (e.viewTransition ? e.viewTransition.finished.then(resolve, resolve) : resolve()), { once: true })
-  setTimeout(resolve, 1500) // dự phòng
-})
+export function afterPageTransition() {
+  const vt = document.activeViewTransition
+  return vt ? vt.finished.catch(() => {}) : Promise.resolve()
+}

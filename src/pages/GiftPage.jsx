@@ -1,14 +1,11 @@
-import { Check } from 'lucide-react'
-import { Shell, PageHead, OrderButtons, NextBand } from './common.jsx'
-import GiftBox3D from './giftbox3d/GiftBox3D.jsx'
-import { giftSet, giftMessage, honeys } from '../data/catalog.js'
-import { asset, hasAsset } from '../lib/assets.js'
-import { page } from '../lib/site.js'
+import { Shell, PageHead } from './common.jsx'
+import GiftSet from '../components/GiftSet/GiftSet.jsx'
 import Reveal from '../components/common/Reveal.jsx'
+import { giftSet, giftMessage } from '../data/catalog.js'
+import { asset } from '../lib/assets.js'
 
-/** /hop-qua/ — set quà: trong hộp có gì, hộp trông ra sao, lời gửi bên trong, đặt thế nào. */
+/** /hop-qua/ — set quà: hộp 3D + chọn 2 lọ mật + đặt; lời gửi in trong nắp hộp. */
 export default function GiftPage() {
-  const hasPhoto = hasAsset(giftSet.photo)
   return (
     <Shell current="gift">
       <PageHead
@@ -18,43 +15,7 @@ export default function GiftPage() {
       />
 
       <div className="container gift-main">
-        <figure className="gift-main__fig">
-          <GiftBox3D fallback={<img src={asset(hasPhoto ? giftSet.photo : giftSet.designFront)} alt={`${giftSet.name} — mặt hộp`} />} />
-          <figcaption>Hộp 3D dựng theo bản thiết kế in (22 × 15 × 10 cm){hasPhoto ? '' : ' · ảnh chụp sắp ra mắt'}</figcaption>
-        </figure>
-
-        <div className="gift-main__info">
-          <p className="eyebrow">Set quà</p>
-          <h2 className="gift-main__name">{giftSet.name}</h2>
-          <p className="detail__desc">{giftSet.description}</p>
-
-          <h3 className="sp-h3">Trong hộp có</h3>
-          <ul className="checks">
-            {giftSet.contents.map((t) => (
-              <li key={t}>
-                <Check size={16} aria-hidden="true" />
-                {t}
-              </li>
-            ))}
-          </ul>
-
-          <h3 className="sp-h3">Loại mật</h3>
-          <p className="gift-main__honeys">
-            {honeys.map((h, i) => (
-              <span key={h.id}>
-                <a href={page(`san-pham/${h.id}/`)}>{h.short}</a>
-                {i < honeys.length - 1 && ' · '}
-              </span>
-            ))}
-            <br />
-            <small>Nhắn MelBee để được tư vấn loại mật trong set.</small>
-          </p>
-
-          <p className="price">
-            <b>{giftSet.price || 'Liên hệ'}</b>
-          </p>
-          <OrderButtons zaloLabel="Nhắn Zalo đặt hộp quà" />
-        </div>
+        <GiftSet />
       </div>
 
       <section className="letter" aria-labelledby="letter-title">
@@ -76,13 +37,6 @@ export default function GiftPage() {
         </div>
       </section>
 
-      <NextBand
-        eyebrow="Tự chọn hộp quà"
-        title="Muốn một hộp theo ý mình?"
-        text="Chọn kiểu hộp, màu hộp, loại mật và vài dòng trên thiệp ở trang chủ, rồi gửi mẫu cho MelBee qua tin nhắn."
-        href={page('#hop-qua')}
-        label="Gói thử hộp quà"
-      />
     </Shell>
   )
 }

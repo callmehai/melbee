@@ -12,13 +12,54 @@
   display: grid;
   place-items: center;
   padding: 8%;
-  transition: opacity 0.6s var(--ease);
 }
 
 .box3d__fallback > * {
   width: auto;
   height: 100%;
   max-width: 100%;
+}
+
+/* đang tải: logo thở nhẹ — không hiện ảnh phẳng gây hiểu nhầm */
+.box3d__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  transition: opacity 0.5s var(--ease);
+}
+
+.box3d__loading img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  animation: box3d-breathe 1.6s ease-in-out infinite;
+}
+
+.box3d__loading span {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.box3d.is-ready .box3d__loading {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes box3d-breathe {
+  50% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box3d__loading img {
+    animation: none;
+  }
 }
 
 .box3d__canvas {
@@ -41,9 +82,6 @@
   opacity: 1;
 }
 
-.box3d.is-ready .box3d__fallback {
-  opacity: 0;
-}
 
 .box3d__bar {
   position: absolute;

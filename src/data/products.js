@@ -26,7 +26,7 @@ export const products = [
     detailsHref: 'san-pham/',
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
-    price: '280.000 ₫', // giá tạm
+    price: 'Từ 84.000 ₫', // lọ 280ml Khoái rừng (300.000 ₫/lít) — xem src/data/catalog.js
     size: '280 · 380 · 500 · 730ml',
     featured: true,
     facebookMessage: true,
@@ -44,7 +44,7 @@ export const products = [
     detailsHref: 'san-pham/hoa-ban/',
     image: 'assets/images/products/honey-02.jpg',
     tone: 'light',
-    price: '320.000 ₫', // giá tạm
+    price: null,
     size: '500ml',
     featured: false,
     facebookMessage: true,

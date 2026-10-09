@@ -36,7 +36,7 @@ export const THREE_CONFIG = {
     bees: true,
     honeycomb: true, // miếng bánh tổ 3D lắc được, mật chảy thành sợi rồi nhỏ giọt (section "Giọt mật")
     guideBee: true, // một con ong dẫn đường: cuộn tới đâu bay tới đậu lên thứ chính của phần đó (data-bee-perch)
-    giftBox: true, // hộp quà lục giác 3D: xoay, mở nắp xem hũ mật và thiệp bên trong (section "Hộp quà")
+    giftBox: false, // hộp lục giác tưởng tượng (bản cũ) — đã thay bằng hộp thật 2 lọ 380ml (src/pages/giftbox3d)
     goldenParticles: true,
   },
 }

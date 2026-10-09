@@ -1,39 +1,47 @@
 import { useEffect, useRef, useState } from 'react'
 import { Box, PackageOpen } from 'lucide-react'
 import { hasWebGL } from '../../three/utils/performance.js'
-import { pageTransitionDone } from '../../lib/pageTransition.js'
+import { afterPageTransition } from '../../lib/pageTransition.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
 import { asset } from '../../lib/assets.js'
 import { brand } from '../../config/brand.js'
 import './GiftBox3D.css'
 
+const texUrl = (name) => asset(`assets/images/gift/3d/${name}`)
+// ảnh các mặt hộp — tải ngay khi vào trang, song song với three.js (tên khớp với scene.js)
+const TEXTURES = ['lid-top.jpg', 'lid-flap.jpg', 'lid-back.jpg', 'base-bottom.jpg', 'base-long.jpg', 'base-short.jpg', '../hop-mat-trong.jpg']
+
 /**
- * Hộp quà 3D dựng từ file in. Three.js chỉ tải khi khung sắp hiện trên màn hình và sau hiệu ứng chuyển trang.
- * Chưa tải xong / máy không có WebGL → hiện `fallback` (ảnh bản thiết kế mặt hộp).
+ * Hộp quà set 2 lọ 380ml 3D, dựng từ file in.
+ * Vừa vào trang là tải three.js + ảnh các mặt hộp song song; trong lúc chờ hiện logo "Đang mở hộp quà…".
+ * Máy không có WebGL → hiện `fallback` (ảnh bản thiết kế mặt hộp).
+ *
+ * jarColors: màu mật 2 lọ (theo loại khách chọn) · openKey: đổi giá trị → mở nắp (vd sau khi chọn mật)
  */
-export default function GiftBox3D({ fallback }) {
-  const wrap = useRef(null)
+export default function GiftBox3D({ fallback, jarColors = [], openKey }) {
   const canvas = useRef(null)
   const api = useRef(null)
-  const [state, setState] = useState('idle') // idle | ready | off
+  const colors = useRef(jarColors)
+  const [state, setState] = useState(() => (hasWebGL() ? 'loading' : 'off')) // loading | ready | off
   const [open, setOpen] = useState(false)
   const touch = useMediaQuery('(hover: none)')
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
 
   useEffect(() => {
-    if (!hasWebGL()) {
-      setState('off')
-      return
-    }
+    if (state === 'off') return
     let alive = true
-    const load = async () => {
+    // tải ngay, song song: code 3D (three.js) + ảnh các mặt hộp
+    TEXTURES.forEach((n) => (new Image().src = texUrl(n)))
+    const scene = import('./scene.js')
+    ;(async () => {
       try {
-        await pageTransitionDone
-        const { createGiftBox } = await import('./scene.js')
+        const { createGiftBox } = await scene
+        await afterPageTransition()
         if (!alive) return
         api.current = createGiftBox(canvas.current, {
-          url: (name) => asset(`assets/images/gift/3d/${name}`),
+          url: texUrl,
           logo: asset(brand.logo),
+          jarColors: colors.current,
           reducedMotion: reduced,
           onReady: (err) => alive && setState(err ? 'off' : 'ready'),
           onOpenChange: (v) => alive && setOpen(v),
@@ -41,30 +49,40 @@ export default function GiftBox3D({ fallback }) {
       } catch {
         if (alive) setState('off')
       }
-    }
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return
-        io.disconnect()
-        load()
-      },
-      { rootMargin: '300px' }
-    )
-    io.observe(wrap.current)
+    })()
     return () => {
       alive = false
-      io.disconnect()
       api.current?.dispose()
       api.current = null
     }
-    // reduced chỉ đọc lúc tạo cảnh
+    // tạo cảnh một lần; màu mật, mở nắp cập nhật qua api bên dưới
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const colorKey = jarColors.join(',')
+  useEffect(() => {
+    colors.current = jarColors
+    api.current?.setJarColors(jarColors)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colorKey])
+
+  useEffect(() => {
+    if (openKey !== undefined) api.current?.setOpen(true)
+  }, [openKey])
+
   return (
-    <div ref={wrap} className={`box3d is-${state}`}>
-      <div className="box3d__fallback">{fallback}</div>
-      {state !== 'off' && <canvas ref={canvas} className="box3d__canvas" aria-label="Hộp quà MelBee 3D — kéo để xoay, chạm để mở nắp" role="img" />}
+    <div className={`box3d is-${state}`}>
+      {state === 'off' ? (
+        <div className="box3d__fallback">{fallback}</div>
+      ) : (
+        <>
+          <div className="box3d__loading" aria-hidden={state === 'ready'}>
+            <img src={asset(brand.logo)} alt="" />
+            <span>Đang mở hộp quà…</span>
+          </div>
+          <canvas ref={canvas} className="box3d__canvas" aria-label="Hộp quà MelBee 3D — kéo để xoay, chạm để mở nắp" role="img" />
+        </>
+      )}
       {state === 'ready' && (
         <div className="box3d__bar">
           <span className="box3d__hint">{touch ? 'Vuốt ngang để xoay · chạm hộp để mở nắp' : 'Kéo để xoay mọi hướng · bấm hộp để mở nắp'}</span>

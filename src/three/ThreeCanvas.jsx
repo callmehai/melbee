@@ -2,7 +2,7 @@ import { Component, lazy, Suspense, useEffect, useState } from 'react'
 import { THREE_CONFIG } from './config.js'
 import { hasWebGL } from './utils/performance.js'
 import { setThreeStatus } from './store.js'
-import { pageTransitionDone } from '../lib/pageTransition.js'
+import { afterPageTransition } from '../lib/pageTransition.js'
 
 // Three.js (~150KB gzip) nằm ở chunk riêng, chỉ tải sau khi trang đã hiện xong
 const ThreeScene = lazy(() => import('./ThreeScene.jsx'))
@@ -38,7 +38,7 @@ export default function ThreeCanvas() {
     let alive = true
     // chờ hiệu ứng chuyển trang chạy xong rồi mới khởi động 3D (khởi động chiếm luồng chính ~0,3 giây)
     const go = () =>
-      pageTransitionDone.then(() => {
+      afterPageTransition().then(() => {
         if (!alive) return
         const idle = window.requestIdleCallback
         if (idle) idleId = idle(() => setReady(true), { timeout: 1500 })

@@ -3,7 +3,7 @@ import Navbar from './components/Navbar/Navbar.jsx'
 import Hero from './components/Hero/Hero.jsx'
 import Intro from './components/Intro/Intro.jsx'
 import ProductShowcase from './components/ProductShowcase/ProductShowcase.jsx'
-import GiftBuilder from './components/GiftBuilder/GiftBuilder.jsx'
+import { GiftSection } from './components/GiftSet/GiftSet.jsx'
 import BrandStory from './components/BrandStory/BrandStory.jsx'
 import OriginSection from './components/OriginSection/OriginSection.jsx'
 import ProcessTimeline from './components/ProcessTimeline/ProcessTimeline.jsx'
@@ -40,7 +40,7 @@ export default function App() {
         <BrandStory />
         <ProcessTimeline />
         <ProductShowcase />
-        <GiftBuilder />
+        <GiftSection />
         <WhyUs />
         <Lifestyle />
         <Gallery />

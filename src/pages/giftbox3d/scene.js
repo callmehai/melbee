@@ -42,7 +42,7 @@ const BROWN = '#2a1611'
 const YELLOW = '#f5b51c'
 const HONEY = '#e2a13a'
 
-export function createGiftBox(canvas, { url, logo, reducedMotion = false, onReady, onOpenChange }) {
+export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion = false, onReady, onOpenChange }) {
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.outputColorSpace = SRGBColorSpace
@@ -63,9 +63,9 @@ export function createGiftBox(canvas, { url, logo, reducedMotion = false, onRead
   const camDir = { y: 18 / 60.7, z: 58 / 60.7 }
   let baseDist = 58
   const placeCamera = (o) => {
-    const dist = baseDist * (1 + 0.42 * o)
+    const dist = baseDist * (1 + 0.6 * o)
     camera.position.set(0, camDir.y * dist + 3 * o, camDir.z * dist)
-    camera.lookAt(0, 0.5 + 3.8 * o, 0)
+    camera.lookAt(0, 0.5 + 4.6 * o, 0)
   }
 
   // ---------- vật liệu ----------
@@ -149,10 +149,14 @@ export function createGiftBox(canvas, { url, logo, reducedMotion = false, onRead
   logoImg.onload = () => drawLabel(logoImg)
   logoImg.src = logo
 
-  const honey = new MeshPhysicalMaterial({ color: HONEY, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.08, transparent: true, opacity: 0.94 })
+  const honeyBase = new MeshPhysicalMaterial({ color: HONEY, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.08, transparent: true, opacity: 0.94 })
   const cap = new MeshPhysicalMaterial({ color: '#141210', roughness: 0.3, clearcoat: 0.6 })
   const label = new MeshStandardMaterial({ map: labelTex, roughness: 0.6 })
-  const makeJar = (x, z) => {
+  const jarMats = []
+  const makeJar = (x, z, color) => {
+    const honey = honeyBase.clone()
+    if (color) honey.color.set(color)
+    jarMats.push(honey)
     const jar = new Group()
     jar.position.set(x, T, z)
     jar.rotation.y = Math.PI / 6 // mặt phẳng lục giác quay ra trước
@@ -163,8 +167,8 @@ export function createGiftBox(canvas, { url, logo, reducedMotion = false, onRead
     box.add(jar)
   }
   // tâm 2 ô lọ trên tấm lót (theo file in)
-  makeJar(-4.9, -1.3)
-  makeJar(4.9, -1.3)
+  makeJar(-4.9, -1.3, jarColors[0])
+  makeJar(4.9, -1.3, jarColors[1])
 
   // ---------- nắp gập: bản lề ở mép trên lưng hộp ----------
   const lid = new Group()
@@ -376,6 +380,11 @@ export function createGiftBox(canvas, { url, logo, reducedMotion = false, onRead
 
   return {
     toggle: () => setOpen(!openTarget),
+    setOpen,
+    /** đổi màu mật trong 2 lọ theo loại khách chọn */
+    setJarColors(colors) {
+      colors.forEach((c, i) => c && jarMats[i]?.color.set(c))
+    },
     dispose() {
       cancelAnimationFrame(raf)
       io.disconnect()
@@ -386,6 +395,7 @@ export function createGiftBox(canvas, { url, logo, reducedMotion = false, onRead
       canvas.removeEventListener('pointerup', onUp)
       canvas.removeEventListener('pointercancel', onCancel)
       for (const g of geometries) g.dispose()
+      honeyBase.dispose()
       for (const t of textures) t.dispose()
       scene.traverse((o) => {
         if (!o.material) return
