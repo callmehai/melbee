@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import assetManifest from './plugins/assetManifest.js'
+import speed from './plugins/speed.js'
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url))
 const SKIP = new Set(['node_modules', 'dist', 'public', 'src', 'plugins', '.git', '.github'])
@@ -21,7 +22,7 @@ function pages(dir = ROOT) {
 // base './' → chạy được ở mọi nơi deploy (GitHub Pages /melbee/, tên miền riêng, Vercel, Netlify…)
 export default defineConfig({
   base: './',
-  plugins: [react(), assetManifest()],
+  plugins: [react(), assetManifest(), speed()],
   build: {
     // three.js (~150KB gzip) nằm ở chunk riêng, tải lazy sau khi trang hiện xong
     chunkSizeWarningLimit: 700,

@@ -167,6 +167,8 @@ class AudioManager {
     el.preload = 'auto'
     el.currentTime = readPos(name) // đặt trước khi tải: trình duyệt bắt đầu phát từ đây
     const savePos = () => writePos(name, el.currentTime)
+    // lưu liên tục (không chỉ lúc rời trang): trang kế được tải sẵn ở nền có thể đọc trước khi trang này đóng
+    el.addEventListener('timeupdate', savePos)
     window.addEventListener('pagehide', savePos)
     this.cleanups.push(() => window.removeEventListener('pagehide', savePos))
     const layer = this.layers[name]
@@ -318,6 +320,11 @@ class AudioManager {
    * tính cuộn trang là tương tác). Người xem tắt → giữ tắt tới hết phiên xem.
    */
   autoStart() {
+    // trang đang được tải sẵn ở nền (rê chuột vào link) → chỉ phát khi người xem thật sự mở trang
+    if (document.prerendering) {
+      document.addEventListener('prerenderingchange', () => this.autoStart(), { once: true })
+      return
+    }
     if (!AUDIO_CONFIG.autoplay || readPref() === 'off' || this.status !== 'off') return
     this.setStatus('pending')
     const start = (e) => {

@@ -13,7 +13,7 @@ const TEXTURES = ['lid-top.jpg', 'lid-flap.jpg', 'lid-back.jpg', 'base-bottom.jp
 
 /**
  * Hộp quà set 2 lọ 380ml 3D, dựng từ file in.
- * Vừa vào trang là tải three.js + ảnh các mặt hộp song song; trong lúc chờ hiện logo "Đang mở hộp quà…".
+ * Khung sắp hiện thì tải three.js + ảnh các mặt hộp song song; trong lúc chờ hiện logo "Đang mở hộp quà…".
  * Máy không có WebGL → hiện `fallback` (ảnh bản thiết kế mặt hộp).
  *
  * jarColors: màu mật 2 lọ (theo loại khách chọn) · openKey: đổi giá trị → mở nắp (vd sau khi chọn mật)
@@ -30,10 +30,10 @@ export default function GiftBox3D({ fallback, jarColors = [], openKey }) {
   useEffect(() => {
     if (state === 'off') return
     let alive = true
-    // tải ngay, song song: code 3D (three.js) + ảnh các mặt hộp
-    TEXTURES.forEach((n) => (new Image().src = texUrl(n)))
-    const scene = import('./scene.js')
-    ;(async () => {
+    const start = async () => {
+      // song song: code 3D (three.js) + ảnh các mặt hộp
+      TEXTURES.forEach((n) => (new Image().src = texUrl(n)))
+      const scene = import('./scene.js')
       try {
         const { createGiftBox } = await scene
         await afterPageTransition()
@@ -49,9 +49,20 @@ export default function GiftBox3D({ fallback, jarColors = [], openKey }) {
       } catch {
         if (alive) setState('off')
       }
-    })()
+    }
+    // chỉ tải khi khung hộp còn cách màn hình ~1,5 màn: trang Hộp quà tải ngay, trang chủ đợi cuộn tới gần
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return
+        io.disconnect()
+        start()
+      },
+      { rootMargin: '150% 0px' },
+    )
+    io.observe(canvas.current)
     return () => {
       alive = false
+      io.disconnect()
       api.current?.dispose()
       api.current = null
     }
