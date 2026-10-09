@@ -56,7 +56,6 @@ export default function ProductPage() {
           {honeys.map((h, i) => (
             <article key={h.id} id={h.id} className="pp-honey" style={{ '--c': h.color }}>
               <div className="pp-honey__head">
-                <span className="pp-honey__drop" aria-hidden="true" />
                 <div>
                   <p className="pp-honey__no">0{i + 1}</p>
                   <h2>{h.name}</h2>

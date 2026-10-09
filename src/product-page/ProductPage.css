@@ -181,17 +181,6 @@ html {
   align-items: flex-start;
 }
 
-/* giọt mật mang màu của loại mật */
-.pp-honey__drop {
-  flex: none;
-  width: 44px;
-  height: 52px;
-  margin-top: 4px;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 32%), var(--c);
-  box-shadow: inset 0 -6px 12px rgba(0, 0, 0, 0.18);
-}
-
 .pp-honey__no {
   font-size: 12px;
   letter-spacing: 0.2em;
