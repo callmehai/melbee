@@ -1,6 +1,5 @@
 /* ── máy tính: dòng mật chảy dọc giữa, các bước so le hai bên ───── */
 .timeline {
-  --p: 0;
   --dot: 18px;
   position: relative;
   display: grid;
@@ -24,27 +23,31 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  /* mật sánh: lõi sáng, viền đậm, một vệt bóng chạy dọc */
-  background:
-    linear-gradient(90deg, rgba(255, 241, 200, 0.75) 0 22%, transparent 34%),
-    linear-gradient(90deg, #e9b24f, #c88a24 60%, #9a6514);
-  box-shadow: 2px 0 10px -2px rgba(200, 138, 36, 0.55);
-  transform: scaleY(var(--p));
+  background: linear-gradient(90deg, #e9b24f, #c88a24);
+  /* JS chỉ đổi transform (ProcessTimeline.jsx) — GPU tự vẽ, không tính lại bố cục */
+  transform: scaleY(0);
   transform-origin: center top;
+  will-change: transform;
 }
 
-/* giọt mật ở đầu dòng — nằm TRONG .timeline__track nên left: 50% là giữa dòng mật, mọi cỡ màn hình */
+/* chấm mật tròn ở đầu dòng — nằm TRONG .timeline__track nên left: 50% là giữa dòng mật, mọi cỡ màn hình */
 .timeline__bead {
   position: absolute;
-  top: calc(var(--p) * 100%);
+  top: 0;
   left: 50%;
-  width: 16px;
-  height: 19px;
-  margin: -6px 0 0 -8px;
-  border-radius: 50% 50% 50% 50% / 38% 38% 62% 62%;
-  background: radial-gradient(circle at 38% 62%, #fff1c8 0 14%, #e9b24f 42%, #a86d1c 100%);
-  box-shadow: 0 4px 10px -3px rgba(154, 101, 20, 0.6);
-  opacity: calc(var(--p) * 40 - 0.2);
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--honey);
+  opacity: 0;
+  transition: opacity 0.3s;
+  will-change: transform;
+  z-index: 2;
+}
+
+.timeline__bead.is-on {
+  opacity: 1;
 }
 
 .step {
@@ -53,8 +56,6 @@
   grid-template-columns: 1fr 1fr;
   gap: clamp(64px, 9vw, 128px);
   align-items: center;
-  /* bước sáng lên khi mật chảy tới */
-  --reached: clamp(0, (var(--p) - var(--i)) * 30 + 1, 1);
 }
 
 .step__dot {
@@ -65,8 +66,14 @@
   height: calc(var(--dot) * 1.12);
   margin: calc(var(--dot) * -0.56) 0 0 calc(var(--dot) / -2);
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  background: color-mix(in srgb, var(--honey) calc(var(--reached) * 100%), #e6d8c2);
+  background: #e6d8c2;
+  transition: background-color 0.35s;
   z-index: 1;
+}
+
+/* mật chảy tới (class do ProcessTimeline.jsx bật) → lục giác + số bước sáng lên */
+.step.is-reached .step__dot {
+  background: var(--honey);
 }
 
 .step__media {
@@ -105,7 +112,12 @@
   font-size: clamp(40px, 4.2vw, 60px);
   line-height: 1;
   color: var(--honey);
-  opacity: calc(0.35 + var(--reached) * 0.65);
+  opacity: 0.35;
+  transition: opacity 0.35s;
+}
+
+.step.is-reached .step__no {
+  opacity: 1;
 }
 
 .step__text h3 {
