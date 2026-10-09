@@ -5,10 +5,10 @@
  * - JS / CSS / font có mã băm trong tên (main-CXXEH3G6.js…): không bao giờ đổi → lấy từ bộ nhớ, không hỏi lại.
  * - Ảnh, âm thanh, icon: hiện bản đã lưu ngay, đồng thời tải bản mới ở nền cho lần sau (ảnh thật thay ảnh cũ
  *   cùng tên thì lần xem kế tiếp sẽ thấy).
- * - Trang HTML: luôn hỏi máy chủ để thấy bản mới nhất; mất mạng thì dùng bản đã lưu.
+ * - Trang HTML: luôn hỏi máy chủ (bỏ qua bộ nhớ 10 phút) để thấy bản mới nhất; mất mạng thì dùng bản đã lưu.
  * - Nhạc phát dạng stream (yêu cầu Range) để trình duyệt tự lo.
  */
-const VERSION = 'v1'
+const VERSION = 'v2'
 const STATIC = `melbee-static-${VERSION}`
 const MEDIA = `melbee-media-${VERSION}`
 const PAGES = `melbee-pages-${VERSION}`
@@ -70,7 +70,9 @@ async function staleWhileRevalidate(req, e) {
 async function networkFirst(req) {
   const cache = await caches.open(PAGES)
   try {
-    const res = await fetch(req)
+    // no-cache: luôn hỏi lại máy chủ (304 nếu chưa đổi) — HTML cũ trỏ tới JS của lần deploy trước, mà
+    // GitHub Pages đã xoá các file đó → trang trắng
+    const res = await fetch(req, { cache: 'no-cache' })
     if (res.ok) cache.put(req, res.clone())
     return res
   } catch (err) {
