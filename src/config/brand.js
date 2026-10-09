@@ -22,7 +22,7 @@ export const brand = {
   contact: {
     phone: '093 632 19 02',
     email: 'melbeetaybac@gmail.com',
-    address: 'Hà Nội',
+    address: 'Hoà Lạc, Hà Nội',
   },
 
   // Chữ trên các nút

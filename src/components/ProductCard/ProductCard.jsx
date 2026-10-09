@@ -56,10 +56,18 @@ function ProductCard({ product, onOpen, feature = false, badge = false, lead }) 
           </dl>
         )}
         <div className="product-card__actions">
-          <button type="button" className="arrow-link product-card__detail" onClick={() => onOpen(product)} data-cursor="cta">
-            <span>Xem chi tiết</span>
-            <ArrowUpRight size={16} aria-hidden="true" />
-          </button>
+          {/* có trang thông tin riêng → đi thẳng tới đó; không thì mở cửa sổ chi tiết */}
+          {product.detailsHref ? (
+            <a className="arrow-link product-card__detail" href={product.detailsHref} data-cursor="cta">
+              <span>Xem chi tiết</span>
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </a>
+          ) : (
+            <button type="button" className="arrow-link product-card__detail" onClick={() => onOpen(product)} data-cursor="cta">
+              <span>Xem chi tiết</span>
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </button>
+          )}
           <OrderMenu size="sm" variant="outline" align="up" perch="top-right" facebook={product.facebookMessage !== false} zalo={product.zaloMessage !== false} />
         </div>
       </div>

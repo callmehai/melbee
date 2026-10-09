@@ -16,16 +16,18 @@ export const products = [
     id: 'honey-01',
     // sản phẩm thật — ảnh và tên theo trang Facebook MelBee
     name: 'Mật ong Tây Bắc',
-    subtitle: 'Mật ngọt từ hoa · Tinh hoa từ rừng',
+    subtitle: 'Khoái rừng · Hang đá · Hoa ban · Hoa nhãn',
     description:
-      'Mật ong từ những mùa hoa nơi núi rừng Điện Biên, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee. Thông tin chi tiết về nguồn mật sẽ được cập nhật thêm.',
-    origin: 'Vùng núi Điện Biên, Tây Bắc.',
-    flavor: ['Hương hoa rừng', 'Ngọt đậm', 'Hậu vị dịu'],
-    usage: ['Pha cùng nước ấm', 'Dùng cùng trà', 'Rưới lên bánh, sữa chua'],
+      '4 loại mật MelBee chọn lựa từ các trang trại ong vùng cao Tây Bắc, 100% mật ong nguyên chất, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee.',
+    origin: 'Các trang trại ong vùng cao Tây Bắc.',
+    flavor: ['Khoái rừng', 'Hang đá', 'Hoa ban', 'Hoa nhãn'],
+    usage: ['Mỗi ngày 15g – 30g, pha cùng nước ấm', 'Dùng trực tiếp, pha trà, cà phê', 'Không dùng cho trẻ dưới 1 tuổi'],
+    // trang thông tin đầy đủ (đích của mã QR trên hộp quà) — xem src/data/catalog.js
+    detailsHref: 'san-pham/',
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
     price: '280.000 ₫', // giá tạm
-    size: 'Hũ 500ml', // quy cách tạm
+    size: '280 · 380 · 500 · 730ml',
     featured: true,
     facebookMessage: true,
     zaloMessage: true,
@@ -35,10 +37,11 @@ export const products = [
     name: 'Mật ong hoa ban',
     subtitle: 'Dấu ấn mùa xuân vùng cao',
     description:
-      'Gắn với mùa hoa ban trắng nở khắp núi rừng Tây Bắc. Màu mật sáng, hương thanh, vị ngọt nhẹ — hợp với những ai thích vị dịu.',
-    origin: 'Vùng núi Tây Bắc (thông tin chi tiết đang cập nhật).',
-    flavor: ['Hương thanh', 'Ngọt nhẹ', 'Màu vàng sáng'],
-    usage: ['Pha nước ấm buổi sáng', 'Dùng cùng chanh, gừng', 'Làm sốt trộn salad'],
+      'Chắt lọc từ những vạt hoa ban trắng nở rộ khắp núi rừng Tây Bắc vào mùa xuân. Mật màu vàng sáng, vị ngọt thanh mát, hương thơm thảo mộc dịu nhẹ.',
+    origin: 'Núi rừng Tây Bắc.',
+    flavor: ['Vàng sáng', 'Ngọt thanh mát', 'Hương thảo mộc dịu'],
+    usage: ['Pha nước ấm hoặc nước mát', 'Dùng cùng trà xanh, trà hoa'],
+    detailsHref: 'san-pham/#hoa-ban',
     image: 'assets/images/products/honey-02.jpg',
     tone: 'light',
     price: '320.000 ₫', // giá tạm

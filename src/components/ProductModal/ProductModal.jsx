@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { X } from 'lucide-react'
 import Media from '../common/Media.jsx'
-import { FacebookButton, ZaloButton } from '../common/Button.jsx'
+import { ArrowLink, FacebookButton, ZaloButton } from '../common/Button.jsx'
 import { useDialog } from '../common/useDialog.js'
 import './ProductModal.css'
 
@@ -82,6 +82,12 @@ export default function ProductModal({ product, onClose }) {
                 ))}
               </ul>
             </section>
+          )}
+
+          {product.detailsHref && (
+            <p className="pmodal__more">
+              <ArrowLink href={product.detailsHref}>Thành phần, cách dùng, bảo quản</ArrowLink>
+            </p>
           )}
 
           <div className="pmodal__cta">
