@@ -3,15 +3,12 @@ import Logo from '../common/Logo.jsx'
 import { FacebookLogo, TikTokIcon, ZaloLogo } from '../common/BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import { nav } from '../../data/sections.js'
-import { products } from '../../data/products.js'
-import { hasAsset } from '../../lib/assets.js'
+import { honeys } from '../../data/catalog.js'
+import { page } from '../../lib/site.js'
 import './Footer.css'
 
 const pending = 'Đang cập nhật'
 const YEAR = new Date().getFullYear()
-
-// chỉ những sản phẩm đang hiện trên trang (đã có ảnh thật)
-const shown = products.filter((p) => hasAsset(p.image))
 
 // ba lời hứa ngắn — chỉ ghi điều MelBee thật sự làm, không hứa phí ship / chính sách chưa có
 const promises = [
@@ -82,29 +79,26 @@ export default function Footer() {
             <h2 className="footer__h">Khám phá</h2>
             <ul className="footer__links is-cols">
               {nav.map((n) => (
-                <li key={n.href}>
-                  <a href={n.href}>{n.label}</a>
+                <li key={n.id}>
+                  <a href={page(n.path)}>{n.label}</a>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {shown.length > 0 && (
-            <div className="footer__products">
-              <h2 className="footer__h">Sản phẩm</h2>
-              <ul className="footer__links">
-                {shown.map((p) => (
-                  <li key={p.id}>
-                    <a href="#san-pham">{p.name}</a>
-                    {p.price && <small>{p.price}</small>}
-                  </li>
-                ))}
-                <li>
-                  <a href="#hop-qua">Hộp quà Tây Bắc</a>
+          <div className="footer__products">
+            <h2 className="footer__h">Sản phẩm</h2>
+            <ul className="footer__links">
+              {honeys.map((h) => (
+                <li key={h.id}>
+                  <a href={page(`san-pham/${h.id}/`)}>{h.name}</a>
                 </li>
-              </ul>
-            </div>
-          )}
+              ))}
+              <li>
+                <a href={page('hop-qua/')}>Set quà 2 lọ 380ml</a>
+              </li>
+            </ul>
+          </div>
 
           <div>
             <h2 className="footer__h">Liên hệ</h2>
@@ -137,7 +131,9 @@ export default function Footer() {
           <p>
             © {YEAR} {brand.shortName} — {brand.name}
           </p>
-          <a href="#trang-chu">Về đầu trang ↑</a>
+          <a href="#top" onClick={(e) => (e.preventDefault(), window.scrollTo({ top: 0, behavior: 'smooth' }))}>
+            Về đầu trang ↑
+          </a>
         </div>
       </div>
     </footer>

@@ -8,7 +8,7 @@ import { boxSizes } from './giftbox.js'
  * Thêm một câu trả lời = thêm một object vào `intents` (hoà điểm thì mục đứng trước thắng):
  *   keys:    từ khoá (gõ có dấu hay không dấu đều được; khớp càng nhiều từ khoá càng được ưu tiên)
  *   answer:  chuỗi, hoặc hàm trả về chuỗi (để lấy giá / liên hệ mới nhất từ dữ liệu trang)
- *   actions: nút gợi ý dưới câu trả lời — { label, ask } hỏi tiếp · { label, go: '#id' } cuộn tới phần đó ·
+ *   actions: nút gợi ý dưới câu trả lời — { label, ask } hỏi tiếp · { label, go: 'trang/' } mở trang đó của website ·
  *            { label, href } mở link (Zalo, Facebook)
  *
  * ⚠️ Chỉ viết điều MelBee thật sự làm / đã công bố. Chưa có chính sách (phí ship, thanh toán…) thì nói
@@ -59,7 +59,7 @@ export const intents = [
         .join('\n')
       return `Sản phẩm MelBee đang giới thiệu:\n${list}\n\nGiá trên web để tham khảo — MelBee xác nhận lại khi bạn nhắn tin đặt hàng.`
     },
-    actions: [{ label: 'Xem sản phẩm', go: '#san-pham' }, { label: 'Đặt hàng thế nào?', ask: 'Đặt hàng thế nào?' }, zalo],
+    actions: [{ label: 'Xem sản phẩm', go: 'san-pham/' }, { label: 'Đặt hàng thế nào?', ask: 'Đặt hàng thế nào?' }, zalo],
   },
   {
     id: 'gift',
@@ -68,7 +68,7 @@ export const intents = [
       `MelBee có hộp quà lục giác như một ô tổ ong, 3 màu giấy, thắt nơ satin, kèm thiệp viết tay:\n${boxSizes
         .map((b) => `• ${b.name} — ${b.note.toLowerCase()} · phí hộp ${b.fee}`)
         .join('\n')}\n\nBạn tự chọn và xem hộp 3D ở phần Hộp quà, xong bấm "Gửi mẫu hộp" để chép sẵn lời nhắn gửi MelBee.`,
-    actions: [{ label: 'Mở phần Hộp quà', go: '#hop-qua' }, zalo],
+    actions: [{ label: 'Xem hộp quà', go: 'hop-qua/' }, zalo],
   },
   {
     id: 'ship',
@@ -89,8 +89,7 @@ export const intents = [
     answer:
       'Mật ong MelBee đến từ những mùa hoa nơi núi rừng Điện Biên, Tây Bắc. Hành trình từ mùa hoa đến hũ mật được kể ở phần Nguồn gốc và Quy trình — thông tin chi tiết về từng nguồn mật MelBee đang cập nhật thêm.',
     actions: [
-      { label: 'Xem Nguồn gốc', go: '#nguon-goc' },
-      { label: 'Xem Quy trình', go: '#quy-trinh' },
+      { label: 'Xem câu chuyện MelBee', go: 'cau-chuyen/' },
     ],
   },
   {

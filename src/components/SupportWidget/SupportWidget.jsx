@@ -5,11 +5,12 @@ import { FacebookLogo, ZaloLogo } from '../common/BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import { chatbot, reply } from '../../data/chatbot.js'
 import { asset } from '../../lib/assets.js'
+import { page } from '../../lib/site.js'
 import './SupportWidget.css'
 
 const EASE = [0.22, 0.8, 0.24, 1]
 
-/** Nút gợi ý dưới câu trả lời: hỏi tiếp / cuộn tới phần trên trang / mở Zalo, Facebook. */
+/** Nút gợi ý dưới câu trả lời: hỏi tiếp / mở một trang của website / mở Zalo, Facebook. */
 function Action({ a, onAsk, onGo }) {
   if (a.href) {
     return (
@@ -78,9 +79,8 @@ export default function SupportWidget() {
     )
   }
 
-  const go = (sel) => {
-    document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    if (window.matchMedia('(max-width: 560px)').matches) setOpen(false) // điện thoại: khung chat che trang
+  const go = (path) => {
+    window.location.href = page(path)
   }
 
   const restart = () => {

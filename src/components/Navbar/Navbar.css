@@ -184,6 +184,11 @@
   text-decoration: none;
 }
 
+/* trang đang xem */
+.mobile-menu li a[aria-current='page'] {
+  color: var(--honey-deep);
+}
+
 .mobile-menu li a span {
   font-family: var(--font-sans);
   font-size: 11px;

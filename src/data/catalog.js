@@ -1,9 +1,15 @@
 /**
- * THÔNG TIN SẢN PHẨM IN TRÊN BAO BÌ — trang /san-pham/ (mã QR trên hộp quà trỏ tới đây).
+ * THÔNG TIN SẢN PHẨM IN TRÊN BAO BÌ — trang /san-pham/ (mã QR trên hộp quà trỏ tới đây)
+ * và trang chi tiết /san-pham/<id>/ của từng loại.
  * Nguồn: "DỰ ÁN MELBEE – Nội dung nhãn in hũ mật ong".
  *
- * ⚠️ Mã QR đã in lên hộp → KHÔNG đổi đường dẫn /san-pham/ và các id (#khoai-rung…) bên dưới.
- *    Chữ thì sửa thoải mái, không phải in lại QR.
+ * ⚠️ Mã QR in lên hộp → KHÔNG đổi đường dẫn /san-pham/ và các id (khoai-rung…) bên dưới:
+ *    id là tên thư mục trang chi tiết (san-pham/<id>/index.html). Chữ thì sửa thoải mái.
+ *
+ * image: ảnh lọ, tính từ public/. Chưa có file → khung "Ảnh sắp ra mắt"; chép ảnh đúng tên vào là tự hiện
+ *        (ảnh dọc 4:5, rộng ~1200px, nền sáng, thấy rõ nhãn).
+ * prices: giá theo dung tích, vd { '380ml': '250.000 ₫' }. Dung tích chưa có giá → hiện "Liên hệ".
+ * group, short, taste: nhóm mật, tên ngắn, một dòng vị — cho thẻ ở trang Sản phẩm.
  *
  * highlights: viết mềm lại từ mục "Công dụng" trên nhãn — web là quảng cáo, thực phẩm thường
  *   không được nói công dụng phòng/chữa bệnh (miễn dịch, kháng khuẩn, tim mạch, giải độc gan…).
@@ -11,6 +17,18 @@
  */
 
 export const sizes = ['280ml', '380ml', '500ml', '730ml']
+
+/** Set quà — trang /hop-qua/. Ảnh là bản thiết kế hộp (từ file in), chưa phải ảnh chụp. */
+export const giftSet = {
+  name: 'Set quà 2 lọ 380ml',
+  description:
+    'Hai lọ mật ong MelBee 380ml trong hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoa và ong vẽ nét. Mở nắp là lời gửi từ núi rừng Tây Bắc, in trên nền vàng mật hoạ tiết tổ ong.',
+  contents: ['2 lọ mật ong MelBee 380ml', 'Hộp cứng in nhũ vàng', 'Lời gửi in ở mặt trong nắp hộp'],
+  price: null, // vd '520.000 ₫' — null → "Liên hệ"
+  photo: 'assets/images/gift/set-2-lo-380ml.jpg', // ảnh chụp thật — chưa có thì dùng ảnh thiết kế bên dưới
+  designFront: 'assets/images/gift/hop-mat-truoc.jpg',
+  designInside: 'assets/images/gift/hop-mat-trong.jpg',
+}
 
 /** Lời nhắn in ở mặt trong nắp hộp set quà */
 export const giftMessage = [
@@ -21,6 +39,11 @@ export const giftMessage = [
 export const honeys = [
   {
     id: 'khoai-rung',
+    short: 'Khoái rừng',
+    group: 'Mật rừng',
+    taste: 'Hương nồng hoang dã, ngọt đậm',
+    image: 'assets/images/products/khoai-rung.jpg',
+    prices: {},
     name: 'Mật ong Khoái rừng Tây Bắc',
     nameEn: 'Pure Wild Apis Dorsata Honey',
     description:
@@ -35,6 +58,11 @@ export const honeys = [
   },
   {
     id: 'hang-da',
+    short: 'Hang đá',
+    group: 'Mật rừng',
+    taste: 'Sánh đặc, hổ phách sẫm',
+    image: 'assets/images/products/hang-da.jpg',
+    prices: {},
     name: 'Mật ong Hang đá',
     nameEn: 'Wild Mountain Cave Honey',
     description:
@@ -49,6 +77,11 @@ export const honeys = [
   },
   {
     id: 'hoa-ban',
+    short: 'Hoa ban',
+    group: 'Mật hoa',
+    taste: 'Vàng sáng, ngọt thanh mát',
+    image: 'assets/images/products/hoa-ban.jpg',
+    prices: {},
     name: 'Mật ong Hoa ban Tây Bắc',
     nameEn: 'Northwest Bauhinia Flower Honey',
     description:
@@ -63,6 +96,11 @@ export const honeys = [
   },
   {
     id: 'hoa-nhan',
+    short: 'Hoa nhãn',
+    group: 'Mật hoa',
+    taste: 'Vàng óng, thơm hương nhãn',
+    image: 'assets/images/products/hoa-nhan.jpg',
+    prices: {},
     name: 'Mật ong Hoa nhãn',
     nameEn: 'Northwest Longan Flower Honey',
     description:

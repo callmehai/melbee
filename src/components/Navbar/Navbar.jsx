@@ -9,12 +9,16 @@ import { FacebookIcon, ZaloLogo } from '../common/BrandIcons.jsx'
 import { nav } from '../../data/sections.js'
 import { brand } from '../../config/brand.js'
 import { useLockBody } from '../../hooks/useLockBody.js'
+import { page } from '../../lib/site.js'
 import './Navbar.css'
 
-export default function Navbar() {
+/**
+ * Thanh menu chung cho mọi trang. Mỗi mục là một trang riêng; mục của trang đang xem được tô.
+ * current: id trang trong `nav` (src/data/sections.js) · solid: nền đặc ngay từ đầu (trang con, không có ảnh hero phía sau).
+ */
+export default function Navbar({ current = 'home', solid: alwaysSolid = false }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const [active, setActive] = useState(nav[0].href)
   useLockBody(open)
 
   useEffect(() => {
@@ -24,23 +28,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // làm nổi mục menu của section đang xem; section không có trong menu → không mục nào sáng
-  useEffect(() => {
-    const els = [...document.querySelectorAll('main > section, footer')]
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (!e.isIntersecting) return
-          const href = '#' + e.target.id
-          setActive(nav.some((n) => n.href === href) ? href : null)
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px' }
-    )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [])
-
   useEffect(() => {
     if (!open) return
     const onKey = (e) => e.key === 'Escape' && setOpen(false)
@@ -48,20 +35,20 @@ export default function Navbar() {
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
 
-  const solid = scrolled || open
+  const solid = alwaysSolid || scrolled || open
 
   return (
     <header className={`nav ${solid ? 'is-solid' : ''} ${open ? 'is-open' : ''}`}>
       <div className="container nav__inner">
-        <a href="#trang-chu" className="nav__brand" aria-label={`${brand.name} — về đầu trang`} onClick={() => setOpen(false)}>
+        <a href={page()} className="nav__brand" aria-label={`${brand.name} — trang chủ`} onClick={() => setOpen(false)}>
           <Logo />
         </a>
 
         <nav className="nav__links" aria-label="Điều hướng chính">
           <ul>
             {nav.map((n) => (
-              <li key={n.href}>
-                <a href={n.href} className={active === n.href ? 'is-active' : ''} aria-current={active === n.href ? 'true' : undefined}>
+              <li key={n.id}>
+                <a href={page(n.path)} className={current === n.id ? 'is-active' : ''} aria-current={current === n.id ? 'page' : undefined}>
                   {n.label}
                 </a>
               </li>
@@ -69,7 +56,8 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        <SoundToggle />
+        {/* nhạc nền chỉ có ở trang chủ */}
+        {current === 'home' && <SoundToggle />}
 
         <div className="nav__cta">
           <OrderMenu size="sm" variant="solid" />
@@ -102,8 +90,8 @@ export default function Navbar() {
               <nav aria-label="Điều hướng (di động)">
                 <ul>
                   {nav.map((n, i) => (
-                    <motion.li key={n.href} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * i + 0.1, duration: 0.5 }}>
-                      <a href={n.href} onClick={() => setOpen(false)}>
+                    <motion.li key={n.id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * i + 0.1, duration: 0.5 }}>
+                      <a href={page(n.path)} aria-current={current === n.id ? 'page' : undefined} onClick={() => setOpen(false)}>
                         <span>{String(i + 1).padStart(2, '0')}</span>
                         {n.label}
                       </a>

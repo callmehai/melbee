@@ -41,7 +41,7 @@ export const products = [
     origin: 'Núi rừng Tây Bắc.',
     flavor: ['Vàng sáng', 'Ngọt thanh mát', 'Hương thảo mộc dịu'],
     usage: ['Pha nước ấm hoặc nước mát', 'Dùng cùng trà xanh, trà hoa'],
-    detailsHref: 'san-pham/#hoa-ban',
+    detailsHref: 'san-pham/hoa-ban/',
     image: 'assets/images/products/honey-02.jpg',
     tone: 'light',
     price: '320.000 ₫', // giá tạm

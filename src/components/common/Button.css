@@ -169,8 +169,19 @@
   border-color: rgba(0, 104, 255, 0.55);
 }
 
+.btn--zalo-solid {
+  background: #0068ff;
+  color: #fff;
+  box-shadow: 0 12px 26px -14px rgba(0, 104, 255, 0.85);
+}
+
+.btn--zalo-solid::before {
+  background: #0052cc;
+}
+
 .btn--facebook svg,
-.btn--zalo svg {
+.btn--zalo svg,
+.btn--zalo-solid svg {
   margin-left: -6px;
 }
 

@@ -13,14 +13,15 @@
  *   - Khách hàng: hiện khi có chia sẻ thật (bỏ `sample: true` trong src/data/testimonials.js)
  */
 
+// Menu: mỗi mục là một trang riêng (path tính từ gốc website). Trang chủ là landing để cuộn,
+// các trang còn lại nói kỹ hơn phần landing chỉ giới thiệu.
+// ⚠️ 'san-pham/' là đích của mã QR in trên hộp quà — không đổi.
 export const nav = [
-  { label: 'Trang chủ', href: '#trang-chu' },
-  { label: 'Nguồn gốc', href: '#nguon-goc' },
-  { label: 'Câu chuyện', href: '#cau-chuyen' },
-  { label: 'Quy trình', href: '#quy-trinh' },
-  { label: 'Sản phẩm', href: '#san-pham' },
-  { label: 'Hộp quà', href: '#hop-qua' },
-  { label: 'Liên hệ', href: '#lien-he' },
+  { id: 'home', label: 'Trang chủ', path: '' },
+  { id: 'products', label: 'Sản phẩm', path: 'san-pham/' },
+  { id: 'gift', label: 'Hộp quà', path: 'hop-qua/' },
+  { id: 'story', label: 'Câu chuyện', path: 'cau-chuyen/' },
+  { id: 'contact', label: 'Liên hệ', path: 'lien-he/' },
 ]
 
 export const hero = {
@@ -28,8 +29,8 @@ export const hero = {
   title: 'Mật Ong Tây Bắc',
   tagline: 'Mật ngọt từ hoa, tinh hoa từ rừng.',
   subtext: 'Mang mật ong từ vùng núi Điện Biên đến gần hơn với bạn — rõ ràng, chỉn chu và đáng tin cậy.',
-  primaryCta: { label: 'Khám phá sản phẩm', href: '#san-pham' },
-  secondaryCta: { label: 'Câu chuyện của chúng tôi', href: '#cau-chuyen' },
+  primaryCta: { label: 'Khám phá sản phẩm', href: 'san-pham/' },
+  secondaryCta: { label: 'Câu chuyện của chúng tôi', href: 'cau-chuyen/' },
   image: 'assets/images/hero/hero.jpg',
   // Video nền (tuỳ chọn) — chỉ tải sau khi trang đã hiện xong
   video: 'assets/videos/hero.mp4',

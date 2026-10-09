@@ -27,6 +27,25 @@ và đăng lại (~30 giây). Muốn dùng Vercel/Netlify: import repo, build `n
 
 ---
 
+## Các trang
+
+| Trang | Địa chỉ | File HTML | Component |
+|---|---|---|---|
+| Trang chủ (landing, cuộn kể chuyện, 3D, nhạc) | `/` | `index.html` | `src/App.jsx` |
+| Sản phẩm — **đích của mã QR trên hộp quà, không đổi đường dẫn** | `/san-pham/` | `san-pham/index.html` | `src/pages/ProductsPage.jsx` |
+| Chi tiết từng loại mật | `/san-pham/<id>/` | `san-pham/<id>/index.html` (`data-honey="<id>"`) | `src/pages/HoneyPage.jsx` |
+| Hộp quà | `/hop-qua/` | `hop-qua/index.html` | `src/pages/GiftPage.jsx` |
+| Câu chuyện | `/cau-chuyen/` | `cau-chuyen/index.html` | `src/pages/StoryPage.jsx` |
+| Liên hệ | `/lien-he/` | `lien-he/index.html` | `src/pages/ContactPage.jsx` |
+
+Các trang con dùng chung menu, chân trang, nút Zalo/trợ lý (`src/pages/common.jsx`), không có 3D và nhạc.
+Menu lấy từ `nav` trong `src/data/sections.js`. Thêm một trang: tạo thư mục có `index.html` (chép từ trang con khác,
+đổi `data-page`) — Vite tự nhận mọi `index.html`, không phải khai báo.
+
+Thông tin 4 loại mật, set quà, cách dùng & bảo quản: `src/data/catalog.js` (theo nội dung nhãn in).
+Ảnh từng loại: chép `public/assets/images/products/<id>.jpg` (vd `hoa-ban.jpg`) là tự thay khung "Ảnh sắp ra mắt".
+Giá: điền `prices: { '380ml': '250.000 ₫', … }` cho từng loại — chưa có thì hiện "Liên hệ".
+
 ## Thay nội dung — chỉ sửa dữ liệu, không sửa component
 
 | Muốn đổi | Sửa file |
