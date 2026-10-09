@@ -33,7 +33,7 @@
   transform-origin: center top;
 }
 
-/* giọt mật ở đầu dòng */
+/* giọt mật ở đầu dòng — nằm TRONG .timeline__track nên left: 50% là giữa dòng mật, mọi cỡ màn hình */
 .timeline__bead {
   position: absolute;
   top: calc(var(--p) * 100%);
@@ -129,10 +129,6 @@
   }
 
   .timeline__track {
-    left: 9px;
-  }
-
-  .timeline__bead {
     left: 9px;
   }
 
