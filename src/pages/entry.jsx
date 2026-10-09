@@ -27,7 +27,7 @@ const PAGES = { products: ProductsPage, honey: HoneyPage, gift: GiftPage, story:
 const root = document.getElementById('root')
 const Page = PAGES[root.dataset.page] || ProductsPage
 
-// dựng ngay (đồng bộ) trong lúc script còn chặn hiển thị → khung hình đầu tiên đã có đủ trang
+// dựng ngay (đồng bộ) khi script chạy → trang hiện đủ trong một khung hình, không hiện từng mảnh
 flushSync(() =>
   createRoot(root).render(
     <StrictMode>

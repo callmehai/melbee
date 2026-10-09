@@ -18,21 +18,10 @@ function pages(dir = ROOT) {
   })
 }
 
-/**
- * Script trang chặn hiển thị cho tới khi chạy xong (blocking="render"): trang được dựng đồng bộ (flushSync)
- * nên khung hình đầu tiên đã đủ nội dung → chuyển trang bằng View Transitions không chớp trắng.
- * Vite viết lại thẻ script lúc build và bỏ thuộc tính này, nên gắn lại ở đây.
- */
-const renderBlocking = () => ({
-  name: 'render-blocking-entry',
-  enforce: 'post',
-  transformIndexHtml: (html) => html.replace(/<script type="module" (?!blocking)/g, '<script type="module" blocking="render" '),
-})
-
 // base './' → chạy được ở mọi nơi deploy (GitHub Pages /melbee/, tên miền riêng, Vercel, Netlify…)
 export default defineConfig({
   base: './',
-  plugins: [react(), assetManifest(), renderBlocking()],
+  plugins: [react(), assetManifest()],
   build: {
     // three.js (~150KB gzip) nằm ở chunk riêng, tải lazy sau khi trang hiện xong
     chunkSizeWarningLimit: 700,

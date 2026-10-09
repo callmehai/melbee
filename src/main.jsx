@@ -22,7 +22,7 @@ if (import.meta.env.DEV && zaloIsPlaceholder) {
 // tiêu đề tab ngắn cho vừa khung tab; <title> + og:title trong index.html giữ câu đầy đủ cho Google, mạng xã hội
 document.title = 'MelBee · Mật ong Tây Bắc'
 
-// dựng ngay (đồng bộ) trong lúc script còn chặn hiển thị → khung hình đầu tiên đã có đủ trang
+// dựng ngay (đồng bộ) khi script chạy → trang hiện đủ trong một khung hình, không hiện từng mảnh
 flushSync(() =>
   createRoot(document.getElementById('root')).render(
     <StrictMode>
