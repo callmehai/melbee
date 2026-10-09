@@ -1,4 +1,5 @@
 import { StrictMode } from 'react'
+import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
 
 // Font tự host, có đủ dấu tiếng Việt
@@ -21,8 +22,11 @@ if (import.meta.env.DEV && zaloIsPlaceholder) {
 // tiêu đề tab ngắn cho vừa khung tab; <title> + og:title trong index.html giữ câu đầy đủ cho Google, mạng xã hội
 document.title = 'MelBee · Mật ong Tây Bắc'
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+// dựng ngay (đồng bộ) trong lúc script còn chặn hiển thị → khung hình đầu tiên đã có đủ trang
+flushSync(() =>
+  createRoot(document.getElementById('root')).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  )
 )

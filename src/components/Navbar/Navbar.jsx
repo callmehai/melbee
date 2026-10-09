@@ -56,8 +56,8 @@ export default function Navbar({ current = 'home', solid: alwaysSolid = false })
           </ul>
         </nav>
 
-        {/* nhạc nền chỉ có ở trang chủ */}
-        {current === 'home' && <SoundToggle />}
+        {/* nhạc nền ở mọi trang — cùng một chỗ trên thanh menu, chuyển trang nhạc phát tiếp */}
+        <SoundToggle />
 
         <div className="nav__cta">
           <OrderMenu size="sm" variant="solid" />

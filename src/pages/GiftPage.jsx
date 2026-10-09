@@ -3,6 +3,7 @@ import { Shell, PageHead, Photo, OrderButtons, NextBand } from './common.jsx'
 import { giftSet, giftMessage, honeys } from '../data/catalog.js'
 import { asset, hasAsset } from '../lib/assets.js'
 import { page } from '../lib/site.js'
+import Reveal from '../components/common/Reveal.jsx'
 
 /** /hop-qua/ — set quà: trong hộp có gì, hộp trông ra sao, lời gửi bên trong, đặt thế nào. */
 export default function GiftPage() {
@@ -57,7 +58,7 @@ export default function GiftPage() {
 
       <section className="letter" aria-labelledby="letter-title">
         <div className="container letter__in">
-          <div className="letter__text">
+          <Reveal className="letter__text">
             <p className="eyebrow">Mở nắp hộp</p>
             <h2 id="letter-title" className="sp-h2">
               Lời gửi từ núi rừng
@@ -67,8 +68,10 @@ export default function GiftPage() {
                 {p}
               </p>
             ))}
-          </div>
-          <img className="letter__img" src={asset(giftSet.designInside)} alt="Mặt trong nắp hộp: lời gửi in trên nền vàng mật hoạ tiết tổ ong" loading="lazy" width="1386" height="935" />
+          </Reveal>
+          <Reveal effect="slide-right" delay={0.1}>
+            <img className="letter__img" src={asset(giftSet.designInside)} alt="Mặt trong nắp hộp: lời gửi in trên nền vàng mật hoạ tiết tổ ong" loading="lazy" width="1386" height="935" />
+          </Reveal>
         </div>
       </section>
 

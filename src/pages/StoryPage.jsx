@@ -2,6 +2,7 @@ import { Flower2, HeartHandshake, Leaf, Mountain } from 'lucide-react'
 import { Shell, PageHead, Photo, NextBand } from './common.jsx'
 import { story, origin, process, whyUs } from '../data/sections.js'
 import { page } from '../lib/site.js'
+import Reveal from '../components/common/Reveal.jsx'
 
 const ICONS = { mountain: Mountain, leaf: Leaf, flower: Flower2, 'heart-handshake': HeartHandshake }
 
@@ -27,7 +28,7 @@ export default function StoryPage() {
       </section>
 
       <section className="origin-band" aria-labelledby="st-origin">
-        <div className="container split is-flip">
+        <Reveal className="container split is-flip">
           <Photo src={origin.image} alt={origin.imageAlt} className="split__photo" />
           <div>
             <p className="eyebrow">{origin.eyebrow}</p>
@@ -48,7 +49,7 @@ export default function StoryPage() {
               })}
             </ul>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       <section className="container steps" aria-labelledby="st-process">
@@ -58,11 +59,11 @@ export default function StoryPage() {
         </h2>
         <ol className="steps__list">
           {process.steps.map((s, i) => (
-            <li key={s.title}>
+            <Reveal as="li" key={s.title} delay={i * 0.1}>
               <span className="steps__no">{String(i + 1).padStart(2, '0')}</span>
               <h3>{s.title}</h3>
               <p>{s.text}</p>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </section>
@@ -72,11 +73,11 @@ export default function StoryPage() {
           {whyUs.title.join(' ')}
         </h2>
         <ul className="why__grid">
-          {whyUs.items.map((w) => (
-            <li key={w.title}>
+          {whyUs.items.map((w, i) => (
+            <Reveal as="li" key={w.title} delay={(i % 2) * 0.1}>
               <h3>{w.title}</h3>
               <p>{w.text}</p>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>

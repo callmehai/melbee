@@ -3,6 +3,7 @@ import Button from '../components/common/Button.jsx'
 import { honeys, sizes, giftSet } from '../data/catalog.js'
 import { hasAsset } from '../lib/assets.js'
 import { page } from '../lib/site.js'
+import Reveal from '../components/common/Reveal.jsx'
 
 /**
  * /san-pham/ — đích của mã QR trên hộp quà.
@@ -19,16 +20,16 @@ export default function ProductsPage() {
 
       <div className="container">
         <ul className="hgrid">
-          {honeys.map((h) => (
-            <li key={h.id}>
+          {honeys.map((h, i) => (
+            <Reveal as="li" key={h.id} delay={i * 0.08}>
               <HoneyCard honey={h} sizes={sizes} />
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>
 
       <div className="container">
-        <section className="giftband" aria-labelledby="giftband-title">
+        <Reveal as="section" className="giftband" aria-labelledby="giftband-title">
           <Photo
             src={hasAsset(giftSet.photo) ? giftSet.photo : giftSet.designFront}
             alt={`${giftSet.name} — mặt hộp`}
@@ -42,7 +43,7 @@ export default function ProductsPage() {
               Xem hộp quà
             </Button>
           </div>
-        </section>
+        </Reveal>
       </div>
 
       <UsageInfo />

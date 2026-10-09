@@ -255,3 +255,52 @@ ol {
   }
 }
 
+
+/* ── chuyển trang (Chrome, Edge, Safari 18+): thanh menu và nút Zalo đứng yên, nội dung trang cũ
+      mờ đi, trang mới trồi lên. Trình duyệt chưa hỗ trợ thì chuyển trang bình thường. ── */
+@view-transition {
+  navigation: auto;
+}
+
+.nav {
+  view-transition-name: site-nav;
+}
+
+.support {
+  view-transition-name: site-support;
+}
+
+::view-transition-old(root) {
+  animation: page-out 0.28s var(--ease-in-out) both;
+}
+
+::view-transition-new(root) {
+  animation: page-in 0.55s var(--ease) 0.08s both;
+}
+
+/* menu đổi nền (trong suốt ở đầu trang chủ ↔ đặc ở trang con) bằng cách hoà dần, không nhảy */
+::view-transition-group(site-nav) {
+  animation-duration: 0.45s;
+}
+
+@keyframes page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

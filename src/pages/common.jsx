@@ -9,10 +9,12 @@ import { commonInfo, company } from '../data/catalog.js'
 import { asset, hasAsset } from '../lib/assets.js'
 import { page } from '../lib/site.js'
 import './pages.css'
+import Reveal from '../components/common/Reveal.jsx'
 
 /**
  * Khung chung của các trang con (Sản phẩm, Hộp quà, Câu chuyện, Liên hệ):
- * cùng thanh menu, chân trang, nút Zalo + trợ lý như trang chủ — nhưng không 3D, không nhạc.
+ * cùng thanh menu (có nút nhạc), chân trang, nút Zalo + trợ lý như trang chủ — không có lớp 3D.
+ * Chuyển trang mượt nhờ View Transitions (src/styles/globals.css).
  */
 export function Shell({ current, children }) {
   return (
@@ -136,7 +138,7 @@ export function UsageInfo({ id = 'thong-tin', title = 'Dùng & bảo quản' }) 
         <h2 id={`${id}-title`} className="sp-h2">
           {title}
         </h2>
-        <dl className="usage__grid">
+        <Reveal as="dl" className="usage__grid">
           <div>
             <dt>Cách dùng</dt>
             <dd>
@@ -165,7 +167,7 @@ export function UsageInfo({ id = 'thong-tin', title = 'Dùng & bảo quản' }) 
               {commonInfo.shelfLife} · Xuất xứ {commonInfo.origin}
             </dd>
           </div>
-        </dl>
+        </Reveal>
       </div>
     </section>
   )
@@ -175,7 +177,7 @@ export function UsageInfo({ id = 'thong-tin', title = 'Dùng & bảo quản' }) 
 export function NextBand({ eyebrow, title, text, href, label, tone = 'forest' }) {
   return (
     <div className="container">
-      <section className={`band is-${tone}`}>
+      <Reveal as="section" className={`band is-${tone}`}>
         <div>
           {eyebrow && <p className="eyebrow">{eyebrow}</p>}
           <h2>{title}</h2>
@@ -184,7 +186,7 @@ export function NextBand({ eyebrow, title, text, href, label, tone = 'forest' })
         <Button href={href} variant="light">
           {label}
         </Button>
-      </section>
+      </Reveal>
     </div>
   )
 }

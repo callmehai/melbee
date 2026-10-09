@@ -2,6 +2,7 @@ import { useId, useState } from 'react'
 import { Shell, Crumbs, Photo, HoneyCard, OrderButtons, priceOf } from './common.jsx'
 import { honeys, sizes, commonInfo } from '../data/catalog.js'
 import { page } from '../lib/site.js'
+import Reveal from '../components/common/Reveal.jsx'
 
 const TABS = ['Mô tả & gợi ý dùng', 'Cách dùng', 'Bảo quản & lưu ý']
 
@@ -137,10 +138,10 @@ export default function HoneyPage({ id }) {
           </a>
         </div>
         <ul className="hgrid is-three">
-          {others.map((h) => (
-            <li key={h.id}>
+          {others.map((h, i) => (
+            <Reveal as="li" key={h.id} delay={i * 0.08}>
               <HoneyCard honey={h} sizes={sizes} compact />
-            </li>
+            </Reveal>
           ))}
         </ul>
       </section>

@@ -22,6 +22,23 @@ const writePref = (v) => {
   }
 }
 
+// chỗ đang phát của từng lớp stream — chuyển sang trang khác trong web thì nhạc phát tiếp, không về đầu bài
+const posKey = (name) => `melbee:pos:${name}`
+const readPos = (name) => {
+  try {
+    return Number(sessionStorage.getItem(posKey(name))) || 0
+  } catch {
+    return 0
+  }
+}
+const writePos = (name, t) => {
+  try {
+    sessionStorage.setItem(posKey(name), String(t))
+  } catch {
+    // trình duyệt chặn lưu trữ — bỏ qua
+  }
+}
+
 /**
  * Trình duyệt có cho phát tiếng ngay khi vào trang không (khách quen của trang, hoặc người xem đã cho
  * phép âm thanh với trang này). Firefox có API hỏi thẳng; Chrome/Edge: ngữ cảnh âm thanh tạo ra mà chạy
@@ -148,6 +165,10 @@ class AudioManager {
     el.src = asset(AUDIO_LAYERS[name].file)
     el.loop = true
     el.preload = 'auto'
+    el.currentTime = readPos(name) // đặt trước khi tải: trình duyệt bắt đầu phát từ đây
+    const savePos = () => writePos(name, el.currentTime)
+    window.addEventListener('pagehide', savePos)
+    this.cleanups.push(() => window.removeEventListener('pagehide', savePos))
     const layer = this.layers[name]
     layer.media = el
     try {

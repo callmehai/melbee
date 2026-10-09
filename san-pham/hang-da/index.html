@@ -19,6 +19,7 @@
   </head>
   <body>
     <div id="root" data-page="honey" data-honey="hang-da"></div>
-    <script type="module" src="/src/pages/entry.jsx"></script>
+    <!-- blocking=render: trình duyệt chờ trang dựng xong mới hiện → chuyển trang không chớp trắng -->
+    <script type="module" blocking="render" src="/src/pages/entry.jsx"></script>
   </body>
 </html>

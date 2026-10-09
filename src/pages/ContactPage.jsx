@@ -5,6 +5,7 @@ import { FacebookLogo, TikTokIcon, ZaloLogo } from '../components/common/BrandIc
 import { brand } from '../config/brand.js'
 import { company } from '../data/catalog.js'
 import { productsSection } from '../data/sections.js'
+import Reveal from '../components/common/Reveal.jsx'
 
 /** /lien-he/ — ba kênh đặt hàng (Zalo chính), rồi thông tin doanh nghiệp như in ở đáy hộp. */
 export default function ContactPage() {
@@ -18,21 +19,21 @@ export default function ContactPage() {
 
       <div className="container">
         <ul className="channels">
-          <li className="is-main">
+          <Reveal as="li" className="is-main">
             <ZaloLogo size={40} />
             <h2>Zalo</h2>
             <p>Nhanh nhất — nhắn tin, gửi ảnh, nhận báo giá.</p>
             <p className="channels__id">{company.hotlineDisplay}</p>
             <ZaloButton variant="zalo-solid">Nhắn Zalo</ZaloButton>
-          </li>
-          <li>
+          </Reveal>
+          <Reveal as="li" delay={0.08}>
             <FacebookLogo size={40} />
             <h2>Facebook</h2>
             <p>Nhắn tin trang MelBee — Mật ong Tây Bắc.</p>
             <p className="channels__id">facebook.com/melbeetaybac</p>
             <FacebookButton variant="outline">Nhắn Facebook</FacebookButton>
-          </li>
-          <li>
+          </Reveal>
+          <Reveal as="li" delay={0.16}>
             <span className="channels__icon" aria-hidden="true">
               <Phone size={22} />
             </span>
@@ -42,7 +43,7 @@ export default function ContactPage() {
             <Button href={`tel:${company.hotline}`} variant="outline" icon={<Phone size={18} aria-hidden="true" />}>
               Gọi ngay
             </Button>
-          </li>
+          </Reveal>
         </ul>
       </div>
 

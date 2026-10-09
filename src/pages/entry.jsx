@@ -1,4 +1,5 @@
 import { StrictMode } from 'react'
+import { flushSync } from 'react-dom'
 import { createRoot } from 'react-dom/client'
 
 // Font tự host, đủ dấu tiếng Việt — như trang chủ
@@ -26,8 +27,11 @@ const PAGES = { products: ProductsPage, honey: HoneyPage, gift: GiftPage, story:
 const root = document.getElementById('root')
 const Page = PAGES[root.dataset.page] || ProductsPage
 
-createRoot(root).render(
-  <StrictMode>
-    <Page id={root.dataset.honey} />
-  </StrictMode>
+// dựng ngay (đồng bộ) trong lúc script còn chặn hiển thị → khung hình đầu tiên đã có đủ trang
+flushSync(() =>
+  createRoot(root).render(
+    <StrictMode>
+      <Page id={root.dataset.honey} />
+    </StrictMode>
+  )
 )
