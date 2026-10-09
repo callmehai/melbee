@@ -8,7 +8,8 @@
  *
  * image: ảnh lọ, tính từ public/. Chưa có file → khung "Ảnh sắp ra mắt"; chép ảnh đúng tên vào là tự hiện
  *        (ảnh dọc 4:5, rộng ~1200px, nền sáng, thấy rõ nhãn).
- * prices: giá theo dung tích, vd { '380ml': '250.000 ₫' }. Dung tích chưa có giá → hiện "Liên hệ".
+ * pricePerLiter: giá theo lít, vd '300.000 ₫' — hiện "300.000 ₫ / lít". null → "Liên hệ".
+ * prices: giá từng lọ theo dung tích, vd { '380ml': '120.000 ₫' } — có thì hiện giá lọ thay cho giá lít.
  * group, short, taste: nhóm mật, tên ngắn, một dòng vị — cho thẻ ở trang Sản phẩm.
  *
  * highlights: viết mềm lại từ mục "Công dụng" trên nhãn — web là quảng cáo, thực phẩm thường
@@ -43,6 +44,7 @@ export const honeys = [
     group: 'Mật rừng',
     taste: 'Hương nồng hoang dã, ngọt đậm',
     image: 'assets/images/products/khoai-rung.jpg',
+    pricePerLiter: '300.000 ₫',
     prices: {},
     name: 'Mật ong Khoái rừng Tây Bắc',
     nameEn: 'Pure Wild Apis Dorsata Honey',
@@ -62,6 +64,7 @@ export const honeys = [
     group: 'Mật rừng',
     taste: 'Sánh đặc, hổ phách sẫm',
     image: 'assets/images/products/hang-da.jpg',
+    pricePerLiter: '380.000 ₫',
     prices: {},
     name: 'Mật ong Hang đá',
     nameEn: 'Wild Mountain Cave Honey',
@@ -81,6 +84,7 @@ export const honeys = [
     group: 'Mật hoa',
     taste: 'Vàng sáng, ngọt thanh mát',
     image: 'assets/images/products/hoa-ban.jpg',
+    pricePerLiter: null,
     prices: {},
     name: 'Mật ong Hoa ban Tây Bắc',
     nameEn: 'Northwest Bauhinia Flower Honey',
@@ -100,6 +104,7 @@ export const honeys = [
     group: 'Mật hoa',
     taste: 'Vàng óng, thơm hương nhãn',
     image: 'assets/images/products/hoa-nhan.jpg',
+    pricePerLiter: null,
     prices: {},
     name: 'Mật ong Hoa nhãn',
     nameEn: 'Northwest Longan Flower Honey',

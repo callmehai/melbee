@@ -83,6 +83,7 @@ export default function HoneyPage({ id }) {
   const honey = honeys.find((h) => h.id === id) || honeys[0]
   const others = honeys.filter((h) => h.id !== honey.id)
   const [size, setSize] = useState(sizes[1])
+  const price = priceOf(honey, size)
 
   return (
     <Shell current="products">
@@ -118,7 +119,8 @@ export default function HoneyPage({ id }) {
           </fieldset>
 
           <p className="price">
-            <b>{priceOf(honey, size)}</b>
+            <b>{price.value}</b>
+            {price.unit && <em>{price.unit}</em>}
             {!honey.prices?.[size] && <span>Nhắn MelBee để được báo giá lọ {size}</span>}
           </p>
 

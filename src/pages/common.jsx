@@ -81,16 +81,21 @@ export function Photo({ src, alt, className = '', eager = false }) {
   )
 }
 
-/** Giá của một dung tích; chưa có → "Liên hệ" */
-export const priceOf = (honey, size) => honey.prices?.[size] || 'Liên hệ'
+/** Giá hiện cho một dung tích: giá lọ nếu có, không thì giá theo lít, không nữa thì "Liên hệ". */
+export function priceOf(honey, size) {
+  if (honey.prices?.[size]) return { value: honey.prices[size], unit: `/ lọ ${size}` }
+  if (honey.pricePerLiter) return { value: honey.pricePerLiter, unit: '/ lít' }
+  return { value: 'Liên hệ', unit: '' }
+}
 
 /** Khoảng dung tích "280 – 730ml" */
 export const sizeRange = (sizes) => `${sizes[0].replace('ml', '')} – ${sizes[sizes.length - 1]}`
 
 /** Thẻ một loại mật — cả thẻ là link sang trang chi tiết. */
 export function HoneyCard({ honey, sizes, compact = false }) {
-  // giá của dung tích nhỏ nhất đã có giá
+  // giá lọ nhỏ nhất đã có giá; chưa có giá lọ thì giá theo lít
   const from = sizes.find((s) => honey.prices?.[s])
+  const price = from ? `từ ${honey.prices[from]}` : honey.pricePerLiter ? `${honey.pricePerLiter}/lít` : 'Liên hệ'
   return (
     <a className={`hcard ${compact ? 'is-compact' : ''}`} href={page(`san-pham/${honey.id}/`)} id={honey.id}>
       <Photo src={honey.image} alt={honey.name} />
@@ -101,7 +106,7 @@ export function HoneyCard({ honey, sizes, compact = false }) {
           <div className="hcard__meta">
             <span>{sizeRange(sizes)}</span>
             <span>
-              Giá: <b>{from ? `từ ${honey.prices[from]}` : 'Liên hệ'}</b>
+              Giá: <b>{price}</b>
             </span>
           </div>
           <span className="hcard__go">

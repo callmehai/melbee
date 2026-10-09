@@ -270,30 +270,30 @@ ol {
   view-transition-name: site-support;
 }
 
+/* ngắn, gọn: trang cũ mờ đi 0,18s, trang mới hiện ngay sau đó trong 0,32s */
 ::view-transition-old(root) {
-  animation: page-out 0.28s var(--ease-in-out) both;
+  animation: page-out 0.18s ease-out both;
 }
 
 ::view-transition-new(root) {
-  animation: page-in 0.55s var(--ease) 0.08s both;
+  animation: page-in 0.32s var(--ease) both;
 }
 
 /* menu đổi nền (trong suốt ở đầu trang chủ ↔ đặc ở trang con) bằng cách hoà dần, không nhảy */
 ::view-transition-group(site-nav) {
-  animation-duration: 0.45s;
+  animation-duration: 0.3s;
 }
 
 @keyframes page-out {
   to {
     opacity: 0;
-    transform: translateY(-10px);
   }
 }
 
 @keyframes page-in {
   from {
     opacity: 0;
-    transform: translateY(18px);
+    transform: translateY(10px);
   }
 }
 

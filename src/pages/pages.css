@@ -482,6 +482,12 @@
   line-height: 1;
 }
 
+.price em {
+  font-style: normal;
+  font-size: 16px;
+  color: var(--brown-2);
+}
+
 .price span {
   font-size: 13.5px;
   color: var(--muted);
