@@ -68,11 +68,11 @@ export default function StoryPage() {
         </ol>
       </section>
 
-      <section className="container why" aria-labelledby="st-why">
+      <section className="container values" aria-labelledby="st-why">
         <h2 id="st-why" className="sp-h2">
           {whyUs.title.join(' ')}
         </h2>
-        <ul className="why__grid">
+        <ul className="values__grid">
           {whyUs.items.map((w, i) => (
             <Reveal as="li" key={w.title} delay={(i % 2) * 0.1}>
               <h3>{w.title}</h3>

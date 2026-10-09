@@ -304,3 +304,40 @@ ol {
     animation: none !important;
   }
 }
+
+/* ── hiện dần khi cuộn tới (components/common/Reveal.jsx) ── */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity var(--rv-dur, 0.9s) cubic-bezier(0.22, 0.8, 0.24, 1) var(--rv-delay, 0s),
+    transform var(--rv-dur, 0.9s) cubic-bezier(0.22, 0.8, 0.24, 1) var(--rv-delay, 0s);
+}
+
+.reveal--fade-up {
+  transform: translate3d(0, 36px, 0);
+}
+
+.reveal--slide-left {
+  transform: translate3d(-40px, 0, 0);
+}
+
+.reveal--slide-right {
+  transform: translate3d(40px, 0, 0);
+}
+
+.reveal--scale {
+  transform: scale(0.94);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -6,8 +6,8 @@
  */
 export const THREE_CONFIG = {
   enabled: true,
-  // điện thoại / máy tính bảng (màn cảm ứng): tắt cả lớp 3D nền — hoa cỏ vỡ hình, ong giật, nóng máy.
-  // Trang tự dùng tranh/ảnh 2D thay thế; hộp quà 3D (src/pages/giftbox3d) vẫn chạy. Thử bật: thêm ?three=on vào URL.
+  // điện thoại / máy tính bảng (màn cảm ứng): chế độ nhẹ — chỉ miếng bánh tổ 3D; hoa cỏ, ong, sương, phấn hoa
+  // tắt (vỡ hình, giật, nóng máy), trang dùng tranh 2D thay thế. true = chạy bản đầy đủ. Thử nhanh: thêm ?three=on vào URL.
   touchDevices: false,
 
   // ── số lượng theo cấp chất lượng ──────────────────────────

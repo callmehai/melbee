@@ -1,4 +1,5 @@
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useNoParallax } from '../../hooks/useNoParallax.js'
 import { useRef, useState } from 'react'
 import Reveal from '../common/Reveal.jsx'
 import Media from '../common/Media.jsx'
@@ -35,7 +36,7 @@ function CombStage() {
 
 export default function Intro() {
   const ref = useRef(null)
-  const reduced = useReducedMotion()
+  const still = useNoParallax()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], [60, -60])
   // có WebGL → miếng bánh tổ 3D; không có → ảnh thật / tranh minh hoạ như cũ
@@ -59,7 +60,7 @@ export default function Intro() {
             ))}
           </div>
         </div>
-        <motion.div className="intro__visual" style={reduced ? undefined : { y }}>
+        <motion.div className="intro__visual" style={still ? undefined : { y }}>
           <Reveal effect="scale" duration={1.2} className="intro__frame">
             {comb ? <CombStage /> : <Media src={intro.image} alt={intro.imageAlt} art={intro.art} />}
           </Reveal>

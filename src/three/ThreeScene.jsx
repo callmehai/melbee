@@ -9,7 +9,7 @@ const DebugPanel = import.meta.env.DEV ? lazy(() => import('./debug/DebugPanel.j
 const debug = import.meta.env.DEV && new URLSearchParams(window.location.search).get('debug') === 'true'
 
 /** Canvas WebGL dùng chung cho cả trang + vòng đời engine (tạo, giảm chuyển động, dọn dẹp). */
-export default function ThreeScene() {
+export default function ThreeScene({ lite = false }) {
   const canvasRef = useRef(null)
   const [engine, setEngine] = useState(null)
 
@@ -18,7 +18,7 @@ export default function ThreeScene() {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
     let instance
     try {
-      instance = createExperience(canvas, { ...detectDevice(), reducedMotion: motion.matches })
+      instance = createExperience(canvas, { ...detectDevice(), reducedMotion: motion.matches, lite })
     } catch (err) {
       if (import.meta.env.DEV) console.warn('[MelBee] Không khởi tạo được WebGL:', err)
       setThreeStatus('unavailable')
@@ -26,7 +26,7 @@ export default function ThreeScene() {
     }
     setEngine(instance)
     if (debug) window.__melbeeEngine = instance // soi trong DevTools (chỉ bản dev)
-    setThreeStatus('running')
+    setThreeStatus(lite ? 'lite' : 'running')
     const show = requestAnimationFrame(() => canvas.classList.add('is-ready'))
 
     const onMotion = () => instance.setReducedMotion(motion.matches)

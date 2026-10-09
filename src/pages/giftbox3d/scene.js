@@ -404,6 +404,7 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
       env.dispose()
       pmrem.dispose()
       renderer.dispose()
+      renderer.forceContextLoss() // trả ngữ cảnh WebGL ngay khi rời trang (đổi trang tại chỗ)
     },
   }
 }

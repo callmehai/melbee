@@ -26,8 +26,9 @@ const MOOD_KEYS = ['pollen', 'wind']
  * vị trí section/phần tử DOM của chúng nên không cần canvas riêng cho từng section.
  */
 export class Engine {
-  constructor(canvas, { quality, mobile, reducedMotion }) {
+  constructor(canvas, { quality, mobile, reducedMotion, lite = false }) {
     this.canvas = canvas
+    this.lite = lite
     this.mobile = mobile
     this.reduced = reducedMotion
     this.quality = quality
@@ -208,6 +209,13 @@ export class Engine {
     u.uMouse.value.set(this.pointer.x, this.pointer.y, this.interactive && this.pointer.inside ? 1 : 0)
 
     for (const e of this.effects) e.update(step, this)
+    // chế độ nhẹ: không có gì trên màn hình (bánh tổ đã cuộn qua) → không vẽ, chỉ xoá khung một lần
+    if (this.lite && !this.effects.some((e) => e.active)) {
+      if (this.drawn) this.renderer.clear()
+      this.drawn = false
+      return
+    }
+    this.drawn = true
     this.renderer.render(this.scene, this.camera)
 
     if (this.fps.sample(dt) && THREE_CONFIG.autoQuality && this.quality !== 'low') {
@@ -323,5 +331,6 @@ export class Engine {
     this.effects = []
     this.uniforms.uBg.value.dispose()
     this.renderer.dispose()
+    this.renderer.forceContextLoss() // trả ngữ cảnh WebGL ngay khi rời trang chủ (đổi trang tại chỗ, không tải lại)
   }
 }

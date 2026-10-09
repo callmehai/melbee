@@ -28,7 +28,8 @@ import { GuideBee } from './effects/GuideBee.js'
 export function createExperience(canvas, options) {
   const engine = new Engine(canvas, options)
   const anchors = createAnchors(engine)
-  const fx = THREE_CONFIG.effects
+  // chế độ nhẹ (điện thoại): chỉ miếng bánh tổ 3D — không hoa cỏ, ong, sương, phấn hoa
+  const fx = options.lite ? { honeycomb: THREE_CONFIG.effects.honeycomb } : THREE_CONFIG.effects
   const P = PALETTE
 
   // ── nền: ánh sáng & không khí ─────────────────────────────

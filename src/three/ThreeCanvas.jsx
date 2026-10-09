@@ -24,14 +24,18 @@ class Guard extends Component {
   }
 }
 
-/** Điểm vào lớp Three.js: bỏ qua trên màn cảm ứng, kiểm tra WebGL, chờ trang rảnh rồi mới tải. */
+/** Điểm vào lớp Three.js: kiểm tra WebGL, chờ trang rảnh rồi mới tải; màn cảm ứng chạy chế độ nhẹ. */
 export default function ThreeCanvas() {
   const [ready, setReady] = useState(false)
-
-  useEffect(() => {
+  // màn cảm ứng (điện thoại, máy tính bảng): chế độ nhẹ — chỉ bánh tổ 3D. Thử bản đầy đủ: thêm ?three=on vào URL
+  const [lite] = useState(() => {
     const touch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
     const forced = new URLSearchParams(window.location.search).get('three') === 'on'
-    if (!THREE_CONFIG.enabled || (touch && !THREE_CONFIG.touchDevices && !forced) || !hasWebGL()) {
+    return touch && !THREE_CONFIG.touchDevices && !forced
+  })
+
+  useEffect(() => {
+    if (!THREE_CONFIG.enabled || !hasWebGL()) {
       setThreeStatus('unavailable')
       return
     }
@@ -60,7 +64,7 @@ export default function ThreeCanvas() {
   return (
     <Guard>
       <Suspense fallback={null}>
-        <ThreeScene />
+        <ThreeScene lite={lite} />
       </Suspense>
     </Guard>
   )

@@ -6,6 +6,7 @@ import { BanBranch, Landscape } from '../Art/Art.jsx'
 import Pollen from './Pollen.jsx'
 import { useThreeStatus } from '../../three/store.js'
 import { hero } from '../../data/sections.js'
+import { useNoParallax } from '../../hooks/useNoParallax.js'
 import { asset, hasAsset } from '../../lib/assets.js'
 import './Hero.css'
 
@@ -19,6 +20,7 @@ const item = (delay) => ({
 export default function Hero() {
   const ref = useRef(null)
   const reduced = useReducedMotion()
+  const still = useNoParallax() // điện thoại: các lớp núi, cành hoa, chữ đứng yên khi cuộn
   const three = useThreeStatus()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
 
@@ -55,7 +57,7 @@ export default function Hero() {
       <motion.div className="hero__bg" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1.2 }}>
         <div className="hero__zoom">
           {hasImage || hasVideo ? (
-            <motion.div className="hero__media" style={{ y: reduced ? 0 : bgY }}>
+            <motion.div className="hero__media" style={{ y: still ? 0 : bgY }}>
               {hasImage && <img src={asset(hero.image)} alt="" />}
               {hasVideo && loadVideo && (
                 <video src={asset(hero.video)} poster={hasImage ? asset(hero.image) : undefined} autoPlay muted loop playsInline preload="none" />
@@ -65,21 +67,21 @@ export default function Hero() {
             <Landscape
               variant="morning"
               className="hero__art"
-              layerY={reduced ? undefined : [l0, l1, l2, l3, l4, l5]}
+              layerY={still ? undefined : [l0, l1, l2, l3, l4, l5]}
               label="Minh hoạ núi rừng Điện Biên buổi sáng mùa xuân"
             />
           )}
         </div>
         <div className="hero__shade" />
         {/* cành hoa ban tiền cảnh — gần máy quay nhất nên trôi ngược lên khi cuộn */}
-        <motion.div className="hero__branch" style={reduced ? undefined : { y: branchY }}>
+        <motion.div className="hero__branch" style={still ? undefined : { y: branchY }}>
           <BanBranch className="hero__branch-art" />
         </motion.div>
         {/* phấn hoa 2D chỉ dùng khi lớp Three.js chưa chạy / không có WebGL */}
         {three !== 'running' && <Pollen />}
       </motion.div>
 
-      <motion.div className="container hero__content" style={reduced ? undefined : { y: textY, opacity: textOpacity }}>
+      <motion.div className="container hero__content" style={still ? undefined : { y: textY, opacity: textOpacity }}>
         <motion.p className="hero__eyebrow" {...item(0.35)}>
           {hero.eyebrow}
         </motion.p>

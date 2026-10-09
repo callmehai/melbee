@@ -36,12 +36,10 @@ export default function SoundToggle() {
   const ref = useRef(null)
   const timer = useRef(0)
   useEffect(() => audioManager.subscribe(setStatus), [])
+  // nhạc sống suốt phiên xem: đổi trang thì thanh menu (và nút này) dựng lại, nhạc vẫn phát tiếp — không dispose
   useEffect(() => {
     audioManager.autoStart()
-    return () => {
-      clearTimeout(timer.current)
-      audioManager.dispose()
-    }
+    return () => clearTimeout(timer.current)
   }, [])
 
   const on = status === 'on' || status === 'loading' || status === 'pending'

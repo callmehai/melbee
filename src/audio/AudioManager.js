@@ -222,7 +222,7 @@ class AudioManager {
     )
 
     const visible = new Map()
-    const io = new IntersectionObserver(
+    const io = (this.sceneObserver = new IntersectionObserver(
       (entries) => {
         if (getAtmosphere().source === 'three') return // lớp Three.js đang báo section rồi
         for (const e of entries) visible.set(e.target.dataset.scene, e.intersectionRatio * e.boundingClientRect.height)
@@ -232,8 +232,9 @@ class AudioManager {
         if (best) this.setScene(best)
       },
       { threshold: [0, 0.25, 0.5, 0.75, 1] }
-    )
-    document.querySelectorAll('[data-scene]').forEach((el) => io.observe(el))
+    ))
+    this.sceneVisible = visible
+    this.watchScenes()
     this.cleanups.push(() => io.disconnect())
 
     const onVisibility = () => {
@@ -244,6 +245,20 @@ class AudioManager {
     }
     document.addEventListener('visibilitychange', onVisibility)
     this.cleanups.push(() => document.removeEventListener('visibilitychange', onVisibility))
+  }
+
+  /**
+   * Theo dõi lại các section của trang đang hiện — gọi sau mỗi lần đổi trang tại chỗ (src/Site.jsx).
+   * Trang không có section riêng (trang con) → về mức mặc định như đầu trang chủ.
+   */
+  watchScenes() {
+    const io = this.sceneObserver
+    if (!io) return
+    io.disconnect()
+    this.sceneVisible.clear()
+    const els = document.querySelectorAll('[data-scene]')
+    els.forEach((el) => io.observe(el))
+    if (!els.length && this.scene !== 'hero') this.setScene('hero')
   }
 
   /** Đặt âm lượng từng lớp theo section + gió hiện tại (mượt, không cắt đột ngột). */

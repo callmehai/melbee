@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useNoParallax } from '../../hooks/useNoParallax.js'
 import SectionHeading from '../common/SectionHeading.jsx'
 import Reveal from '../common/Reveal.jsx'
 import Media from '../common/Media.jsx'
@@ -9,7 +10,7 @@ import './BrandStory.css'
 
 export default function BrandStory() {
   const ref = useRef(null)
-  const reduced = useReducedMotion()
+  const still = useNoParallax()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], ['-4%', '4%'])
 
@@ -30,7 +31,7 @@ export default function BrandStory() {
           </Reveal>
         </div>
         <Reveal effect="slide-right" duration={1.2} className="story__visual" data-bee-perch="top-left" data-bee-glow="off">
-          <motion.div className="story__parallax" style={reduced ? undefined : { y }}>
+          <motion.div className="story__parallax" style={still ? undefined : { y }}>
             <Media src={story.image} alt={story.imageAlt} art={story.art} />
           </motion.div>
         </Reveal>

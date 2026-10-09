@@ -1,32 +1,10 @@
-import { StrictMode } from 'react'
-import { flushSync } from 'react-dom'
-import { createRoot } from 'react-dom/client'
-
-// Font tự host, có đủ dấu tiếng Việt
-import '@fontsource/noto-serif-display/400.css'
-import '@fontsource/noto-serif-display/500.css'
-import '@fontsource/noto-serif-display/400-italic.css'
-import '@fontsource/be-vietnam-pro/300.css'
-import '@fontsource/be-vietnam-pro/400.css'
-import '@fontsource/be-vietnam-pro/500.css'
-
-import './styles/variables.css'
-import './styles/globals.css'
-import App from './App.jsx'
 import { zaloIsPlaceholder } from './config/brand.js'
+import { mount } from './Site.jsx'
 
 if (import.meta.env.DEV && zaloIsPlaceholder) {
   console.info('[MelBee] Link Zalo đang là placeholder — thay trong src/config/brand.js')
 }
 
-// tiêu đề tab ngắn cho vừa khung tab; <title> + og:title trong index.html giữ câu đầy đủ cho Google, mạng xã hội
-document.title = 'MelBee · Mật ong Tây Bắc'
-
-// dựng ngay (đồng bộ) khi script chạy → trang hiện đủ trong một khung hình, không hiện từng mảnh
-flushSync(() =>
-  createRoot(document.getElementById('root')).render(
-    <StrictMode>
-      <App />
-    </StrictMode>
-  )
-)
+// Mọi trang (index.html ở /, /san-pham/, /hop-qua/…) đều vào đây; Site.jsx chọn trang theo đường dẫn.
+// Tiêu đề tab ngắn đặt trong lib/router.js; <title> + og:title trong từng index.html giữ câu đầy đủ cho Google, mạng xã hội.
+mount()

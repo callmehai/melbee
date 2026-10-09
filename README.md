@@ -40,9 +40,14 @@ và đăng lại (~30 giây). Muốn dùng Vercel/Netlify: import repo, build `n
 | Câu chuyện | `/cau-chuyen/` | `cau-chuyen/index.html` | `src/pages/StoryPage.jsx` |
 | Liên hệ | `/lien-he/` | `lien-he/index.html` | `src/pages/ContactPage.jsx` |
 
-Các trang con dùng chung menu, chân trang, nút Zalo/trợ lý (`src/pages/common.jsx`), không có 3D và nhạc.
-Menu lấy từ `nav` trong `src/data/sections.js`. Thêm một trang: tạo thư mục có `index.html` (chép từ trang con khác,
-đổi `data-page`) — Vite tự nhận mọi `index.html`, không phải khai báo.
+Các trang con dùng chung menu, chân trang, nút Zalo/trợ lý (`src/pages/common.jsx`), không có 3D nền.
+Cả web là một ứng dụng (`src/Site.jsx`): bấm link trong web thì đổi trang tại chỗ, không tải lại — nhạc nền phát liền mạch,
+kể cả trên điện thoại. Mỗi đường dẫn vẫn có `index.html` riêng để vào thẳng link / mã QR / Google.
+Menu lấy từ `nav` trong `src/data/sections.js`. Thêm một trang: tạo thư mục có `index.html` (chép từ trang con khác),
+khai đường dẫn + tiêu đề tab trong `src/lib/router.js` và trang trong `PAGES` của `src/Site.jsx`.
+
+Điện thoại / máy tính bảng: lớp 3D nền chạy chế độ nhẹ — chỉ miếng bánh tổ; hoa cỏ, ong, sương, phấn hoa tắt
+(`touchDevices` trong `src/three/config.js`), không trôi parallax khi cuộn. Thử bản đầy đủ trên điện thoại: thêm `?three=on`.
 
 Thông tin 4 loại mật, set quà, cách dùng & bảo quản: `src/data/catalog.js` (theo nội dung nhãn in).
 Ảnh từng loại: chép `public/assets/images/products/<id>.jpg` (vd `hoa-ban.jpg`) là tự thay khung "Ảnh sắp ra mắt".

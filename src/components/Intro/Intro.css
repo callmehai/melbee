@@ -137,3 +137,10 @@
     max-width: 420px;
   }
 }
+
+/* điện thoại: khối lục giác trang trí lòi ra sát mép màn hình trông như lệch → ẩn */
+@media (max-width: 560px) {
+  .intro__hex {
+    display: none;
+  }
+}
