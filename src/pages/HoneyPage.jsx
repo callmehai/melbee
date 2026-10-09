@@ -4,7 +4,7 @@ import { honeys, sizes, commonInfo } from '../data/catalog.js'
 import { page } from '../lib/site.js'
 import Reveal from '../components/common/Reveal.jsx'
 
-const TABS = ['Mô tả & gợi ý dùng', 'Cách dùng', 'Bảo quản & lưu ý']
+const TABS = ['Mô tả', 'Cách dùng', 'Bảo quản'] // ngắn để vừa một hàng trên điện thoại
 
 /** Tab Mô tả / Cách dùng / Bảo quản — mũi tên trái phải chuyển tab như tab chuẩn. */
 function InfoTabs({ honey }) {

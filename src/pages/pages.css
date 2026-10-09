@@ -40,6 +40,7 @@
   font-weight: 400;
   font-size: clamp(34px, 6vw, 56px);
   line-height: 1.1;
+  text-wrap: balance;
 }
 
 .page-head__sub {
@@ -173,7 +174,7 @@
 }
 
 .hcard__taste {
-  margin-top: 4px;
+  margin: 4px 0 10px;
   font-size: 14px;
   color: var(--brown-2);
 }
@@ -182,7 +183,8 @@
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  margin-top: 10px;
+  /* đẩy giá + "Xem chi tiết" xuống đáy thẻ: mô tả dài ngắn khác nhau vẫn thẳng hàng giữa các thẻ */
+  margin-top: auto;
   padding-top: 10px;
   border-top: 1px dashed var(--line);
   font-size: 13px;
@@ -199,8 +201,7 @@
   align-items: center;
   gap: 6px;
   align-self: flex-start;
-  margin-top: auto;
-  padding-top: 12px;
+  margin-top: 12px;
   font-size: 14px;
   font-weight: 400;
   border-bottom: 1px solid var(--line);
@@ -392,6 +393,7 @@
   font-weight: 400;
   font-size: clamp(30px, 4.4vw, 44px);
   line-height: 1.12;
+  text-wrap: balance; /* không để một chữ rớt xuống dòng riêng */
 }
 
 .detail__en {

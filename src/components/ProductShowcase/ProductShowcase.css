@@ -50,6 +50,12 @@
   .products__grid {
     grid-template-columns: 1fr;
   }
+
+  .products.is-single .products__note {
+    margin-top: 28px;
+    text-align: left;
+    font-size: 18px;
+  }
 }
 
 /* nền ngà của Quy trình chuyển dần sang kem — không có đường cắt */

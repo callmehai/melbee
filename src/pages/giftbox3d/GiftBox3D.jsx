@@ -96,7 +96,7 @@ export default function GiftBox3D({ fallback, jarColors = [], openKey }) {
       )}
       {state === 'ready' && (
         <div className="box3d__bar">
-          <span className="box3d__hint">{touch ? 'Vuốt ngang để xoay · chạm hộp để mở nắp' : 'Kéo để xoay mọi hướng · bấm hộp để mở nắp'}</span>
+          <span className="box3d__hint">{touch ? 'Vuốt để xoay · chạm để mở nắp' : 'Kéo để xoay mọi hướng · bấm hộp để mở nắp'}</span>
           <button type="button" className="box3d__btn" onClick={() => api.current?.toggle()} aria-pressed={open}>
             {open ? <Box size={16} aria-hidden="true" /> : <PackageOpen size={16} aria-hidden="true" />}
             {open ? 'Đóng nắp' : 'Mở nắp'}
