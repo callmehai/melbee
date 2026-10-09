@@ -94,9 +94,6 @@ export default function Footer() {
                   <a href={page(`san-pham/${h.id}/`)}>{h.name}</a>
                 </li>
               ))}
-              <li>
-                <a href={page('hop-qua/')}>Set quà 2 lọ 380ml</a>
-              </li>
             </ul>
           </div>
 
