@@ -20,29 +20,35 @@ import {
   Shape,
   ShapeGeometry,
   SRGBColorSpace,
-  TextureLoader,
   WebGLRenderer,
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { LAYOUTS } from './layouts.js'
 
 /**
- * Hộp quà set 2 lọ 380ml dựng lại từ file in (public/assets/Set 2 lọ 380ml.pdf), đơn vị cm:
- * hộp đáy 22 × 15, cao 10, mặt ngoài hoa văn tổ ong, đáy có nhãn công ty; nắp gập liền tấm (mặt sau trơn
- * dán vào lưng hộp, mặt trên chữ MELBEE nhũ vàng, vạt trước bo tròn có logo), mặt trong nắp in lời gửi;
- * lót vàng khoét 2 ô đặt lọ + một khe dài.
+ * Hộp quà MelBee 3D, đơn vị cm — hộp 2 · 3 · 4 lọ (kích thước, chỗ đặt lọ: layouts.js).
+ * Mặt ngoài vân tổ ong, đáy có nhãn công ty; nắp gập liền tấm (mặt trên chữ MELBEE nhũ vàng, vạt trước bo tròn
+ * có logo), mặt trong nắp in lời gửi; khay lót vàng khoét ô đặt lọ + một khe dài.
+ * Ảnh bề mặt lấy từ file in hộp 2 lọ (public/assets/Set 2 lọ 380ml.pdf) rồi vẽ lại cho vừa từng cỡ hộp
+ * (phủ kín / thu vào, không kéo méo) — hộp 3 và 4 lọ chưa có file in riêng.
  * Kéo để xoay (điện thoại: vuốt ngang — vuốt dọc vẫn cuộn trang), chạm / bấm để mở nắp.
  */
-const W = 22
-const D = 15
-const H = 10
 const T = 0.3 // độ dày bìa
-const FLAP = 7.8 // vạt trước của nắp
 
 const BROWN = '#2a1611'
 const YELLOW = '#f5b51c'
 const HONEY = '#e2a13a'
 
-export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion = false, onReady, onOpenChange }) {
+/** Lọ 280ml nhỏ hơn lọ 380ml (cùng dáng lục giác) */
+const JAR_SCALE = { '380ml': 1, '280ml': 0.88 }
+
+export function createGiftBox(canvas, { layout = 'hop-2', url, logo, jarColors = [], reducedMotion = false, onReady, onOpenChange }) {
+  const L = LAYOUTS[layout] || LAYOUTS['hop-2']
+  const { W, D, H } = L
+  const FLAP = H * 0.78 // vạt trước của nắp
+  // hộp to hơn hộp 2 lọ bao nhiêu → máy quay lùi ra bấy nhiêu
+  const K = Math.hypot(W, D, H) / Math.hypot(22, 15, 10)
+
   const renderer = new WebGLRenderer({ canvas, antialias: true, alpha: true })
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
   renderer.outputColorSpace = SRGBColorSpace
@@ -61,32 +67,60 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
   const camera = new PerspectiveCamera(30, 1, 1, 400)
   // máy quay nhìn hơi từ trên xuống; mở nắp thì lùi ra + ngẩng lên để thấy trọn nắp
   const camDir = { y: 18 / 60.7, z: 58 / 60.7 }
-  let baseDist = 58
+  let baseDist = 58 * K
   const placeCamera = (o) => {
     const dist = baseDist * (1 + 0.6 * o)
-    camera.position.set(0, camDir.y * dist + 3 * o, camDir.z * dist)
-    camera.lookAt(0, 0.5 + 4.6 * o, 0)
+    camera.position.set(0, camDir.y * dist + 3 * o * K, camDir.z * dist)
+    camera.lookAt(0, 0.5 + 4.6 * o * (D / 15), 0) // nắp càng sâu, mở ra càng cao
   }
 
   // ---------- vật liệu ----------
-  const loader = new TextureLoader()
   const maxAniso = renderer.capabilities.getMaxAnisotropy()
   const textures = []
-  const tex = (path, setup) =>
-    new Promise((resolve, reject) =>
-      loader.load(
-        url(path),
-        (t) => {
-          t.colorSpace = SRGBColorSpace
-          t.anisotropy = maxAniso
-          setup?.(t)
-          textures.push(t)
-          resolve(t)
-        },
-        undefined,
-        reject
-      )
-    )
+  const img = (path) =>
+    new Promise((resolve, reject) => {
+      const i = new Image()
+      i.onload = () => resolve(i)
+      i.onerror = reject
+      i.src = url(path)
+    })
+  const canvasTex = (c) => {
+    const t = new CanvasTexture(c)
+    t.colorSpace = SRGBColorSpace
+    t.anisotropy = maxAniso
+    textures.push(t)
+    return t
+  }
+  /** Màu nền của ảnh (lấy một điểm) — để phần thêm vào quanh ảnh liền màu với ảnh */
+  const sampleColor = (im, x, y) => {
+    const c = document.createElement('canvas')
+    c.width = c.height = 1
+    const ctx = c.getContext('2d', { willReadFrequently: true })
+    ctx.drawImage(im, x, y, 1, 1, 0, 0, 1, 1)
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
+    return `rgb(${r},${g},${b})`
+  }
+  /**
+   * Vẽ ảnh lên một mặt w × h cm mà không kéo méo: 'cover' phủ kín (cắt bớt mép), 'contain' thu vào
+   * (phần thừa tô màu nền ảnh). src: vùng ảnh nguồn [sx, sy, sw, sh] nếu chỉ lấy một phần.
+   */
+  const fit = (im, w, h, { mode = 'cover', bg, src } = {}) => {
+    const c = document.createElement('canvas')
+    const a = w / h
+    c.width = a >= 1 ? 1024 : Math.round(1024 * a)
+    c.height = a >= 1 ? Math.round(1024 / a) : 1024
+    const ctx = c.getContext('2d')
+    if (bg) {
+      ctx.fillStyle = bg
+      ctx.fillRect(0, 0, c.width, c.height)
+    }
+    const [sx, sy, sw, sh] = src || [0, 0, im.width, im.height]
+    const k = (mode === 'cover' ? Math.max : Math.min)(c.width / sw, c.height / sh)
+    const dw = sw * k
+    const dh = sh * k
+    ctx.drawImage(im, sx, sy, sw, sh, (c.width - dw) / 2, mode === 'top' ? 0 : (c.height - dh) / 2, dw, dh)
+    return canvasTex(c)
+  }
   const mat = (opts) => new MeshStandardMaterial({ roughness: 0.55, envMapIntensity: 0.7, ...opts })
   const brown = mat({ color: BROWN })
   const yellow = mat({ color: YELLOW, roughness: 0.75 })
@@ -109,13 +143,8 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
   }
 
   // ---------- lọ mật lục giác ----------
-  const labelCanvas = document.createElement('canvas')
-  labelCanvas.width = 1800
-  labelCanvas.height = 420
-  const labelTex = new CanvasTexture(labelCanvas)
-  labelTex.colorSpace = SRGBColorSpace
-  textures.push(labelTex)
-  const drawLabel = (img) => {
+  const labels = {} // một nhãn cho mỗi dung tích
+  const drawLabel = ({ canvas: labelCanvas, tex: labelTex, size }, img) => {
     const c = labelCanvas.getContext('2d')
     c.fillStyle = '#f6eedb'
     c.fillRect(0, 0, 1800, 420)
@@ -133,7 +162,7 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
         c.fillText('Tây Bắc', x + 150, 318)
         c.font = '26px system-ui, sans-serif'
         c.fillStyle = '#9a6514'
-        c.fillText('380ml', x + 150, 370)
+        c.fillText(size, x + 150, 370)
       } else {
         c.font = '600 40px Georgia, serif'
         c.fillText('MELBEE', x + 150, 200)
@@ -144,31 +173,40 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
     }
     labelTex.needsUpdate = true
   }
-  drawLabel(null)
   const logoImg = new Image()
-  logoImg.onload = () => drawLabel(logoImg)
+  const labelFor = (size) => {
+    if (!labels[size]) {
+      const lc = document.createElement('canvas')
+      lc.width = 1800
+      lc.height = 420
+      labels[size] = { canvas: lc, tex: canvasTex(lc), size }
+      labels[size].mat = new MeshStandardMaterial({ map: labels[size].tex, roughness: 0.6 })
+      drawLabel(labels[size], logoImg.complete && logoImg.naturalWidth ? logoImg : null)
+    }
+    return labels[size].mat
+  }
+  logoImg.onload = () => Object.values(labels).forEach((l) => drawLabel(l, logoImg))
   logoImg.src = logo
 
   const honeyBase = new MeshPhysicalMaterial({ color: HONEY, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.08, transparent: true, opacity: 0.94 })
   const cap = new MeshPhysicalMaterial({ color: '#141210', roughness: 0.3, clearcoat: 0.6 })
-  const label = new MeshStandardMaterial({ map: labelTex, roughness: 0.6 })
   const jarMats = []
-  const makeJar = (x, z, color) => {
+  const makeJar = ({ x, z, size }, color) => {
+    const k = JAR_SCALE[size] || 1
     const honey = honeyBase.clone()
     if (color) honey.color.set(color)
     jarMats.push(honey)
     const jar = new Group()
     jar.position.set(x, T, z)
     jar.rotation.y = Math.PI / 6 // mặt phẳng lục giác quay ra trước
+    jar.scale.setScalar(k)
     add(jar, new CylinderGeometry(3.5, 3.5, 7.2, 6), honey, 0, 3.6, 0)
-    add(jar, new CylinderGeometry(3.53, 3.53, 3.8, 6, 1, true), label, 0, 3.4, 0)
+    add(jar, new CylinderGeometry(3.53, 3.53, 3.8, 6, 1, true), labelFor(size), 0, 3.4, 0)
     add(jar, new CylinderGeometry(2.7, 3.1, 0.6, 24), honey, 0, 7.5, 0)
     add(jar, new CylinderGeometry(3.0, 3.0, 1.4, 32), cap, 0, 8.5, 0)
     box.add(jar)
   }
-  // tâm 2 ô lọ trên tấm lót (theo file in)
-  makeJar(-4.9, -1.3, jarColors[0])
-  makeJar(4.9, -1.3, jarColors[1])
+  L.jars.forEach((j, i) => makeJar(j, jarColors[i]))
 
   // ---------- nắp gập: bản lề ở mép trên lưng hộp ----------
   const lid = new Group()
@@ -193,31 +231,26 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
     return s
   })()
 
-  const ready = Promise.all([
-    tex('lid-top.jpg'),
-    tex('lid-flap.jpg', (t) => {
-      // UV của ShapeGeometry là toạ độ cm → đưa về 0..1
-      // co vào một chút: mép ảnh vạt (từ file in) còn sót nền trắng
-      t.repeat.set(0.98 / (W + 0.4), 0.95 / FLAP)
-      t.offset.set(0.5, 0.99)
-    }),
-    tex('lid-back.jpg'),
-    tex('base-bottom.jpg'),
-    tex('base-long.jpg'),
-    tex('base-short.jpg', (t) => {
-      t.center.set(0.5, 0.5)
-      t.rotation = Math.PI / 2
-    }),
-    tex('../hop-mat-trong.jpg'),
-  ]).then(([top, flap, back, bottom, long, short, inside]) => {
+  const ready = Promise.all(['lid-top.jpg', 'lid-flap.jpg', 'base-bottom.jpg', 'base-long.jpg', '../hop-mat-trong.jpg'].map(img)).then(
+    ([topImg, flapImg, bottomImg, sideImg, insideImg]) => {
     const m = (map, extra) => mat({ map, ...extra })
-    const topM = m(top, { roughness: 0.5, envMapIntensity: 0.55 })
-    const longM = m(long)
-    const shortM = m(short)
-    const backM = m(back)
-    const bottomM = m(bottom)
-    const insideM = m(inside, { roughness: 0.7 })
-    const flapM = m(flap, { roughness: 0.5, envMapIntensity: 0.55 })
+    const lidBrown = sampleColor(topImg, topImg.width / 2, 4)
+    const topM = m(fit(topImg, W + 0.4, D + 0.3), { roughness: 0.5, envMapIntensity: 0.55 })
+    const longM = m(fit(sideImg, W, H))
+    const shortM = m(fit(sideImg, D, H))
+    const backM = m(fit(sideImg, W, H))
+    const bottomM = m(fit(bottomImg, W, D, { mode: 'contain', bg: sampleColor(bottomImg, 4, 4) }))
+    const insideM = m(fit(insideImg, W + 0.4, D + 0.3), { roughness: 0.7 })
+    // vạt: chỉ lấy logo ở giữa ảnh vạt (bỏ góc bo trắng của file in), đặt lên nền nâu vừa bề ngang hộp
+    const flapTex = fit(flapImg, W + 0.4, FLAP, {
+      mode: 'top',
+      bg: lidBrown,
+      src: [flapImg.width * 0.3, 0, flapImg.width * 0.4, flapImg.height * 0.85],
+    })
+    // UV của ShapeGeometry là toạ độ cm → đưa về 0..1
+    flapTex.repeat.set(1 / (W + 0.4), 1 / FLAP)
+    flapTex.offset.set(0.5, 1)
+    const flapM = m(flapTex, { roughness: 0.5, envMapIntensity: 0.55 })
 
     // thứ tự mặt BoxGeometry: +x, -x, +y, -y, +z, -z
     add(box, new BoxGeometry(W, H, T), [brown, brown, brown, brown, longM, yellow], 0, H / 2, D / 2 - T / 2)
@@ -244,10 +277,11 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
       p.closePath()
       return p
     }
-    tray.holes.push(rect(-9.4, -4.1, -0.4, 6.7), rect(0.4, -4.1, 9.4, 6.7), rect(-7.8, -6.6, 7.8, -4.9))
+    // shape nằm ngang sau khi xoay: y của shape = -z
+    for (const [x0, z0, x1, z1] of L.holes) tray.holes.push(rect(x0, -z1, x1, -z0))
     const trayGeo = new ExtrudeGeometry(tray, { depth: 0.25, bevelEnabled: false })
     // lót đặt thấp để thấy nhãn lọ khi mở nắp
-    const trayMesh = add(box, trayGeo, [yellow, yellowShade], 0, 2.95, 0)
+    const trayMesh = add(box, trayGeo, [yellow, yellowShade], 0, H * 0.295, 0)
     trayMesh.rotation.x = -Math.PI / 2
 
     // nắp: mặt trên (ngoài MELBEE, trong là lời gửi) + vạt trước
@@ -270,7 +304,7 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
   const shadowTex = new CanvasTexture(shadowCanvas)
   textures.push(shadowTex)
   const shadowMat = new MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, side: DoubleSide })
-  const shadow = add(scene, new PlaneGeometry(44, 30), shadowMat, 0, -H / 2 - 0.6, 0)
+  const shadow = add(scene, new PlaneGeometry(W * 2, D * 2), shadowMat, 0, -H / 2 - 0.6, 0)
   shadow.rotation.x = -Math.PI / 2
 
   // ---------- tương tác ----------
@@ -363,7 +397,7 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
     renderer.setSize(w, h, false)
     camera.aspect = w / h
     // khung hẹp: lùi máy ảnh để hộp không bị cắt
-    baseDist = 58 / Math.min(1, camera.aspect)
+    baseDist = (58 * K) / Math.min(1, camera.aspect)
     camera.updateProjectionMatrix()
     placeCamera(open)
   }
@@ -381,7 +415,7 @@ export function createGiftBox(canvas, { url, logo, jarColors = [], reducedMotion
   return {
     toggle: () => setOpen(!openTarget),
     setOpen,
-    /** đổi màu mật trong 2 lọ theo loại khách chọn */
+    /** đổi màu mật trong các lọ theo loại khách chọn */
     setJarColors(colors) {
       colors.forEach((c, i) => c && jarMats[i]?.color.set(c))
     },

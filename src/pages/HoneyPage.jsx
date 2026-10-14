@@ -1,6 +1,6 @@
 import { useId, useState } from 'react'
-import { Shell, Crumbs, Photo, HoneyCard, OrderButtons, jarPrice, vnd } from './common.jsx'
-import { honeys, sizes, commonInfo } from '../data/catalog.js'
+import { Shell, Crumbs, Photo, HoneyCard, OrderButtons, priceOf, perUnit, vnd } from './common.jsx'
+import { honeys, sizesOf, commonInfo } from '../data/catalog.js'
 import { page } from '../lib/site.js'
 import Reveal from '../components/common/Reveal.jsx'
 
@@ -44,7 +44,7 @@ function InfoTabs({ honey }) {
         )}
         {tab === 1 && (
           <ul className="dots">
-            {commonInfo.usage.map((t) => (
+            {(honey.usage || commonInfo.usage).map((t) => (
               <li key={t}>{t}</li>
             ))}
           </ul>
@@ -55,10 +55,12 @@ function InfoTabs({ honey }) {
               <dt>Bảo quản</dt>
               <dd>{commonInfo.storage}</dd>
             </div>
-            <div>
-              <dt>Mật bị kết tinh?</dt>
-              <dd>{commonInfo.crystallize}</dd>
-            </div>
+            {!honey.comb && (
+              <div>
+                <dt>Mật bị kết tinh?</dt>
+                <dd>{commonInfo.crystallize}</dd>
+              </div>
+            )}
             <div>
               <dt>Lưu ý</dt>
               <dd>
@@ -82,8 +84,10 @@ function InfoTabs({ honey }) {
 export default function HoneyPage({ id }) {
   const honey = honeys.find((h) => h.id === id) || honeys[0]
   const others = honeys.filter((h) => h.id !== honey.id)
-  const [size, setSize] = useState(sizes[1])
-  const price = jarPrice(honey, size)
+  const sizes = sizesOf(honey)
+  // mặc định lọ 380ml (cỡ của hộp quà) nếu loại này có, không thì cỡ đầu tiên
+  const [size, setSize] = useState(sizes.includes('380ml') ? '380ml' : sizes[0])
+  const price = priceOf(honey, size)
 
   return (
     <Shell current="products">
@@ -108,7 +112,7 @@ export default function HoneyPage({ id }) {
           </ul>
 
           <fieldset className="sizes">
-            <legend>Dung tích</legend>
+            <legend>{sizes.every((s) => s.endsWith('ml')) ? 'Dung tích' : 'Quy cách'}</legend>
             <div className="sizes__row">
               {sizes.map((s) => (
                 <button key={s} type="button" aria-pressed={size === s} onClick={() => setSize(s)}>
@@ -119,15 +123,8 @@ export default function HoneyPage({ id }) {
           </fieldset>
 
           <p className="price">
-            <b>{price || 'Liên hệ'}</b>
-            {price ? (
-              <>
-                <em>/ lọ {size}</em>
-                {honey.pricePerLiter && <span>{vnd(honey.pricePerLiter)} / lít</span>}
-              </>
-            ) : (
-              <span>Nhắn MelBee để được báo giá lọ {size}</span>
-            )}
+            <b>{price ? vnd(price) : 'Liên hệ'}</b>
+            {price ? <em>{perUnit(size)}</em> : <span>Nhắn MelBee để được báo giá</span>}
           </p>
 
           <OrderButtons />
@@ -145,10 +142,10 @@ export default function HoneyPage({ id }) {
             <span>Tất cả sản phẩm</span>
           </a>
         </div>
-        <ul className="hgrid is-three">
+        <ul className="hgrid is-others" style={{ '--cols': others.length }}>
           {others.map((h, i) => (
             <Reveal as="li" key={h.id} delay={i * 0.08}>
-              <HoneyCard honey={h} sizes={sizes} compact />
+              <HoneyCard honey={h} compact />
             </Reveal>
           ))}
         </ul>

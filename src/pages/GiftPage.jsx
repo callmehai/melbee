@@ -4,19 +4,35 @@ import Reveal from '../components/common/Reveal.jsx'
 import { giftSet, giftMessage } from '../data/catalog.js'
 import { asset } from '../lib/assets.js'
 
-/** /hop-qua/ — set quà: hộp 3D + chọn 2 lọ mật + đặt; lời gửi in trong nắp hộp. */
+/** /hop-qua/ — hộp quà 2 · 3 · 4 lọ: chọn hộp, chọn mật từng ô, đặt; túi giấy đi kèm; lời gửi in trong nắp hộp. */
 export default function GiftPage() {
   return (
     <Shell current="gift">
       <PageHead
         crumbs={[['Trang chủ', ''], ['Hộp quà']]}
         title="Hộp quà MelBee"
-        sub="Mật ong Tây Bắc trong hộp quà chỉn chu — để biếu, để tặng, để gửi một lời chúc."
+        sub="Hộp 2, 3 hoặc 4 lọ mật ong Tây Bắc, kèm túi giấy cùng bộ — để biếu, để tặng, để gửi một lời chúc."
       />
 
       <div className="container gift-main">
         <GiftSet />
       </div>
+
+      <section className="container bag" aria-labelledby="bag-title">
+        <Reveal className="bag__photo">
+          <img src={asset(giftSet.bag)} alt="Túi giấy MELBEE màu nâu, chữ nhũ vàng, hoa và ong vẽ nét vàng, quai dây vàng" loading="lazy" width="1000" height="872" />
+        </Reveal>
+        <Reveal className="bag__text" delay={0.1}>
+          <p className="eyebrow">Đi kèm mỗi hộp</p>
+          <h2 id="bag-title" className="sp-h2">
+            Túi giấy cùng bộ
+          </h2>
+          <p>
+            Túi nâu trầm, chữ MELBEE nhũ vàng nổi, hoa và ong vẽ nét vàng như trên nắp hộp, quai dây vàng. Túi vừa cỡ từng
+            hộp, đã tính trong 100.000 ₫ tiền hộp và túi.
+          </p>
+        </Reveal>
+      </section>
 
       <section className="letter" aria-labelledby="letter-title">
         <div className="container letter__in">

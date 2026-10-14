@@ -1,64 +1,98 @@
 import { useState } from 'react'
-import { Check, Copy, Minus, Plus } from 'lucide-react'
+import { Check, ChevronDown, Copy, RotateCcw } from 'lucide-react'
 import OrderMenu from '../common/OrderMenu.jsx'
 import SectionHeading from '../common/SectionHeading.jsx'
 import GiftBox3D from '../../pages/giftbox3d/GiftBox3D.jsx'
-import { giftSet, honeys } from '../../data/catalog.js'
+import { giftBoxes, giftBoxFee, giftSet, honeys } from '../../data/catalog.js'
 import { giftSection } from '../../data/giftbox.js'
 import { asset } from '../../lib/assets.js'
-import { page } from '../../lib/site.js'
 import './GiftSet.css'
 
-const SLOTS = 2
-const SIZE = '380ml'
-
-/** Giá một lọ 380ml: giá đặt riêng, không thì tính từ giá lít (làm tròn nghìn); chưa có → null */
-function jarPrice(h) {
-  if (h.prices?.[SIZE]) return Number(String(h.prices[SIZE]).replace(/\D/g, ''))
-  if (!h.pricePerLiter) return null
-  return Math.round((h.pricePerLiter * parseInt(SIZE, 10)) / 1000 / 1000) * 1000
-}
 const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`
+const byId = (id) => honeys.find((h) => h.id === id)
+/** Loại mật có bán lọ cỡ này (bánh tổ không vào hộp lọ) */
+const fits = (size) => honeys.filter((h) => h.prices?.[size])
+/** Giá chọn lẻ = giá các lọ + hộp & túi */
+const loose = (box, jars) => jars.reduce((sum, id, i) => sum + byId(id).prices[box.slots[i]], giftBoxFee)
+const isPresetOf = (box, jars) => jars.every((id, i) => id === box.preset[i])
+/** Đúng set trong bảng giá → giá set cố định; khách đổi mật → giá chọn lẻ */
+const total = (box, jars) => (isPresetOf(box, jars) && box.price ? box.price : loose(box, jars))
 
-/** Lời nhắn mô tả set quà — chép sẵn để khách dán vào Zalo / Facebook. */
-function message(picked, known, missing) {
-  const lines = [`Chào MelBee, mình muốn đặt ${giftSet.name}:`]
-  for (const [h, n] of picked) {
-    const p = jarPrice(h)
-    lines.push(`• ${n} × ${h.name} (${SIZE})${p ? ` — ${vnd(p * n)}` : ''}`)
-  }
-  if (known) lines.push(`Tạm tính ${missing ? 'các lọ đã có giá' : 'mật'} trên web: ${vnd(known)} (chưa gồm hộp)`)
-  return lines.join('\n')
+/** Lời nhắn mô tả hộp — chép sẵn để khách dán vào Zalo / Facebook. */
+function message(box, jars) {
+  return [
+    `Chào MelBee, mình muốn đặt ${box.name} (${box.size}):`,
+    ...jars.map((id, i) => `• ${byId(id).name} ${box.slots[i]} — ${vnd(byId(id).prices[box.slots[i]])}`),
+    `• Hộp cứng + túi giấy — ${vnd(giftBoxFee)}`,
+    `${isPresetOf(box, jars) ? `Giá ${box.set}` : 'Tổng theo giá trên web'}: ${vnd(total(box, jars))}`,
+  ].join('\n')
+}
+
+/** Hộp 3D xoay được · ảnh thiết kế hộp đóng · ảnh mở nắp */
+function BoxVisual({ box, jars, openKey }) {
+  const views = [
+    ['3d', 'Xoay 3D'],
+    ['closed', 'Ảnh hộp'],
+    ['open', 'Ảnh mở nắp'],
+  ]
+  const [view, setView] = useState('3d')
+  return (
+    <figure className="giftset__visual">
+      {view === '3d' ? (
+        <GiftBox3D
+          key={box.id}
+          layout={box.id}
+          jarColors={jars.map((id) => byId(id).color)}
+          openKey={openKey}
+          fallback={<img src={asset(box.photo)} alt={`${box.name} MelBee`} />}
+        />
+      ) : (
+        <div className="giftset__photo">
+          <img
+            key={box.id + view}
+            src={asset(view === 'open' ? box.photoOpen : box.photo)}
+            alt={view === 'open' ? `${box.name} MelBee mở nắp: lót vàng mật, lời gửi in trong nắp` : `${box.name} MelBee, ${box.size}`}
+            width="1000"
+            height="1000"
+          />
+        </div>
+      )}
+      <div className="giftset__views" role="group" aria-label="Cách xem hộp">
+        {views.map(([v, label]) => (
+          <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
+            {label}
+          </button>
+        ))}
+      </div>
+      <figcaption>
+        {box.name} · {box.size} · bản thiết kế
+      </figcaption>
+    </figure>
+  )
 }
 
 /**
- * Set quà 2 lọ 380ml: hộp 3D thật (dựng từ file in) + chọn 2 lọ trong 4 loại mật.
- * Chọn mật → nắp tự mở, màu mật trong lọ đổi theo. Dùng ở trang chủ và trang Hộp quà.
+ * Hộp quà MelBee: chọn hộp 2 · 3 · 4 lọ, đổi loại mật từng ô (đúng cỡ lọ của khay trong hộp),
+ * giá = các lọ + 100.000 ₫ hộp và túi. Mặc định là các set trong bảng giá. Dùng ở trang chủ và trang Hộp quà.
  */
 export default function GiftSet() {
-  const [jars, setJars] = useState(['khoai-rung', 'hang-da'])
+  const [boxId, setBoxId] = useState(giftBoxes[0].id)
+  const [chosen, setChosen] = useState(() => Object.fromEntries(giftBoxes.map((b) => [b.id, b.preset])))
   const [opened, setOpened] = useState(undefined)
   const [copied, setCopied] = useState(false)
 
-  const counts = {}
-  for (const id of jars) counts[id] = (counts[id] || 0) + 1
-  const picked = honeys.filter((h) => counts[h.id]).map((h) => [h, counts[h.id]])
-  const known = picked.reduce((sum, [h, n]) => sum + (jarPrice(h) || 0) * n, 0)
-  const missing = picked.some(([h]) => !jarPrice(h)) || jars.length < SLOTS
-  const colors = jars.map((id) => honeys.find((h) => h.id === id)?.color)
+  const box = giftBoxes.find((b) => b.id === boxId)
+  const jars = chosen[box.id]
+  const isPreset = isPresetOf(box, jars)
+  const saving = loose(box, jars) - total(box, jars)
 
-  const change = (next) => {
-    setJars(next)
-    setOpened((k) => (k || 0) + 1) // chọn mật → mở nắp cho thấy lọ bên trong
-  }
-  const add = (id) => jars.length < SLOTS && change([...jars, id])
-  const remove = (id) => {
-    const i = jars.lastIndexOf(id)
-    if (i >= 0) change(jars.filter((_, j) => j !== i))
+  const setJar = (i, id) => {
+    setChosen((c) => ({ ...c, [box.id]: c[box.id].map((v, j) => (j === i ? id : v)) }))
+    setOpened((k) => (k || 0) + 1) // đổi mật → hộp 3D mở nắp cho thấy lọ bên trong
   }
   const copy = async () => {
     try {
-      await navigator.clipboard.writeText(message(picked, known, missing))
+      await navigator.clipboard.writeText(message(box, jars))
       setCopied(true)
       setTimeout(() => setCopied(false), 4000)
     } catch {
@@ -68,48 +102,56 @@ export default function GiftSet() {
 
   return (
     <div className="giftset">
-      <figure className="giftset__visual">
-        <GiftBox3D
-          jarColors={colors}
-          openKey={opened}
-          fallback={<img src={asset(giftSet.designFront)} alt={`${giftSet.name} — mặt hộp`} />}
-        />
-        <figcaption>Hộp 3D dựng theo bản thiết kế in · 22 × 15 × 10 cm</figcaption>
-      </figure>
+      <BoxVisual box={box} jars={jars} openKey={opened} />
 
       <div className="giftset__panel">
-        <p className="eyebrow">Set quà</p>
-        <h3 className="giftset__name">{giftSet.name}</h3>
+        <fieldset className="giftset__boxes">
+          <legend className="giftset__label">Chọn hộp</legend>
+          {giftBoxes.map((b) => (
+            <label key={b.id} className={b.id === box.id ? 'is-on' : ''}>
+              <input type="radio" name="giftbox" value={b.id} checked={b.id === box.id} onChange={() => setBoxId(b.id)} />
+              <b>{b.name}</b>
+              <small>
+                {vnd(total(b, chosen[b.id]))}
+                {loose(b, chosen[b.id]) > total(b, chosen[b.id]) && <em>Ưu đãi</em>}
+              </small>
+            </label>
+          ))}
+        </fieldset>
+
         <p className="giftset__desc">{giftSet.description}</p>
 
-        <h4 className="giftset__label">
-          Chọn {SLOTS} lọ mật{' '}
-          <span>
-            {jars.length}/{SLOTS}
-          </span>
-        </h4>
+        <div className="giftset__label">
+          Mật trong hộp
+          {!isPreset && (
+            <button type="button" className="giftset__reset" onClick={() => setChosen((c) => ({ ...c, [box.id]: box.preset }))}>
+              <RotateCcw size={13} aria-hidden="true" /> Về {box.set}
+            </button>
+          )}
+        </div>
         <ul className="giftset__jars">
-          {honeys.map((h) => {
-            const n = counts[h.id] || 0
-            const p = jarPrice(h)
+          {box.slots.map((size, i) => {
+            const h = byId(jars[i])
+            const selectId = `${box.id}-slot-${i}`
             return (
-              <li key={h.id} className={n ? 'is-on' : ''}>
+              <li key={selectId}>
                 <span className="giftset__swatch" style={{ '--c': h.color }} aria-hidden="true" />
-                <a className="giftset__jar" href={page(`san-pham/${h.id}/`)}>
-                  <b>{h.short}</b>
+                <label className="giftset__slot" htmlFor={selectId}>
                   <small>
-                    {SIZE} · {p ? vnd(p) : 'Liên hệ'}
+                    Lọ {i + 1} · {size}
                   </small>
-                </a>
-                <span className="giftset__stepper">
-                  <button type="button" onClick={() => remove(h.id)} disabled={!n} aria-label={`Bớt một lọ ${h.short}`}>
-                    <Minus size={15} />
-                  </button>
-                  <output aria-live="polite">{n}</output>
-                  <button type="button" onClick={() => add(h.id)} disabled={jars.length >= SLOTS} aria-label={`Thêm một lọ ${h.short}`}>
-                    <Plus size={15} />
-                  </button>
-                </span>
+                  <span className="giftset__select">
+                    <select id={selectId} value={h.id} onChange={(e) => setJar(i, e.target.value)}>
+                      {fits(size).map((o) => (
+                        <option key={o.id} value={o.id}>
+                          {o.short}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown size={16} aria-hidden="true" />
+                  </span>
+                </label>
+                <span className="giftset__price">{vnd(h.prices[size])}</span>
               </li>
             )
           })}
@@ -118,22 +160,24 @@ export default function GiftSet() {
         <div className="giftset__sum">
           <ul>
             <li>
-              Hộp quà MelBee · nắp gập in nhũ vàng<span>{giftSet.price || 'Liên hệ'}</span>
+              Hộp cứng + túi giấy MELBEE<span>{vnd(giftBoxFee)}</span>
             </li>
-            {picked.map(([h, n]) => (
-              <li key={h.id}>
-                {n} × {h.name}
-                <span>{jarPrice(h) ? vnd(jarPrice(h) * n) : 'Liên hệ'}</span>
+            {saving > 0 && (
+              <li className="giftset__saving">
+                Ưu đãi {box.set}
+                <span>−{vnd(saving)}</span>
               </li>
-            ))}
-            {!jars.length && <li className="is-empty">Chưa chọn lọ mật nào</li>}
+            )}
           </ul>
           <p className="giftset__total">
-            <span>Tạm tính mật</span>
-            <b>{known ? vnd(known) : 'Liên hệ'}</b>
+            <span>{isPreset ? `${box.set} · ${box.name}` : box.name}</span>
+            <b>{vnd(total(box, jars))}</b>
           </p>
           <p className="giftset__note">
-            {missing ? 'Chưa đủ giá để tính trọn hộp — ' : 'Chưa gồm giá hộp — '}MelBee xác nhận giá khi nhắn tin.
+            {isPreset
+              ? `Giá ${box.set} trong bảng giá MelBee${saving > 0 ? ` — rẻ hơn ${vnd(saving)} so với chọn lẻ cùng các lọ` : ''}.`
+              : 'Tự chọn mật: giá từng lọ + 100.000 ₫ hộp và túi.'}{' '}
+            MelBee xác nhận lại khi nhắn tin.
           </p>
         </div>
 

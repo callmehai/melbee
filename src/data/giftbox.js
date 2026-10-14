@@ -10,7 +10,7 @@
 export const giftSection = {
   eyebrow: 'Hộp quà',
   title: ['Một hộp quà', 'mang theo núi rừng'],
-  subtitle: 'Chọn hai loại mật cho hộp quà, xoay hộp để ngắm và mở nắp xem lời gửi bên trong. Gửi đơn cho MelBee qua tin nhắn.',
+  subtitle: 'Hộp 2, 3 hoặc 4 lọ — chọn mật cho từng lọ, xem hộp đóng và mở nắp, rồi gửi đơn cho MelBee qua tin nhắn. Set 4 lọ rẻ hơn chọn lẻ.',
   hint: { mouse: 'Kéo để xoay mọi hướng · bấm để mở nắp', touch: 'Vuốt để xoay · chạm để mở nắp' },
   note: 'Tạm tính theo giá tham khảo — MelBee xác nhận giá khi nhắn tin.',
 }

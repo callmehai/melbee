@@ -127,13 +127,13 @@
 /* ---------- lưới thẻ mật ---------- */
 .hgrid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* --cols: số thẻ một hàng trên máy tính (trang đặt theo số sản phẩm) */
+  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
   gap: 24px;
   padding: 28px 0 64px;
 }
 
-.hgrid.is-three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.hgrid.is-others {
   padding: 20px 0 0;
 }
 
@@ -141,11 +141,6 @@
   .hgrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px 12px;
-  }
-
-  .hgrid.is-three {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
   }
 }
 
@@ -685,6 +680,33 @@
 
   .gift-main__fig {
     max-width: 560px;
+  }
+}
+
+/* túi giấy đi kèm hộp quà (trang Hộp quà) */
+.bag {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 64px);
+  padding-bottom: clamp(48px, 7vw, 88px);
+}
+
+.bag__photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.bag__text p:not(.eyebrow) {
+  margin-top: 12px;
+  max-width: 460px;
+  color: var(--brown-2);
+}
+
+@media (max-width: 760px) {
+  .bag {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,7 +1,5 @@
 import { brand } from '../config/brand.js'
-import { products } from './products.js'
-import { hasAsset } from '../lib/assets.js'
-import { boxSizes } from './giftbox.js'
+import { honeys, giftBoxes, giftBoxFee } from './catalog.js'
 
 /**
  * TRỢ LÝ TỰ ĐỘNG (nút chat góc phải) — KHÔNG phải AI: câu trả lời soạn sẵn, chọn theo từ khoá.
@@ -17,7 +15,9 @@ import { boxSizes } from './giftbox.js'
 
 const zalo = { label: 'Nhắn Zalo', href: brand.zalo }
 const facebook = { label: 'Nhắn Facebook', href: brand.facebook }
-const shown = () => products.filter((p) => hasAsset(p.image))
+const vnd = (n) => `${n.toLocaleString('vi-VN')}\u00a0₫`
+const short = (id) => honeys.find((h) => h.id === id).short
+const loosePrice = (b) => b.preset.reduce((s, id, i) => s + honeys.find((h) => h.id === id).prices[b.slots[i]], giftBoxFee)
 
 export const chatbot = {
   title: `${brand.shortName} xin chào!`,
@@ -53,11 +53,12 @@ export const intents = [
   {
     id: 'products',
     keys: ['giá', 'bao nhiêu', 'loại', 'sản phẩm', 'mua', 'hũ', 'ml', 'tiền', 'bán gì', 'có bán', 'có gì'],
+    // giá lấy thẳng từ bảng giá trong src/data/catalog.js — đổi giá ở đó là câu trả lời tự đổi theo
     answer: () => {
-      const list = shown()
-        .map((p) => `• ${p.name}${p.size ? ` — ${p.size}` : ''}${p.price ? ` · ${p.price}` : ''}\n  ${p.subtitle}`)
+      const list = honeys
+        .map((h) => `• ${h.name}\n  ${Object.entries(h.prices).map(([size, p]) => `${size} ${vnd(p)}`).join(' · ')}`)
         .join('\n')
-      return `Sản phẩm MelBee đang giới thiệu:\n${list}\n\nGiá trên web để tham khảo — MelBee xác nhận lại khi bạn nhắn tin đặt hàng.`
+      return `Sản phẩm MelBee:\n${list}\n\nMelBee xác nhận lại giá và phí giao khi bạn nhắn tin đặt hàng.`
     },
     actions: [{ label: 'Xem sản phẩm', go: 'san-pham/' }, { label: 'Đặt hàng thế nào?', ask: 'Đặt hàng thế nào?' }, zalo],
   },
@@ -65,9 +66,12 @@ export const intents = [
     id: 'gift',
     keys: ['quà', 'hộp', 'hộp quà', 'tặng', 'biếu', 'tết', 'doanh nghiệp', 'thiệp', 'gói'],
     answer: () =>
-      `MelBee có hộp quà lục giác như một ô tổ ong, 3 màu giấy, thắt nơ satin, kèm thiệp viết tay:\n${boxSizes
-        .map((b) => `• ${b.name} — ${b.note.toLowerCase()} · phí hộp ${b.fee}`)
-        .join('\n')}\n\nBạn tự chọn và xem hộp 3D ở phần Hộp quà, xong bấm "Gửi mẫu hộp" để chép sẵn lời nhắn gửi MelBee.`,
+      `Hộp quà MelBee: hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy cùng bộ.\n${giftBoxes
+        .map((b) => {
+          const save = loosePrice(b) - b.price
+          return `• ${b.set} · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}${save > 0 ? ` (rẻ hơn ${vnd(save)} so với chọn lẻ)` : ''}`
+        })
+        .join('\n')}\n\nMuốn đổi loại mật từng lọ: giá các lọ + ${vnd(giftBoxFee)} hộp và túi. Ở trang Hộp quà bạn chọn rồi bấm "Gửi đơn hộp quà" để chép sẵn lời nhắn gửi MelBee.`,
     actions: [{ label: 'Xem hộp quà', go: 'hop-qua/' }, zalo],
   },
   {

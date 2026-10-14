@@ -8,9 +8,9 @@
  *
  * image: ảnh lọ, tính từ public/. Chưa có file → khung "Ảnh sắp ra mắt"; chép ảnh đúng tên vào là tự hiện
  *        (ảnh dọc 4:5, rộng ~1200px, nền sáng, thấy rõ nhãn).
- * pricePerLiter: giá 1 lít (số, đồng). Giá từng lọ tự tính = giá lít × ml ÷ 1000, làm tròn tới nghìn.
- *   null → "Liên hệ".
- * prices: giá lọ đặt riêng (ghi đè giá tự tính), vd { '380ml': '120.000 ₫' }.
+ * prices: GIÁ BÁN từng quy cách đang bán (số, đồng) — theo bảng giá bán MelBee gửi 10/2026.
+ *   Quy cách nào không có trong đây thì web không bán (không hiện nút chọn).
+ *   ⚠️ Chỉ ghi giá bán. Giá nhập là số nội bộ, KHÔNG đưa vào code (repo + web đều công khai).
  * group, short, taste: nhóm mật, tên ngắn, một dòng vị — cho thẻ ở trang Sản phẩm.
  *
  * highlights: viết mềm lại từ mục "Công dụng" trên nhãn — web là quảng cáo, thực phẩm thường
@@ -18,16 +18,61 @@
  * color: màu mật (vòng màu cạnh tên) — chưa có ảnh riêng từng loại.
  */
 
-export const sizes = ['280ml', '380ml', '500ml', '730ml']
+/** Các quy cách đang bán của một sản phẩm, theo thứ tự trong bảng giá (nhỏ → lớn). */
+export const sizesOf = (item) => Object.keys(item.prices || {})
 
-/** Set quà — trang /hop-qua/. Ảnh là bản thiết kế hộp (từ file in), chưa phải ảnh chụp. */
+/**
+ * HỘP QUÀ — trang /hop-qua/ và phần Hộp quà ở trang chủ.
+ * slots: quy cách từng ô của khay carton bế sẵn trong hộp (hộp 3 lọ: ô giữa to hơn → lọ 380ml).
+ * preset + price: set trong bảng giá (Set 2 · Set 3 · Set 4) và giá set cố định của nó.
+ * Khách đổi loại mật từng ô → giá = tổng giá các lọ + giftBoxFee (hộp cứng + túi giấy), quy tắc trong bảng giá.
+ * Set nào có giá thấp hơn cách tính đó thì web hiện "rẻ hơn … so với chọn lẻ" (hiện chỉ Set 4: 650.000 ₫ thay vì 675.000 ₫).
+ * Ảnh: bản dựng của bên thiết kế (đã cắt bỏ ghi chú số lượng sản xuất). Hộp 3D xoay được: src/pages/giftbox3d (layouts.js).
+ */
+export const giftBoxFee = 100000
+
+export const giftBoxes = [
+  {
+    id: 'hop-2',
+    name: 'Hộp 2 lọ',
+    set: 'Set 2',
+    size: '22 × 15 × 10 cm',
+    slots: ['380ml', '380ml'],
+    preset: ['khoai-rung', 'hoa-ban'],
+    price: 465000,
+    photo: 'assets/images/gift/hop-2-lo.jpg',
+    photoOpen: 'assets/images/gift/hop-2-lo-mo.jpg',
+  },
+  {
+    id: 'hop-3',
+    name: 'Hộp 3 lọ',
+    set: 'Set 3',
+    size: '27,5 × 25 × 10 cm',
+    slots: ['280ml', '380ml', '280ml'],
+    preset: ['hoa-ban', 'hang-da', 'hoa-nhan'],
+    price: 565000,
+    photo: 'assets/images/gift/hop-3-lo.jpg',
+    photoOpen: 'assets/images/gift/hop-3-lo-mo.jpg',
+  },
+  {
+    id: 'hop-4',
+    name: 'Hộp 4 lọ',
+    set: 'Set 4',
+    size: '25 × 25 × 9 cm',
+    slots: ['280ml', '280ml', '280ml', '280ml'],
+    // đúng bảng giá: 2 lọ hang đá — lẻ cộng lại 675.000 ₫, set bán 650.000 ₫ (rẻ hơn 25.000 ₫)
+    preset: ['hang-da', 'hoa-ban', 'khoai-rung', 'hang-da'],
+    price: 650000,
+    photo: 'assets/images/gift/hop-4-lo.jpg',
+    photoOpen: 'assets/images/gift/hop-4-lo-mo.jpg',
+  },
+]
+
+/** Phần chung của mọi hộp quà */
 export const giftSet = {
-  name: 'Set quà 2 lọ 380ml',
   description:
-    'Hai lọ mật ong MelBee 380ml trong hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoa và ong vẽ nét. Mở nắp là lời gửi từ núi rừng Tây Bắc, in trên nền vàng mật hoạ tiết tổ ong.',
-  contents: ['2 lọ mật ong MelBee 380ml', 'Hộp cứng in nhũ vàng', 'Lời gửi in ở mặt trong nắp hộp'],
-  price: null, // vd '520.000 ₫' — null → "Liên hệ"
-  photo: 'assets/images/gift/set-2-lo-380ml.jpg', // ảnh chụp thật — chưa có thì dùng ảnh thiết kế bên dưới
+    'Hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoa và ong vẽ nét, thành hộp vân tổ ong. Bên trong lót vàng mật, khay carton bế sẵn giữ chặt từng lọ; mở nắp là lời gửi từ núi rừng Tây Bắc. Kèm túi giấy MELBEE cùng bộ.',
+  bag: 'assets/images/gift/tui-giay.jpg',
   designFront: 'assets/images/gift/hop-mat-truoc.jpg',
   designInside: 'assets/images/gift/hop-mat-trong.jpg',
 }
@@ -45,8 +90,7 @@ export const honeys = [
     group: 'Mật rừng',
     taste: 'Hương nồng hoang dã, ngọt đậm',
     image: 'assets/images/products/khoai-rung.jpg',
-    pricePerLiter: 300000,
-    prices: {},
+    prices: { '280ml': 130000, '380ml': 155000 },
     name: 'Mật ong Khoái rừng Tây Bắc',
     nameEn: 'Pure Wild Apis Dorsata Honey',
     description:
@@ -65,8 +109,7 @@ export const honeys = [
     group: 'Mật rừng',
     taste: 'Sánh đặc, hổ phách sẫm',
     image: 'assets/images/products/hang-da.jpg',
-    pricePerLiter: 380000,
-    prices: {},
+    prices: { '280ml': 145000, '380ml': 190000 },
     name: 'Mật ong Hang đá',
     nameEn: 'Wild Mountain Cave Honey',
     description:
@@ -85,8 +128,7 @@ export const honeys = [
     group: 'Mật hoa',
     taste: 'Vàng sáng, ngọt thanh mát',
     image: 'assets/images/products/hoa-ban.jpg',
-    pricePerLiter: null,
-    prices: {},
+    prices: { '280ml': 155000, '380ml': 210000, '730ml': 400000 },
     name: 'Mật ong Hoa ban Tây Bắc',
     nameEn: 'Northwest Bauhinia Flower Honey',
     description:
@@ -105,8 +147,7 @@ export const honeys = [
     group: 'Mật hoa',
     taste: 'Vàng óng, thơm hương nhãn',
     image: 'assets/images/products/hoa-nhan.jpg',
-    pricePerLiter: null,
-    prices: {},
+    prices: { '280ml': 120000, '500ml': 200000 },
     name: 'Mật ong Hoa nhãn',
     nameEn: 'Northwest Longan Flower Honey',
     description:
@@ -118,6 +159,31 @@ export const honeys = [
       'Pha trà, cà phê, làm bánh hay ướp món nướng đều ngon.',
     ],
     color: '#c27a1a',
+  },
+  {
+    // ✏️ mô tả viết tạm từ tên sản phẩm trong bảng giá — chờ MelBee gửi nội dung nhãn
+    id: 'banh-to-hoa-ban',
+    short: 'Bánh tổ hoa ban',
+    group: 'Bánh tổ',
+    taste: 'Nguyên bánh tổ, ăn cả sáp',
+    image: 'assets/images/products/banh-to-hoa-ban.jpg',
+    prices: { 'Hộp 500g': 275000 },
+    name: 'Mật ong bánh tổ hoa ban',
+    nameEn: 'Bauhinia Honeycomb',
+    description:
+      'Bánh tổ ong còn nguyên mật trong từng ô sáp, từ mùa hoa ban Tây Bắc, đóng hộp 500g. Mật vẫn nằm yên trong tổ như lúc ong vừa làm xong.',
+    traits: ['Nguyên bánh tổ', 'Ăn được cả sáp', 'Mùa hoa ban'],
+    highlights: [
+      'Cắt miếng nhỏ, ăn trực tiếp cả mật lẫn sáp để cảm nhận vị mật nguyên bản.',
+      'Dùng kèm bánh mì, sữa chua, phô mai hay trái cây.',
+      'Món quà lạ miệng, mộc mạc cho người thích mật ong nguyên tổ.',
+    ],
+    color: '#e3b54f',
+    comb: true, // bánh tổ: không có lọ để ngâm nước ấm → ẩn mục "Mật bị kết tinh?"
+    usage: [
+      'Cắt miếng vừa ăn, ăn cả mật lẫn sáp; phần sáp còn lại có thể nhả ra.',
+      'Dùng kèm bánh mì, sữa chua, phô mai hoặc trái cây.',
+    ],
   },
 ]
 

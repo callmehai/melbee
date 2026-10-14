@@ -8,7 +8,7 @@
  * tone:  màu mật cho hình minh hoạ: 'light' | 'amber' | 'dark' | 'comb'
  *
  * ⚠️ Đây là DỮ LIỆU MẪU — hãy thay tên, mô tả, quy cách, giá bằng thông tin thật.
- *    GIÁ HIỆN TẠI LÀ GIÁ TẠM để duyệt giao diện, chưa phải giá bán.
+ *    honey-01 dùng giá bán thật (bảng giá 10/2026); các mục khác còn là giá tạm, chưa hiện vì chưa có ảnh.
  *    Không viết công dụng chữa bệnh/tăng miễn dịch nếu không có căn cứ.
  */
 export const products = [
@@ -16,18 +16,18 @@ export const products = [
     id: 'honey-01',
     // sản phẩm thật — ảnh và tên theo trang Facebook MelBee
     name: 'Mật ong Tây Bắc',
-    subtitle: 'Khoái rừng · Hang đá · Hoa ban · Hoa nhãn',
+    subtitle: 'Khoái rừng · Hang đá · Hoa ban · Hoa nhãn · Bánh tổ',
     description:
-      '4 loại mật MelBee chọn lựa từ các trang trại ong vùng cao Tây Bắc, 100% mật ong nguyên chất, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee.',
+      '4 loại mật và bánh tổ hoa ban MelBee chọn lựa từ các trang trại ong vùng cao Tây Bắc, 100% mật ong nguyên chất, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee.',
     origin: 'Các trang trại ong vùng cao Tây Bắc.',
-    flavor: ['Khoái rừng', 'Hang đá', 'Hoa ban', 'Hoa nhãn'],
+    flavor: ['Khoái rừng', 'Hang đá', 'Hoa ban', 'Hoa nhãn', 'Bánh tổ'],
     usage: ['Mỗi ngày 15g – 30g, pha cùng nước ấm', 'Dùng trực tiếp, pha trà, cà phê', 'Không dùng cho trẻ dưới 1 tuổi'],
     // trang thông tin đầy đủ (đích của mã QR trên hộp quà) — xem src/data/catalog.js
     detailsHref: 'san-pham/',
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
-    price: 'Từ 84.000 ₫', // lọ 280ml Khoái rừng (300.000 ₫/lít) — xem src/data/catalog.js
-    size: '280 · 380 · 500 · 730ml',
+    price: 'Từ 120.000 ₫', // lọ 280ml Hoa nhãn — giá rẻ nhất trong bảng giá bán (src/data/catalog.js)
+    size: '280 · 380 · 500 · 730ml · bánh tổ 500g',
     featured: true,
     facebookMessage: true,
     zaloMessage: true,

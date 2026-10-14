@@ -21,25 +21,116 @@
   color: var(--muted);
 }
 
-.giftset__panel .eyebrow {
-  margin-bottom: 10px;
-}
-
-.giftset__name {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.15;
-}
-
 .giftset__desc {
-  margin-top: 12px;
+  margin-top: 18px;
+  font-size: 15px;
   color: var(--brown-2);
+}
+
+/* ── chọn hộp: 3 thẻ ngang ── */
+.giftset__boxes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.giftset__boxes legend {
+  grid-column: 1 / -1;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.giftset__boxes label {
+  display: grid;
+  align-content: start; /* giá các thẻ thẳng hàng dù thẻ có thêm dòng "ưu đãi" */
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.giftset__boxes label:hover {
+  border-color: var(--brown-2);
+}
+
+.giftset__boxes label.is-on {
+  border-color: var(--honey);
+  box-shadow: inset 0 0 0 1px var(--honey);
+}
+
+.giftset__boxes label:has(input:focus-visible) {
+  outline: 2px solid var(--honey);
+  outline-offset: 2px;
+}
+
+.giftset__boxes input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.giftset__boxes b {
+  font-weight: 500;
+}
+
+.giftset__boxes small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ── ảnh hộp + nút đổi cách xem ── */
+.giftset__photo {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #e9e9ea; /* cùng tông nền xám của ảnh dựng */
+}
+
+.giftset__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: giftset-in 0.4s var(--ease);
+}
+
+@keyframes giftset-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.giftset__views {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.giftset__views button {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+
+.giftset__views button[aria-pressed='true'] {
+  border-color: var(--brown);
+  background: var(--brown);
+  color: var(--ivory);
 }
 
 .giftset__label {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 26px;
   font-size: 12px;
   font-weight: 500;
@@ -48,9 +139,27 @@
   color: var(--honey-deep);
 }
 
-.giftset__label span {
+.giftset__boxes .giftset__label {
+  margin-top: 0;
+}
+
+.giftset__reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12.5px;
   letter-spacing: 0.04em;
-  color: var(--muted);
+  text-transform: none;
+  color: var(--brown-2);
+  cursor: pointer;
+}
+
+.giftset__reset:hover {
+  color: var(--brown);
+  text-decoration: underline;
 }
 
 .giftset__jars {
@@ -70,9 +179,56 @@
   transition: border-color 0.25s, box-shadow 0.25s;
 }
 
-.giftset__jars li.is-on {
-  border-color: var(--honey);
-  box-shadow: inset 0 0 0 1px var(--honey);
+.giftset__slot {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.giftset__slot small {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.giftset__select {
+  position: relative;
+  display: block;
+}
+
+.giftset__select select {
+  width: 100%;
+  min-height: 36px;
+  padding: 0 30px 0 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  font: inherit;
+  font-weight: 500;
+  color: var(--brown);
+  appearance: none;
+  cursor: pointer;
+}
+
+.giftset__select select:focus-visible {
+  outline: none;
+  border-bottom-color: var(--honey);
+}
+
+.giftset__select svg {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  translate: 0 -50%;
+  pointer-events: none;
+  color: var(--muted);
+}
+
+.giftset__price {
+  flex: none;
+  min-width: 92px;
+  text-align: right;
+  font-size: 15px;
 }
 
 .giftset__swatch {
@@ -82,60 +238,6 @@
   border-radius: 4px 4px 6px 6px;
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.45), transparent 45%), var(--c);
   box-shadow: inset 0 -4px 6px rgba(0, 0, 0, 0.18);
-}
-
-.giftset__jar {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  line-height: 1.35;
-}
-
-.giftset__jar b {
-  font-weight: 500;
-}
-
-.giftset__jar:hover b {
-  text-decoration: underline;
-}
-
-.giftset__jar small {
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.giftset__stepper {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.giftset__stepper button {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  background: var(--ivory);
-  cursor: pointer;
-}
-
-.giftset__stepper button:hover:not(:disabled) {
-  border-color: var(--brown-2);
-}
-
-.giftset__stepper button:disabled {
-  opacity: 0.35;
-  cursor: default;
-}
-
-.giftset__stepper output {
-  min-width: 22px;
-  text-align: center;
-  font-weight: 500;
 }
 
 .giftset__sum {
@@ -156,6 +258,17 @@
 .giftset__sum li span {
   flex: none;
   color: var(--brown-2);
+}
+
+.giftset__sum .giftset__saving,
+.giftset__sum .giftset__saving span {
+  color: #3f7a3a;
+}
+
+.giftset__boxes em {
+  display: block;
+  font-style: normal;
+  color: #3f7a3a;
 }
 
 .giftset__sum .is-empty {
@@ -216,5 +329,15 @@
 
   .giftset__visual {
     position: static;
+  }
+}
+
+@media (max-width: 420px) {
+  .giftset__boxes label {
+    padding: 10px;
+  }
+
+  .giftset__price {
+    min-width: 0;
   }
 }

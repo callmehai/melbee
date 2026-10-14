@@ -23,3 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 .shots/
+
+# tài liệu gốc từ bên thiết kế / MelBee — có giá nhập, số lượng sản xuất: KHÔNG commit (repo công khai)
+public/assets/*.docx
+public/assets/*.pdf
+public/assets/1WUp*.jpg
+public/assets/2aobor*.jpg

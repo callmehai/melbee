@@ -5,7 +5,7 @@ import Footer from '../components/Footer/Footer.jsx'
 import SupportWidget from '../components/SupportWidget/SupportWidget.jsx'
 import Button, { FacebookButton, ZaloButton } from '../components/common/Button.jsx'
 import { brand } from '../config/brand.js'
-import { commonInfo, company } from '../data/catalog.js'
+import { commonInfo, company, sizesOf } from '../data/catalog.js'
 import { asset, hasAsset } from '../lib/assets.js'
 import { page } from '../lib/site.js'
 import './pages.css'
@@ -83,21 +83,25 @@ export function Photo({ src, alt, className = '', eager = false }) {
 
 export const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`
 
-/** Giá một lọ: giá đặt riêng nếu có, không thì tự tính từ giá lít (làm tròn tới nghìn), không nữa thì null. */
-export function jarPrice(honey, size) {
-  if (honey.prices?.[size]) return honey.prices[size]
-  if (!honey.pricePerLiter) return null
-  return vnd(Math.round((honey.pricePerLiter * parseInt(size, 10)) / 1000 / 1000) * 1000)
+/** Giá bán một quy cách (số đồng) — quy cách không bán → null. Giá lấy từ bảng giá trong src/data/catalog.js. */
+export const priceOf = (item, size) => item.prices?.[size] ?? null
+
+/** Giá thấp nhất trong các quy cách đang bán */
+export const lowestPrice = (item) => Math.min(...Object.values(item.prices || {}))
+
+/** Quy cách gọn cho thẻ: "280 · 380 · 730ml" hoặc "Hộp 500g" */
+export function sizeLabel(item) {
+  const all = sizesOf(item)
+  return all.every((s) => s.endsWith('ml')) ? `${all.map((s) => s.replace('ml', '')).join(' · ')}ml` : all.join(' · ')
 }
 
-/** Khoảng dung tích "280 – 730ml" */
-export const sizeRange = (sizes) => `${sizes[0].replace('ml', '')} – ${sizes[sizes.length - 1]}`
+/** "/ lọ 380ml" · "/ hộp 500g" — đơn vị đi sau giá */
+export const perUnit = (size) => (/^hộp/i.test(size) ? `/ ${size.toLowerCase()}` : `/ lọ ${size}`)
 
 /** Thẻ một loại mật — cả thẻ là link sang trang chi tiết. */
-export function HoneyCard({ honey, sizes, compact = false }) {
-  // giá lọ nhỏ nhất
-  const from = jarPrice(honey, sizes[0])
-  const price = from ? `từ ${from}` : 'Liên hệ'
+export function HoneyCard({ honey, compact = false }) {
+  const many = sizesOf(honey).length > 1
+  const price = `${many ? 'từ ' : ''}${vnd(lowestPrice(honey))}`
   return (
     <a className={`hcard ${compact ? 'is-compact' : ''}`} href={page(`san-pham/${honey.id}/`)} id={honey.id}>
       <Photo src={honey.image} alt={honey.name} />
@@ -106,7 +110,7 @@ export function HoneyCard({ honey, sizes, compact = false }) {
         <>
           <p className="hcard__taste">{honey.taste}</p>
           <div className="hcard__meta">
-            <span>{sizeRange(sizes)}</span>
+            <span>{sizeLabel(honey)}</span>
             <span>
               Giá: <b>{price}</b>
             </span>

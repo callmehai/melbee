@@ -8,17 +8,17 @@ import { brand } from '../../config/brand.js'
 import './GiftBox3D.css'
 
 const texUrl = (name) => asset(`assets/images/gift/3d/${name}`)
-// ảnh các mặt hộp — tải ngay khi vào trang, song song với three.js (tên khớp với scene.js)
-const TEXTURES = ['lid-top.jpg', 'lid-flap.jpg', 'lid-back.jpg', 'base-bottom.jpg', 'base-long.jpg', 'base-short.jpg', '../hop-mat-trong.jpg']
+// ảnh các mặt hộp — tải song song với three.js (tên khớp với scene.js)
+const TEXTURES = ['lid-top.jpg', 'lid-flap.jpg', 'base-bottom.jpg', 'base-long.jpg', '../hop-mat-trong.jpg']
 
 /**
- * Hộp quà set 2 lọ 380ml 3D, dựng từ file in.
+ * Hộp quà 3D (hộp 2 · 3 · 4 lọ — layout: id hộp, xem layouts.js). Đổi hộp → dựng lại cảnh (dùng key ở chỗ gọi).
  * Khung sắp hiện thì tải three.js + ảnh các mặt hộp song song; trong lúc chờ hiện logo "Đang mở hộp quà…".
  * Máy không có WebGL → hiện `fallback` (ảnh bản thiết kế mặt hộp).
  *
  * jarColors: màu mật 2 lọ (theo loại khách chọn) · openKey: đổi giá trị → mở nắp (vd sau khi chọn mật)
  */
-export default function GiftBox3D({ fallback, jarColors = [], openKey }) {
+export default function GiftBox3D({ layout = 'hop-2', fallback, jarColors = [], openKey }) {
   const canvas = useRef(null)
   const api = useRef(null)
   const colors = useRef(jarColors)
@@ -39,6 +39,7 @@ export default function GiftBox3D({ fallback, jarColors = [], openKey }) {
         await afterPageTransition()
         if (!alive) return
         api.current = createGiftBox(canvas.current, {
+          layout,
           url: texUrl,
           logo: asset(brand.logo),
           jarColors: colors.current,
