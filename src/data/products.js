@@ -18,7 +18,7 @@ export const products = [
     name: 'Mật ong Tây Bắc',
     subtitle: 'Khoái rừng · Hang đá · Hoa ban · Hoa nhãn · Bánh tổ',
     description:
-      '4 loại mật và bánh tổ hoa ban MelBee chọn lựa từ các trang trại ong vùng cao Tây Bắc, 100% mật ong nguyên chất, đóng trong hũ thuỷ tinh lục giác mang nhãn MelBee.',
+      'Bốn loại mật và bánh tổ hoa ban, tuyển chọn từ các trang trại ong vùng cao Tây Bắc — 100% mật ong nguyên chất, đóng trong lọ thuỷ tinh lục giác mang nhãn MelBee.',
     origin: 'Các trang trại ong vùng cao Tây Bắc.',
     flavor: ['Khoái rừng', 'Hang đá', 'Hoa ban', 'Hoa nhãn', 'Bánh tổ'],
     usage: ['Mỗi ngày 15g – 30g, pha cùng nước ấm', 'Dùng trực tiếp, pha trà, cà phê', 'Không dùng cho trẻ dưới 1 tuổi'],

@@ -21,15 +21,15 @@ const loosePrice = (b) => b.preset.reduce((s, id, i) => s + honeys.find((h) => h
 
 export const chatbot = {
   title: `${brand.shortName} xin chào!`,
-  subtitle: 'Trợ lý tự động · trả lời có sẵn',
+  subtitle: 'Trợ lý tự động · câu hỏi thường gặp',
   greeting:
-    'Mình là trợ lý tự động của MelBee. Bạn muốn xem mật ong, làm hộp quà hay hỏi cách đặt hàng? Chọn một câu bên dưới hoặc gõ câu hỏi nhé.',
-  suggestions: ['Có những loại mật nào, giá bao nhiêu?', 'Mình muốn làm hộp quà', 'Đặt hàng thế nào?', 'Phí giao hàng?', 'Bảo quản mật ong ra sao?'],
-  footnote: 'Trả lời tự động theo thông tin của MelBee — cần tư vấn kỹ hơn, hãy nhắn Zalo / Facebook.',
+    'Xin chào! Đây là trợ lý tự động của MelBee. Bạn có thể tìm hiểu các loại mật, hộp quà hoặc cách đặt hàng — chọn một câu hỏi bên dưới hoặc nhập câu hỏi của bạn.',
+  suggestions: ['Các loại mật và bảng giá', 'Tư vấn hộp quà', 'Cách đặt hàng', 'Phí và thời gian giao hàng', 'Cách bảo quản mật ong'],
+  footnote: 'Câu trả lời tự động dựa trên thông tin của MelBee. Để được tư vấn chi tiết, vui lòng nhắn qua Zalo hoặc Facebook.',
   fallback: {
     answer:
-      'Câu này mình chưa trả lời được 🙏 Bạn nhắn Zalo hoặc Facebook để MelBee trả lời trực tiếp nhé — hoặc chọn một câu hỏi bên dưới.',
-    actions: [zalo, facebook, { label: 'Có những loại mật nào?', ask: 'Có những loại mật nào, giá bao nhiêu?' }],
+      'Câu hỏi này cần MelBee giải đáp trực tiếp. Bạn vui lòng nhắn qua Zalo hoặc Facebook, hoặc chọn một câu hỏi bên dưới.',
+    actions: [zalo, facebook, { label: 'Các loại mật và bảng giá', ask: 'Các loại mật và bảng giá' }],
   },
 }
 
@@ -37,17 +37,17 @@ export const intents = [
   {
     id: 'hello',
     keys: ['chào', 'hello', 'hi', 'alo', 'ơi'],
-    answer: 'Chào bạn! MelBee có thể giúp gì cho bạn — xem mật ong, làm hộp quà hay cách đặt hàng?',
+    answer: 'Xin chào! MelBee có thể hỗ trợ bạn tìm hiểu các loại mật, hộp quà hoặc cách đặt hàng.',
     actions: [
-      { label: 'Xem các loại mật', ask: 'Có những loại mật nào, giá bao nhiêu?' },
-      { label: 'Làm hộp quà', ask: 'Mình muốn làm hộp quà' },
+      { label: 'Các loại mật và bảng giá', ask: 'Các loại mật và bảng giá' },
+      { label: 'Tư vấn hộp quà', ask: 'Tư vấn hộp quà' },
     ],
   },
   {
     id: 'order',
     keys: ['đặt', 'order', 'đặt hàng', 'mua thế nào', 'mua ở đâu', 'cách mua', 'chốt', 'inbox', 'nhắn'],
     answer:
-      'MelBee nhận đặt hàng qua tin nhắn, không cần tạo tài khoản: nhắn Zalo hoặc Facebook kèm tên sản phẩm, số lượng và địa chỉ nhận — MelBee sẽ tư vấn và xác nhận đơn trực tiếp.',
+      'MelBee nhận đặt hàng qua tin nhắn, không cần tạo tài khoản. Bạn chỉ cần nhắn Zalo hoặc Facebook kèm tên sản phẩm, số lượng và địa chỉ nhận hàng — MelBee sẽ tư vấn và xác nhận đơn trực tiếp.',
     actions: [zalo, facebook],
   },
   {
@@ -60,38 +60,38 @@ export const intents = [
         .join('\n')
       return `Sản phẩm MelBee:\n${list}\n\nMelBee xác nhận lại giá và phí giao khi bạn nhắn tin đặt hàng.`
     },
-    actions: [{ label: 'Xem sản phẩm', go: 'san-pham/' }, { label: 'Đặt hàng thế nào?', ask: 'Đặt hàng thế nào?' }, zalo],
+    actions: [{ label: 'Xem sản phẩm', go: 'san-pham/' }, { label: 'Cách đặt hàng', ask: 'Cách đặt hàng' }, zalo],
   },
   {
     id: 'gift',
     keys: ['quà', 'hộp', 'hộp quà', 'tặng', 'biếu', 'tết', 'doanh nghiệp', 'thiệp', 'gói'],
     answer: () =>
-      `Hộp quà MelBee: hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy cùng bộ.\n${giftBoxes
+      `Hộp quà MelBee: hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy đồng bộ.\n${giftBoxes
         .map((b) => {
           const save = loosePrice(b) - b.price
-          return `• ${b.set} · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}${save > 0 ? ` (rẻ hơn ${vnd(save)} so với chọn lẻ)` : ''}`
+          return `• ${b.set} · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}${save > 0 ? ` (tiết kiệm ${vnd(save)} so với mua lẻ)` : ''}`
         })
-        .join('\n')}\n\nMuốn đổi loại mật từng lọ: giá các lọ + ${vnd(giftBoxFee)} hộp và túi. Ở trang Hộp quà bạn chọn rồi bấm "Gửi đơn hộp quà" để chép sẵn lời nhắn gửi MelBee.`,
+        .join('\n')}\n\nBạn cũng có thể tự chọn loại mật cho từng lọ: giá bằng tổng các lọ cộng ${vnd(giftBoxFee)} hộp và túi. Tại trang Hộp quà, chọn xong bấm "Đặt hộp quà" để gửi thông tin cho MelBee.`,
     actions: [{ label: 'Xem hộp quà', go: 'hop-qua/' }, zalo],
   },
   {
     id: 'ship',
     keys: ['ship', 'giao', 'vận chuyển', 'phí', 'bao lâu', 'tỉnh', 'cod', 'nhận hàng'],
     answer:
-      'Phí và thời gian giao hàng tuỳ địa chỉ của bạn — MelBee báo cụ thể khi bạn nhắn tin đặt hàng (hiện MelBee ở Hà Nội).',
-    actions: [zalo, { label: 'Đặt hàng thế nào?', ask: 'Đặt hàng thế nào?' }],
+      'Phí và thời gian giao hàng tuỳ theo địa chỉ nhận. MelBee (Hà Nội) sẽ báo cụ thể khi xác nhận đơn qua tin nhắn.',
+    actions: [zalo, { label: 'Cách đặt hàng', ask: 'Cách đặt hàng' }],
   },
   {
     id: 'pay',
     keys: ['thanh toán', 'chuyển khoản', 'trả tiền', 'payment', 'tiền mặt'],
-    answer: 'Cách thanh toán MelBee sẽ hướng dẫn khi xác nhận đơn qua tin nhắn.',
+    answer: 'MelBee sẽ hướng dẫn hình thức thanh toán khi xác nhận đơn qua tin nhắn.',
     actions: [zalo, facebook],
   },
   {
     id: 'origin',
     keys: ['nguồn gốc', 'ở đâu', 'điện biên', 'tây bắc', 'rừng', 'thật', 'nguyên chất', 'giả', 'hoa gì', 'lấy mật'],
     answer:
-      'Mật ong MelBee đến từ những mùa hoa nơi núi rừng Điện Biên, Tây Bắc. Hành trình từ mùa hoa đến hũ mật được kể ở phần Nguồn gốc và Quy trình — thông tin chi tiết về từng nguồn mật MelBee đang cập nhật thêm.',
+      'Mật ong MelBee đến từ những mùa hoa nơi núi rừng Điện Biên, Tây Bắc. Hành trình từ mùa hoa đến lọ mật được giới thiệu ở trang Câu chuyện; thông tin chi tiết về từng nguồn mật đang được MelBee tiếp tục cập nhật.',
     actions: [
       { label: 'Xem câu chuyện MelBee', go: 'cau-chuyen/' },
     ],
@@ -100,21 +100,22 @@ export const intents = [
     id: 'store',
     keys: ['bảo quản', 'kết tinh', 'đông', 'đặc lại', 'hạn', 'tủ lạnh', 'để được bao lâu', 'cất'],
     answer:
-      'Mật ong nên đậy kín nắp, để nơi khô ráo, thoáng mát, tránh nắng; dùng thìa khô, sạch. Mật để lâu có thể kết tinh (đặc lại, lợn cợn) — đó là hiện tượng tự nhiên; muốn lỏng lại thì ngâm hũ trong nước ấm (dưới 40°C).',
-    actions: [{ label: 'Cách dùng mật ong?', ask: 'Dùng mật ong thế nào?' }],
+      // theo nhãn in trên lọ (src/data/catalog.js → commonInfo)
+      'Bảo quản mật ong nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp; đậy kín nắp và dùng thìa khô, sạch. Không bảo quản trong tủ lạnh. Mật ong tự nhiên có thể kết tinh theo thời gian — đây là hiện tượng tự nhiên, không làm giảm chất lượng; để mật lỏng lại, ngâm lọ vào nước ấm khoảng 60°C cho đến khi tan.',
+    actions: [{ label: 'Cách dùng mật ong', ask: 'Cách dùng mật ong' }],
   },
   {
     id: 'use',
     keys: ['dùng', 'cách dùng', 'pha', 'uống', 'ăn', 'công dụng', 'tác dụng', 'chữa', 'bệnh', 'giảm cân'],
     answer:
-      'MelBee giới thiệu mật ong như một thực phẩm, không đưa ra công dụng chữa bệnh. Bạn có thể pha cùng nước ấm, dùng với trà, chanh, gừng, hay rưới lên bánh, sữa chua.',
-    actions: [{ label: 'Bảo quản thế nào?', ask: 'Bảo quản mật ong ra sao?' }],
+      'MelBee giới thiệu mật ong như một thực phẩm, không đưa ra công dụng chữa bệnh. Mỗi ngày có thể dùng 15–30g pha cùng nước ấm, dùng với trà, chanh, gừng hoặc rưới lên bánh, sữa chua.',
+    actions: [{ label: 'Cách bảo quản mật ong', ask: 'Cách bảo quản mật ong' }],
   },
   {
     id: 'baby',
     keys: ['trẻ', 'em bé', 'bé', 'sơ sinh', 'con nhỏ', 'tháng', 'tuổi', 'bầu', 'mang thai'],
     answer:
-      'Lưu ý chung: không cho trẻ dưới 1 tuổi ăn mật ong. Với trẻ lớn hơn, người đang mang thai hoặc có bệnh nền, bạn nên hỏi ý kiến bác sĩ.',
+      'Không sử dụng mật ong cho trẻ dưới 1 tuổi. Với trẻ lớn hơn, phụ nữ mang thai hoặc người có bệnh nền, nên tham khảo ý kiến bác sĩ trước khi dùng.',
     actions: [zalo],
   },
   {
@@ -136,7 +137,7 @@ export const intents = [
   {
     id: 'thanks',
     keys: ['cảm ơn', 'cám ơn', 'thanks', 'thank', 'ok', 'oke'],
-    answer: 'Không có gì ạ! Cần thêm gì bạn cứ hỏi, hoặc nhắn Zalo để MelBee tư vấn trực tiếp nhé 🐝',
+    answer: 'Cảm ơn bạn đã quan tâm đến MelBee! Nếu cần tư vấn thêm, bạn có thể nhắn trực tiếp qua Zalo.',
     actions: [zalo],
   },
 ]

@@ -11,7 +11,7 @@ export default function GiftPage() {
       <PageHead
         crumbs={[['Trang chủ', ''], ['Hộp quà']]}
         title="Hộp quà MelBee"
-        sub="Hộp 2, 3 hoặc 4 lọ mật ong Tây Bắc, kèm túi giấy cùng bộ — để biếu, để tặng, để gửi một lời chúc."
+        sub="Hộp 2, 3 hoặc 4 lọ mật ong Tây Bắc, kèm túi giấy đồng bộ — để biếu, để tặng, để gửi một lời chúc."
       />
 
       <div className="container gift-main">
@@ -25,11 +25,11 @@ export default function GiftPage() {
         <Reveal className="bag__text" delay={0.1}>
           <p className="eyebrow">Đi kèm mỗi hộp</p>
           <h2 id="bag-title" className="sp-h2">
-            Túi giấy cùng bộ
+            Túi giấy đồng bộ
           </h2>
           <p>
-            Túi nâu trầm, chữ MELBEE nhũ vàng nổi, hoa và ong vẽ nét vàng như trên nắp hộp, quai dây vàng. Túi vừa cỡ từng
-            hộp, đã tính trong 100.000 ₫ tiền hộp và túi.
+            Túi giấy nâu trầm, chữ MELBEE nhũ vàng nổi, hoạ tiết hoa và ong đồng bộ với nắp hộp, quai dây vàng. Mỗi hộp
+            quà đi kèm một túi vừa vặn, đã bao gồm trong 100.000 ₫ phí hộp và túi.
           </p>
         </Reveal>
       </section>

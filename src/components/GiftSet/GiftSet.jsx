@@ -24,7 +24,7 @@ function message(box, jars) {
     `Chào MelBee, mình muốn đặt ${box.name} (${box.size}):`,
     ...jars.map((id, i) => `• ${byId(id).name} ${box.slots[i]} — ${vnd(byId(id).prices[box.slots[i]])}`),
     `• Hộp cứng + túi giấy — ${vnd(giftBoxFee)}`,
-    `${isPresetOf(box, jars) ? `Giá ${box.set}` : 'Tổng theo giá trên web'}: ${vnd(total(box, jars))}`,
+    `${isPresetOf(box, jars) ? `Giá trọn bộ ${box.set}` : 'Tạm tính'}: ${vnd(total(box, jars))}`,
   ].join('\n')
 }
 
@@ -125,7 +125,7 @@ export default function GiftSet() {
           Mật trong hộp
           {!isPreset && (
             <button type="button" className="giftset__reset" onClick={() => setChosen((c) => ({ ...c, [box.id]: box.preset }))}>
-              <RotateCcw size={13} aria-hidden="true" /> Về {box.set}
+              <RotateCcw size={13} aria-hidden="true" /> Dùng lại {box.set}
             </button>
           )}
         </div>
@@ -175,17 +175,17 @@ export default function GiftSet() {
           </p>
           <p className="giftset__note">
             {isPreset
-              ? `Giá ${box.set} trong bảng giá MelBee${saving > 0 ? ` — rẻ hơn ${vnd(saving)} so với chọn lẻ cùng các lọ` : ''}.`
-              : 'Tự chọn mật: giá từng lọ + 100.000 ₫ hộp và túi.'}{' '}
-            MelBee xác nhận lại khi nhắn tin.
+              ? `Giá trọn bộ ${box.set}${saving > 0 ? ` — tiết kiệm ${vnd(saving)} so với mua lẻ` : ''}.`
+              : 'Bộ tự chọn: tổng giá các lọ cộng 100.000 ₫ hộp và túi.'}{' '}
+            MelBee xác nhận lại giá khi nhận đơn.
           </p>
         </div>
 
         <div className="giftset__actions">
-          <OrderMenu label="Gửi đơn hộp quà" align="up" hint="Lời nhắn mô tả hộp được chép sẵn — mở khung chat rồi dán vào là xong." onPick={copy} />
+          <OrderMenu label="Đặt hộp quà" align="up" hint="Thông tin hộp quà đã được sao chép — chỉ cần dán vào khung chat." onPick={copy} />
           <button type="button" className="giftset__copy" onClick={copy}>
             {copied ? <Check size={15} /> : <Copy size={15} />}
-            {copied ? 'Đã chép lời nhắn' : 'Chép lời nhắn'}
+            {copied ? 'Đã sao chép' : 'Sao chép thông tin đơn'}
           </button>
         </div>
       </div>

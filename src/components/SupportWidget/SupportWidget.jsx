@@ -114,7 +114,7 @@ export default function SupportWidget() {
             </header>
 
             <div className="support__list" ref={listRef} aria-live="polite">
-              <p className="support__eyebrow">Hỏi nhanh · trả lời liền</p>
+              <p className="support__eyebrow">Giải đáp câu hỏi thường gặp</p>
               <div className="support__msg is-bot">{chatbot.greeting}</div>
               {!msgs.length && (
                 <div className="support__chips">

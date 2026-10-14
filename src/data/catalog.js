@@ -71,7 +71,7 @@ export const giftBoxes = [
 /** Phần chung của mọi hộp quà */
 export const giftSet = {
   description:
-    'Hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoa và ong vẽ nét, thành hộp vân tổ ong. Bên trong lót vàng mật, khay carton bế sẵn giữ chặt từng lọ; mở nắp là lời gửi từ núi rừng Tây Bắc. Kèm túi giấy MELBEE cùng bộ.',
+    'Hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoạ tiết hoa và ong, thành hộp vân tổ ong. Bên trong lót vàng mật, khay định hình giữ chắc từng lọ; mở nắp là lời gửi từ núi rừng Tây Bắc. Đi kèm túi giấy MELBEE đồng bộ.',
   bag: 'assets/images/gift/tui-giay.jpg',
   designFront: 'assets/images/gift/hop-mat-truoc.jpg',
   designInside: 'assets/images/gift/hop-mat-trong.jpg',
@@ -97,9 +97,9 @@ export const honeys = [
       'Thu hoạch từ tổ ong khoái tự nhiên đóng trên các cành cây cao nơi đại ngàn Tây Bắc. Mật mang hương thơm nồng nàn hoang dã, vị ngọt đậm đà đặc trưng.',
     traits: ['Hương nồng hoang dã', 'Ngọt đậm đà', 'Ong khoái tự nhiên'],
     highlights: [
-      'Mật rừng nguyên bản từ tổ ong khoái tự nhiên — loài ong làm tổ trên cây cao, không nuôi được.',
-      'Nguồn năng lượng tự nhiên cho ngày dài: một thìa pha nước ấm buổi sáng.',
-      'Pha cùng nước ấm, chanh, gừng — thức uống ấm áp những ngày trở gió.',
+      'Mật rừng nguyên bản từ tổ ong khoái tự nhiên — loài ong làm tổ trên những cành cây cao và không thể nuôi.',
+      'Một thìa mật pha nước ấm mỗi sáng — nguồn năng lượng tự nhiên cho ngày dài.',
+      'Pha cùng nước ấm, chanh, gừng — thức uống ấm áp cho những ngày trở gió.',
     ],
     color: '#8a4f12',
   },
@@ -117,8 +117,8 @@ export const honeys = [
     traits: ['Sánh đặc', 'Hổ phách sẫm', 'Ong rừng vách đá'],
     highlights: [
       'Mật của ong rừng làm tổ trên vách đá, hang đá núi cao Tây Bắc.',
-      'Món quà bồi bổ ý nghĩa dành tặng ông bà, cha mẹ.',
-      'Mật đặc, vị đậm — ngon nhất khi dùng trực tiếp một thìa nhỏ.',
+      'Món quà ý nghĩa dành tặng ông bà, cha mẹ.',
+      'Mật đặc, vị đậm — trọn vị nhất khi thưởng thức trực tiếp từng thìa nhỏ.',
     ],
     color: '#6b3a10',
   },
@@ -135,8 +135,8 @@ export const honeys = [
       'Chắt lọc từ những vạt hoa ban trắng nở rộ khắp núi rừng Tây Bắc vào mùa xuân. Mật màu vàng sáng, vị ngọt thanh mát, hương thơm thảo mộc dịu nhẹ.',
     traits: ['Vàng sáng', 'Ngọt thanh mát', 'Hương thảo mộc dịu'],
     highlights: [
-      'Vị thanh, dễ uống — hợp với người mới làm quen với mật ong.',
-      'Pha nước mát ngày hè hoặc cùng trà xanh, trà hoa.',
+      'Vị thanh, dễ dùng — phù hợp với người mới làm quen với mật ong.',
+      'Pha nước mát ngày hè hoặc dùng cùng trà xanh, trà hoa.',
       'Một cốc nước mật ong ấm trước giờ ngủ cho buổi tối thư thái.',
     ],
     color: '#d9a531',
@@ -154,9 +154,9 @@ export const honeys = [
       'Thu hoạch từ những vùng nhãn cổ thụ tại Tây Bắc. Mật ong có màu vàng óng sóng sánh, hương thơm nồng nàn quyến rũ, vị ngọt đượm vị hoa nhãn.',
     traits: ['Vàng óng', 'Thơm hương nhãn', 'Ngọt đượm'],
     highlights: [
-      'Hương hoa nhãn đặc trưng, ngọt dễ chịu — hợp khẩu vị cả nhà.',
+      'Hương hoa nhãn đặc trưng, vị ngọt dễ chịu — hợp khẩu vị cả gia đình.',
       'Bổ sung năng lượng tự nhiên cho những ngày bận rộn.',
-      'Pha trà, cà phê, làm bánh hay ướp món nướng đều ngon.',
+      'Dùng pha trà, cà phê, làm bánh hay ướp các món nướng.',
     ],
     color: '#c27a1a',
   },
@@ -171,17 +171,17 @@ export const honeys = [
     name: 'Mật ong bánh tổ hoa ban',
     nameEn: 'Bauhinia Honeycomb',
     description:
-      'Bánh tổ ong còn nguyên mật trong từng ô sáp, từ mùa hoa ban Tây Bắc, đóng hộp 500g. Mật vẫn nằm yên trong tổ như lúc ong vừa làm xong.',
+      'Bánh tổ ong còn nguyên mật trong từng ô sáp, thu từ mùa hoa ban Tây Bắc, đóng hộp 500g — giữ trọn vẻ nguyên bản như khi vừa rời tổ.',
     traits: ['Nguyên bánh tổ', 'Ăn được cả sáp', 'Mùa hoa ban'],
     highlights: [
-      'Cắt miếng nhỏ, ăn trực tiếp cả mật lẫn sáp để cảm nhận vị mật nguyên bản.',
+      'Cắt miếng nhỏ, thưởng thức trực tiếp cả mật lẫn sáp để cảm nhận vị mật nguyên bản.',
       'Dùng kèm bánh mì, sữa chua, phô mai hay trái cây.',
-      'Món quà lạ miệng, mộc mạc cho người thích mật ong nguyên tổ.',
+      'Món quà mộc mạc, độc đáo cho người yêu mật ong nguyên tổ.',
     ],
     color: '#e3b54f',
     comb: true, // bánh tổ: không có lọ để ngâm nước ấm → ẩn mục "Mật bị kết tinh?"
     usage: [
-      'Cắt miếng vừa ăn, ăn cả mật lẫn sáp; phần sáp còn lại có thể nhả ra.',
+      'Cắt miếng vừa ăn, dùng cả mật lẫn sáp; phần sáp còn lại có thể bỏ đi.',
       'Dùng kèm bánh mì, sữa chua, phô mai hoặc trái cây.',
     ],
   },

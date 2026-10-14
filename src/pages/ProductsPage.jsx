@@ -17,7 +17,7 @@ export default function ProductsPage() {
       <PageHead
         crumbs={[['Trang chủ', ''], ['Sản phẩm']]}
         title="Mật ong MelBee"
-        sub="4 loại mật và bánh tổ hoa ban từ các trang trại ong vùng cao Tây Bắc · 100% mật ong nguyên chất."
+        sub="Bốn loại mật và bánh tổ hoa ban từ các trang trại ong vùng cao Tây Bắc · 100% mật ong nguyên chất."
       />
 
       <div className="container">
@@ -37,8 +37,8 @@ export default function ProductsPage() {
             <p className="eyebrow">Hộp quà</p>
             <h2 id="giftband-title">Hộp quà 2 · 3 · 4 lọ</h2>
             <p className="giftband__text">
-              Hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy cùng bộ. Set 2 · 3 · 4 lọ từ {setFrom()}, hoặc tự chọn mật
-              cho từng lọ: giá các lọ cộng {giftBoxFee.toLocaleString('vi-VN')} ₫ hộp và túi.
+              Hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy đồng bộ. Các set 2 · 3 · 4 lọ từ {setFrom()}, hoặc tự chọn
+              loại mật cho từng lọ với giá các lọ cộng {giftBoxFee.toLocaleString('vi-VN')} ₫ hộp và túi.
             </p>
             <Button href={page('hop-qua/')} variant="light">
               Xem hộp quà

@@ -28,9 +28,9 @@ export const hero = {
   eyebrow: 'MelBee · Mùa hoa vùng cao',
   title: 'Mật Ong Tây Bắc',
   tagline: 'Mật ngọt từ hoa, tinh hoa từ rừng.',
-  subtext: 'Mang mật ong từ vùng núi Điện Biên đến gần hơn với bạn — rõ ràng, chỉn chu và đáng tin cậy.',
+  subtext: 'Mật ong nguyên chất từ núi rừng Điện Biên — rõ nguồn gốc, chỉn chu từ lọ mật đến hộp quà.',
   primaryCta: { label: 'Khám phá sản phẩm', href: 'san-pham/' },
-  secondaryCta: { label: 'Câu chuyện của chúng tôi', href: 'cau-chuyen/' },
+  secondaryCta: { label: 'Câu chuyện MelBee', href: 'cau-chuyen/' },
   image: 'assets/images/hero/hero.jpg',
   // Video nền (tuỳ chọn) — chỉ tải sau khi trang đã hiện xong
   video: 'assets/videos/hero.mp4',
@@ -41,8 +41,8 @@ export const intro = {
   title: ['Một giọt mật', 'mang theo cả mùa hoa'],
   paragraphs: [
     'Mật ong không chỉ là vị ngọt.',
-    'Đó là dấu vết của những mùa hoa, của núi rừng, của người nuôi ong và của hành trình từ những vùng đất tự nhiên đến từng giọt mật.',
-    'Mỗi sản phẩm được giới thiệu với mong muốn giữ lại sự nguyên bản và câu chuyện phía sau nó.',
+    'Đó là dấu ấn của những mùa hoa, của núi rừng và của người nuôi ong — được gìn giữ qua cả hành trình từ vùng đất tự nhiên đến từng giọt mật.',
+    'Mỗi sản phẩm MelBee gửi đến bạn đều giữ trọn vị nguyên bản cùng câu chuyện phía sau.',
   ],
   // khung này mặc định là miếng bánh tổ 3D lắc được; ảnh / tranh dưới đây chỉ hiện khi máy không có WebGL
   image: 'assets/images/story/intro-macro.jpg',
@@ -54,16 +54,16 @@ export const productsSection = {
   eyebrow: 'Sản phẩm',
   title: 'Khám phá những giọt mật từ Tây Bắc',
   subtitle:
-    'Những sản phẩm được tuyển chọn từ nguồn nguyên liệu tự nhiên và chăm chút trong từng công đoạn.',
-  note: 'Đặt hàng bằng cách nhắn tin — chúng tôi sẽ tư vấn và xác nhận trực tiếp.',
+    'Tuyển chọn từ nguồn nguyên liệu tự nhiên, chăm chút trong từng công đoạn.',
+  note: 'Đặt hàng qua Zalo hoặc Facebook — MelBee tư vấn và xác nhận đơn trực tiếp.',
 }
 
 export const story = {
   title: 'Câu chuyện của chúng tôi',
   paragraphs: [
-    'Giữa rất nhiều sản phẩm mật ong, điều người dùng cần không chỉ là một lời khẳng định “nguyên chất”, mà là sự an tâm về nguồn gốc và hành trình tạo nên sản phẩm.',
+    'Giữa rất nhiều sản phẩm mật ong, điều người tiêu dùng tìm kiếm không chỉ là lời khẳng định “nguyên chất”, mà là sự an tâm về nguồn gốc và hành trình tạo nên sản phẩm.',
     'MelBee được hình thành từ mong muốn mang mật ong từ vùng núi Điện Biên đến gần hơn với người tiêu dùng — giữ lại vị ngọt tự nhiên và cả câu chuyện về vùng đất, người nuôi ong phía sau mỗi giọt mật.',
-    'Không dừng ở một sản phẩm dùng hằng ngày, MelBee muốn mật ong trở thành một món quà gần gũi, mang nét riêng của núi rừng Tây Bắc.',
+    'Không chỉ là thực phẩm dùng hằng ngày, MelBee mong mật ong trở thành một món quà gần gũi, mang đậm nét riêng của núi rừng Tây Bắc.',
   ],
   image: 'assets/images/story/story.jpg',
   imageAlt: 'Người nuôi ong bên đàn ong giữa núi rừng Tây Bắc',
@@ -104,19 +104,19 @@ export const process = {
     },
     {
       title: 'Thu mật',
-      text: 'Mật được thu khi đủ độ chín trong tổ, từ những cầu ong đã được ong vít nắp sáp.',
+      text: 'Mật chỉ được thu khi đã chín trong tổ — từ những cầu ong đã được đàn ong vít nắp sáp.',
       image: 'assets/images/process/03-thu-mat.jpg',
       art: 'frame',
     },
     {
       title: 'Lọc và bảo quản',
-      text: 'Mật được lọc để loại bỏ tạp chất và bảo quản trong điều kiện phù hợp.',
+      text: 'Mật được lọc sạch tạp chất và bảo quản trong điều kiện phù hợp.',
       image: 'assets/images/process/04-loc.jpg',
       art: 'drip',
     },
     {
-      title: 'Đóng chai',
-      text: 'Mật được đóng chai cẩn thận, sẵn sàng cho hành trình từ núi rừng đến tay bạn.',
+      title: 'Đóng lọ',
+      text: 'Mật được đóng lọ cẩn thận, sẵn sàng cho hành trình từ núi rừng đến tay bạn.',
       image: 'assets/images/process/05-dong-chai.jpg',
       art: 'jar',
     },
@@ -129,19 +129,19 @@ export const whyUs = {
   items: [
     {
       title: 'Nguồn mật gắn với mùa hoa vùng cao',
-      text: 'Từ những cánh hoa đến hành trình của đàn ong — mật đến từ đâu, MelBee muốn bạn đều được biết.',
+      text: 'Từ cánh hoa đến hành trình của đàn ong — MelBee muốn bạn biết rõ mỗi giọt mật đến từ đâu.',
     },
     {
       title: 'Đồng hành cùng người nuôi ong',
-      text: 'MelBee hướng đến hợp tác với các hộ, trại ong tại vùng nguyên liệu, góp phần nâng giá trị sản vật địa phương.',
+      text: 'MelBee hợp tác cùng các hộ và trang trại ong tại vùng nguyên liệu, góp phần nâng tầm giá trị sản vật địa phương.',
     },
     {
       title: 'Bảo quản & thông tin rõ ràng',
-      text: 'Hướng đến quy trình kiểm soát bảo quản và truy xuất thông tin minh bạch, từ nguồn mật đến tay khách hàng.',
+      text: 'MelBee hướng đến quy trình bảo quản được kiểm soát và thông tin minh bạch, từ nguồn mật đến tay khách hàng.',
     },
     {
       title: 'Món quà mang dấu ấn Tây Bắc',
-      text: 'Thiết kế hiện đại, câu chuyện vùng miền và những bộ quà chỉn chu để trao gửi trong dịp ý nghĩa.',
+      text: 'Thiết kế hiện đại, câu chuyện vùng miền và những bộ quà chỉn chu để trao gửi trong những dịp ý nghĩa.',
     },
   ],
 }
@@ -152,19 +152,19 @@ export const lifestyle = {
   items: [
     {
       title: 'Pha cùng nước ấm',
-      text: 'Một ly nước ấm với mật ong cho buổi sáng nhẹ nhàng.',
+      text: 'Một cốc nước ấm pha mật ong cho buổi sáng nhẹ nhàng.',
       image: 'assets/images/lifestyle/water.jpg',
       art: 'water',
     },
     {
       title: 'Dùng cùng trà',
-      text: 'Thêm chút mật vào tách trà nóng, vị ngọt dịu và thơm hơn.',
+      text: 'Một thìa mật trong tách trà nóng cho vị ngọt dịu và hương thơm đậm đà hơn.',
       image: 'assets/images/lifestyle/tea.jpg',
       art: 'tea',
     },
     {
       title: 'Trong món ăn',
-      text: 'Rưới lên bánh, sữa chua, hoặc dùng làm sốt cho món nướng.',
+      text: 'Rưới lên bánh, sữa chua hoặc làm sốt cho các món nướng.',
       image: 'assets/images/lifestyle/food.jpg',
       art: 'food',
     },
@@ -199,8 +199,8 @@ export const testimonialsSection = {
 }
 
 export const cta = {
-  title: ['Muốn thử một chút', 'hương vị Tây Bắc?'],
-  subtext: 'Nhắn tin cho chúng tôi để được tư vấn sản phẩm phù hợp.',
+  title: ['Mang vị ngọt Tây Bắc', 'về ngôi nhà của bạn'],
+  subtext: 'Nhắn MelBee qua Zalo hoặc Facebook để được tư vấn loại mật phù hợp.',
   image: 'assets/images/hero/cta.jpg',
   art: 'landscape-sunset',
 }

@@ -14,7 +14,7 @@ export default function ContactPage() {
       <PageHead
         crumbs={[['Trang chủ', ''], ['Liên hệ']]}
         title="Liên hệ MelBee"
-        sub={`Đặt mật, đặt hộp quà hay hỏi về sản phẩm. ${productsSection.note}`}
+        sub={`Đặt mật ong, hộp quà hoặc cần tư vấn về sản phẩm. ${productsSection.note}`}
       />
 
       <div className="container">
@@ -22,14 +22,14 @@ export default function ContactPage() {
           <Reveal as="li" className="is-main">
             <ZaloLogo size={40} />
             <h2>Zalo</h2>
-            <p>Nhanh nhất — nhắn tin, gửi ảnh, nhận báo giá.</p>
+            <p>Phản hồi nhanh nhất — tư vấn, báo giá và xác nhận đơn.</p>
             <p className="channels__id">{company.hotlineDisplay}</p>
             <ZaloButton variant="zalo-solid">Nhắn Zalo</ZaloButton>
           </Reveal>
           <Reveal as="li" delay={0.08}>
             <FacebookLogo size={40} />
             <h2>Facebook</h2>
-            <p>Nhắn tin trang MelBee — Mật ong Tây Bắc.</p>
+            <p>Nhắn tin tới fanpage MelBee — Mật ong Tây Bắc.</p>
             <p className="channels__id">facebook.com/melbeetaybac</p>
             <FacebookButton variant="outline">Nhắn Facebook</FacebookButton>
           </Reveal>
