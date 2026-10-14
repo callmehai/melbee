@@ -56,6 +56,13 @@ blockquote {
   margin: 0;
 }
 
+/* không để một chữ đứng trơ ở dòng cuối đoạn */
+p,
+li,
+figcaption {
+  text-wrap: pretty;
+}
+
 ul,
 ol {
   padding: 0;

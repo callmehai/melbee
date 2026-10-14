@@ -28,7 +28,9 @@
 }
 
 .products.is-single .products__note {
+  max-width: 1080px;
   margin-top: 40px;
+  text-align: left; /* thẳng cột với khối sản phẩm phía trên */
 }
 
 .products__note {

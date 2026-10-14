@@ -14,7 +14,7 @@ const ease = [0.22, 0.8, 0.24, 1]
 const item = (delay) => ({
   initial: { opacity: 0, y: 28 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, delay, ease },
+  transition: { duration: 0.7, delay, ease },
 })
 
 export default function Hero() {
@@ -82,19 +82,19 @@ export default function Hero() {
       </motion.div>
 
       <motion.div className="container hero__content" style={still ? undefined : { y: textY, opacity: textOpacity }}>
-        <motion.p className="hero__eyebrow" {...item(0.35)}>
+        <motion.p className="hero__eyebrow" {...item(0.05)}>
           {hero.eyebrow}
         </motion.p>
-        <motion.h1 className="hero__title" {...item(0.55)}>
+        <motion.h1 className="hero__title" {...item(0.12)}>
           {hero.title}
         </motion.h1>
-        <motion.p className="hero__tagline" {...item(0.8)}>
+        <motion.p className="hero__tagline" {...item(0.22)}>
           {hero.tagline}
         </motion.p>
-        <motion.p className="hero__sub" {...item(0.95)}>
+        <motion.p className="hero__sub" {...item(0.3)}>
           {hero.subtext}
         </motion.p>
-        <motion.div className="hero__ctas" {...item(1.15)}>
+        <motion.div className="hero__ctas" {...item(0.4)}>
           <Button href={hero.primaryCta.href} data-bee-perch="top-right">{hero.primaryCta.label}</Button>
           <Button href={hero.secondaryCta.href} variant="outline">
             {hero.secondaryCta.label}
@@ -102,7 +102,7 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      <motion.a href="#nguon-goc" className="hero__scroll" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 1 }} aria-label="Cuộn xuống">
+      <motion.a href="#nguon-goc" className="hero__scroll" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 0.8 }} aria-label="Cuộn xuống">
         <span>Cuộn xuống</span>
         <ArrowDown size={16} aria-hidden="true" />
       </motion.a>

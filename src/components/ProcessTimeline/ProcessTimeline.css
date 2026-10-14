@@ -111,8 +111,8 @@
   font-style: italic;
   font-size: clamp(40px, 4.2vw, 60px);
   line-height: 1;
-  color: var(--honey);
-  opacity: 0.35;
+  color: var(--honey-deep);
+  opacity: 0.75;
   transition: opacity 0.35s;
 }
 

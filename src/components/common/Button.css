@@ -60,12 +60,16 @@
 
 .btn--solid {
   background: var(--honey);
-  color: var(--ivory);
+  color: var(--brown); /* chữ nâu trên nền mật: 4,7:1 (chữ ngà chỉ 2,8:1) */
   box-shadow: 0 10px 24px -12px rgba(200, 138, 36, 0.8);
 }
 
 .btn--solid::before {
   background: var(--brown);
+}
+
+.btn--solid:hover {
+  color: var(--ivory);
 }
 
 .btn--outline {

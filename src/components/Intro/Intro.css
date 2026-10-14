@@ -88,12 +88,12 @@
   right: 0;
   bottom: 22px;
   text-align: center;
-  font-size: 10.5px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: var(--brown-2);
-  opacity: 0.62;
+  color: var(--muted);
+  opacity: 1;
   transition: opacity 0.8s var(--ease);
   pointer-events: none;
 }

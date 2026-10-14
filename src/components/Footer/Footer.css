@@ -186,7 +186,9 @@
 
 /* chừa chỗ cho hai nút nổi Zalo / hỏi nhanh ở góc phải */
 .footer__bottom a {
+  display: inline-block;
   margin-right: 84px;
+  padding: 6px 0; /* vùng bấm cao hơn 24px */
 }
 
 @media (max-width: 960px) {

@@ -236,7 +236,7 @@
 
   .hgrid .photo__tag {
     padding: 2px 7px;
-    font-size: 9px;
+    font-size: 11px;
     letter-spacing: 0.08em;
   }
 }
@@ -417,6 +417,18 @@
   background: var(--cream);
   font-size: 13.5px;
   font-weight: 400;
+}
+
+/* điện thoại: ba nhãn nằm gọn một hàng */
+@media (max-width: 420px) {
+  .chips {
+    gap: 5px;
+  }
+
+  .chips li {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
 }
 
 .sizes {
