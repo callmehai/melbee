@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Check, ChevronDown, Copy, RotateCcw } from 'lucide-react'
 import OrderMenu from '../common/OrderMenu.jsx'
 import SectionHeading from '../common/SectionHeading.jsx'
@@ -26,6 +26,113 @@ function message(box, jars) {
     `• Hộp cứng + túi giấy — ${vnd(giftBoxFee)}`,
     `${isPresetOf(box, jars) ? `Giá trọn bộ ${box.set}` : 'Tạm tính'}: ${vnd(total(box, jars))}`,
   ].join('\n')
+}
+
+/**
+ * Chọn loại mật cho một lọ — menu tự dựng thay cho <select> (menu mặc định của hệ điều hành xám, lệch giao diện).
+ * Mỗi dòng: màu mật · tên · giá đúng cỡ lọ. Bàn phím: ↑ ↓ Home End để chọn, Enter / Space chốt, Esc đóng.
+ * Sát đáy màn hình thì mở lên trên.
+ */
+function JarSelect({ id, labelId, size, value, onChange }) {
+  const options = fits(size)
+  const [open, setOpen] = useState(false)
+  const [up, setUp] = useState(false)
+  const [active, setActive] = useState(0)
+  const ref = useRef(null)
+  const list = useRef(null)
+  const current = byId(value)
+
+  useEffect(() => {
+    if (!open) return
+    list.current?.focus()
+    const onDown = (e) => {
+      if (!ref.current?.contains(e.target)) setOpen(false)
+    }
+    document.addEventListener('pointerdown', onDown)
+    return () => document.removeEventListener('pointerdown', onDown)
+  }, [open])
+
+  const show = () => {
+    const r = ref.current.getBoundingClientRect()
+    setUp(window.innerHeight - r.bottom < options.length * 46 + 24 && r.top > window.innerHeight - r.bottom)
+    setActive(Math.max(0, options.findIndex((o) => o.id === value)))
+    setOpen(true)
+  }
+  const close = () => {
+    setOpen(false)
+    ref.current?.querySelector('button')?.focus()
+  }
+  const pick = (o) => {
+    onChange(o.id)
+    close()
+  }
+  const onListKey = (e) => {
+    const last = options.length - 1
+    const move = { ArrowDown: Math.min(last, active + 1), ArrowUp: Math.max(0, active - 1), Home: 0, End: last }[e.key]
+    if (move !== undefined) {
+      e.preventDefault()
+      setActive(move)
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      pick(options[active])
+    } else if (e.key === 'Escape') {
+      e.preventDefault()
+      close()
+    } else if (e.key === 'Tab') setOpen(false)
+  }
+
+  return (
+    <div className="jarsel" ref={ref}>
+      <button
+        type="button"
+        id={id}
+        className="jarsel__btn"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-labelledby={`${labelId} ${id}`}
+        onClick={() => (open ? setOpen(false) : show())}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            e.preventDefault()
+            show()
+          }
+        }}
+      >
+        <span>{current.short}</span>
+        <ChevronDown size={16} aria-hidden="true" />
+      </button>
+      {open && (
+        <ul
+          ref={list}
+          role="listbox"
+          tabIndex={-1}
+          aria-labelledby={labelId}
+          aria-activedescendant={`${id}-opt-${active}`}
+          className={`jarsel__list${up ? ' is-up' : ''}`}
+          onKeyDown={onListKey}
+        >
+          {options.map((o, i) => (
+            <li
+              key={o.id}
+              id={`${id}-opt-${i}`}
+              role="option"
+              aria-selected={o.id === value}
+              className={i === active ? 'is-active' : ''}
+              onPointerEnter={() => setActive(i)}
+              onClick={() => pick(o)}
+            >
+              <span className="giftset__swatch" style={{ '--c': o.color }} aria-hidden="true" />
+              <b>{o.short}</b>
+              <small>{vnd(o.prices[size])}</small>
+              <span className="jarsel__check" aria-hidden="true">
+                {o.id === value && <Check size={15} />}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }
 
 /** Hộp 3D xoay được · ảnh thiết kế hộp đóng · ảnh mở nắp */
@@ -136,21 +243,12 @@ export default function GiftSet() {
             return (
               <li key={selectId}>
                 <span className="giftset__swatch" style={{ '--c': h.color }} aria-hidden="true" />
-                <label className="giftset__slot" htmlFor={selectId}>
-                  <small>
+                <div className="giftset__slot">
+                  <small id={`${selectId}-label`}>
                     Lọ {i + 1} · {size}
                   </small>
-                  <span className="giftset__select">
-                    <select id={selectId} value={h.id} onChange={(e) => setJar(i, e.target.value)}>
-                      {fits(size).map((o) => (
-                        <option key={o.id} value={o.id}>
-                          {o.short}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDown size={16} aria-hidden="true" />
-                  </span>
-                </label>
+                  <JarSelect id={selectId} labelId={`${selectId}-label`} size={size} value={h.id} onChange={(id) => setJar(i, id)} />
+                </div>
                 <span className="giftset__price">{vnd(h.prices[size])}</span>
               </li>
             )
