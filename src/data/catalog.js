@@ -26,7 +26,7 @@ export const sizesOf = (item) => Object.keys(item.prices || {})
  * slots: quy cách từng ô của khay carton bế sẵn trong hộp (hộp 3 lọ: ô giữa to hơn → lọ 380ml).
  * preset + price: set trong bảng giá (Set 2 · Set 3 · Set 4) và giá set cố định của nó.
  * Khách đổi loại mật từng ô → giá = tổng giá các lọ + giftBoxFee (hộp cứng + túi giấy), quy tắc trong bảng giá.
- * Set nào có giá thấp hơn cách tính đó thì web hiện "rẻ hơn … so với chọn lẻ" (hiện chỉ Set 4: 650.000 ₫ thay vì 675.000 ₫).
+ * Set nào có giá thấp hơn cách tính đó thì web hiện "tiết kiệm … so với mua lẻ" (hiện cả ba set đều bằng giá chọn lẻ).
  * Ảnh: bản dựng của bên thiết kế (đã cắt bỏ ghi chú số lượng sản xuất). Hộp 3D xoay được: src/pages/giftbox3d (layouts.js).
  */
 export const giftBoxFee = 100000
@@ -60,8 +60,8 @@ export const giftBoxes = [
     set: 'Set 4',
     size: '25 × 25 × 9 cm',
     slots: ['280ml', '280ml', '280ml', '280ml'],
-    // đúng bảng giá: 2 lọ hang đá — lẻ cộng lại 675.000 ₫, set bán 650.000 ₫ (rẻ hơn 25.000 ₫)
-    preset: ['hang-da', 'hoa-ban', 'khoai-rung', 'hang-da'],
+    // bốn loại mật khác nhau — cộng lẻ đúng bằng giá set 650.000 ₫
+    preset: ['hang-da', 'hoa-ban', 'khoai-rung', 'hoa-nhan'],
     price: 650000,
     photo: 'assets/images/gift/hop-4-lo.jpg',
     photoOpen: 'assets/images/gift/hop-4-lo-mo.jpg',
