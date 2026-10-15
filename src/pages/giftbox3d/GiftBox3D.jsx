@@ -16,7 +16,7 @@ const TEXTURES = ['lid-top.jpg', 'lid-flap.jpg', 'base-bottom.jpg', 'base-long.j
  * Khung sắp hiện thì tải three.js + ảnh các mặt hộp song song; trong lúc chờ hiện logo "Đang mở hộp quà…".
  * Máy không có WebGL → hiện `fallback` (ảnh bản thiết kế mặt hộp).
  *
- * jarColors: màu mật 2 lọ (theo loại khách chọn) · openKey: đổi giá trị → mở nắp (vd sau khi chọn mật)
+ * jarColors: màu mật từng lọ theo set · openKey: đổi giá trị → mở nắp
  */
 export default function GiftBox3D({ layout = 'hop-2', fallback, jarColors = [], openKey }) {
   const canvas = useRef(null)

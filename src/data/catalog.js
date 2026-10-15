@@ -24,12 +24,10 @@ export const sizesOf = (item) => Object.keys(item.prices || {})
 /**
  * HỘP QUÀ — trang /hop-qua/ và phần Hộp quà ở trang chủ.
  * slots: quy cách từng ô của khay carton bế sẵn trong hộp (hộp 3 lọ: ô giữa to hơn → lọ 380ml).
- * preset + price: set trong bảng giá (Set 2 · Set 3 · Set 4) và giá set cố định của nó.
- * Khách đổi loại mật từng ô → giá = tổng giá các lọ + giftBoxFee (hộp cứng + túi giấy), quy tắc trong bảng giá.
- * Set nào có giá thấp hơn cách tính đó thì web hiện "tiết kiệm … so với mua lẻ" (hiện cả ba set đều bằng giá chọn lẻ).
+ * preset + price: set trong bảng giá (Set 2 · Set 3 · Set 4) — loại mật và giá cố định, khách không đổi mật từng lọ.
+ * Giá set đã gồm hộp cứng + túi giấy.
  * Ảnh: bản dựng của bên thiết kế (đã cắt bỏ ghi chú số lượng sản xuất). Hộp 3D xoay được: src/pages/giftbox3d (layouts.js).
  */
-export const giftBoxFee = 100000
 
 export const giftBoxes = [
   {

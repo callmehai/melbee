@@ -4,7 +4,7 @@ import Reveal from '../components/common/Reveal.jsx'
 import { giftSet, giftMessage } from '../data/catalog.js'
 import { asset } from '../lib/assets.js'
 
-/** /hop-qua/ — hộp quà 2 · 3 · 4 lọ: chọn hộp, chọn mật từng ô, đặt; túi giấy đi kèm; lời gửi in trong nắp hộp. */
+/** /hop-qua/ — hộp quà 2 · 3 · 4 lọ: chọn set (loại mật cố định), đặt; túi giấy đi kèm; lời gửi in trong nắp hộp. */
 export default function GiftPage() {
   return (
     <Shell current="gift">

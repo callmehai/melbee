@@ -1,5 +1,5 @@
 import { brand } from '../config/brand.js'
-import { honeys, giftBoxes, giftBoxFee } from './catalog.js'
+import { honeys, giftBoxes } from './catalog.js'
 
 /**
  * TRỢ LÝ TỰ ĐỘNG (nút chat góc phải) — KHÔNG phải AI: câu trả lời soạn sẵn, chọn theo từ khoá.
@@ -17,7 +17,6 @@ const zalo = { label: 'Nhắn Zalo', href: brand.zalo }
 const facebook = { label: 'Nhắn Facebook', href: brand.facebook }
 const vnd = (n) => `${n.toLocaleString('vi-VN')}\u00a0₫`
 const short = (id) => honeys.find((h) => h.id === id).short
-const loosePrice = (b) => b.preset.reduce((s, id, i) => s + honeys.find((h) => h.id === id).prices[b.slots[i]], giftBoxFee)
 
 export const chatbot = {
   title: `${brand.shortName} xin chào!`,
@@ -67,11 +66,8 @@ export const intents = [
     keys: ['quà', 'hộp', 'hộp quà', 'tặng', 'biếu', 'tết', 'doanh nghiệp', 'thiệp', 'gói'],
     answer: () =>
       `Hộp quà MelBee: hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy đồng bộ.\n${giftBoxes
-        .map((b) => {
-          const save = loosePrice(b) - b.price
-          return `• ${b.set} · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}${save > 0 ? ` (tiết kiệm ${vnd(save)} so với mua lẻ)` : ''}`
-        })
-        .join('\n')}\n\nBạn cũng có thể tự chọn loại mật cho từng lọ: giá bằng tổng các lọ cộng ${vnd(giftBoxFee)} hộp và túi. Tại trang Hộp quà, chọn xong bấm "Đặt hộp quà" để gửi thông tin cho MelBee.`,
+        .map((b) => `• ${b.set} · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}`)
+        .join('\n')}\n\nGiá trọn bộ đã gồm hộp và túi; mỗi set có sẵn các loại mật như trên. Tại trang Hộp quà, chọn set rồi bấm "Đặt hộp quà" để gửi thông tin cho MelBee.`,
     actions: [{ label: 'Xem hộp quà', go: 'hop-qua/' }, zalo],
   },
   {

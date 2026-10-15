@@ -45,7 +45,7 @@
 
 .giftset__boxes label {
   display: grid;
-  align-content: start; /* giá các thẻ thẳng hàng dù thẻ có thêm dòng "ưu đãi" */
+  align-content: start;
   gap: 2px;
   padding: 12px 14px;
   border: 1px solid var(--line);
@@ -143,25 +143,6 @@
   margin-top: 0;
 }
 
-.giftset__reset {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  color: var(--brown-2);
-  cursor: pointer;
-}
-
-.giftset__reset:hover {
-  color: var(--brown);
-  text-decoration: underline;
-}
-
 .giftset__jars {
   display: grid;
   gap: 8px;
@@ -191,141 +172,9 @@
   color: var(--muted);
 }
 
-.jarsel {
-  position: relative;
-}
-
-.jarsel__btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  width: 100%;
-  min-height: 36px;
-  padding: 0;
-  border: 0;
-  border-bottom: 1px solid var(--line);
-  background: none;
-  font: inherit;
+.giftset__slot b {
+  font-size: 15.5px;
   font-weight: 500;
-  text-align: left;
-  color: var(--brown);
-  cursor: pointer;
-  transition: border-color 0.2s;
-}
-
-.jarsel__btn:hover,
-.jarsel__btn[aria-expanded='true'] {
-  border-bottom-color: var(--honey);
-}
-
-.jarsel__btn:focus-visible {
-  outline: 2px solid var(--honey);
-  outline-offset: 3px;
-  border-radius: 4px;
-}
-
-.jarsel__btn svg {
-  flex: none;
-  color: var(--muted);
-  transition: rotate 0.2s var(--ease);
-}
-
-.jarsel__btn[aria-expanded='true'] svg {
-  rotate: 180deg;
-}
-
-.jarsel__list {
-  position: absolute;
-  left: -10px;
-  /* rộng bằng ô chọn, tối thiểu đủ cho "Khoái rừng  130.000 ₫" trên một dòng */
-  width: max(calc(100% + 20px), 260px);
-  top: calc(100% + 6px);
-  z-index: 30;
-  margin: 0;
-  padding: 6px;
-  list-style: none;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 20px 44px -20px rgba(58, 41, 29, 0.4);
-  animation: jarsel-in 0.16s var(--ease);
-}
-
-.jarsel__list.is-up {
-  top: auto;
-  bottom: calc(100% + 6px);
-}
-
-.jarsel__list:focus {
-  outline: none;
-}
-
-@keyframes jarsel-in {
-  from {
-    opacity: 0;
-    translate: 0 -4px;
-  }
-}
-
-.jarsel__list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 40px;
-  padding: 6px 10px;
-  border: 0;
-  border-radius: 8px;
-  background: none;
-  cursor: pointer;
-}
-
-.jarsel__list li.is-active {
-  background: var(--cream);
-}
-
-.jarsel__list li .giftset__swatch {
-  width: 16px;
-  height: 19px;
-}
-
-.jarsel__list b,
-.jarsel__list small {
-  white-space: nowrap;
-}
-
-.jarsel__list b {
-  font-weight: 400;
-}
-
-.jarsel__list li[aria-selected='true'] b {
-  font-weight: 500;
-}
-
-.jarsel__list small {
-  margin-left: auto;
-  font-size: 13.5px;
-  color: var(--muted);
-}
-
-.jarsel__check {
-  display: grid;
-  place-items: center;
-  width: 16px;
-  color: var(--honey-deep);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .jarsel__list {
-    animation: none;
-  }
-}
-
-.giftset__price {
-  flex: none;
-  min-width: 92px;
-  text-align: right;
-  font-size: 15px;
 }
 
 .giftset__swatch {
@@ -355,17 +204,6 @@
 .giftset__sum li span {
   flex: none;
   color: var(--brown-2);
-}
-
-.giftset__sum .giftset__saving,
-.giftset__sum .giftset__saving span {
-  color: #3f7a3a;
-}
-
-.giftset__boxes em {
-  display: block;
-  font-style: normal;
-  color: #3f7a3a;
 }
 
 .giftset__sum .is-empty {
@@ -432,9 +270,5 @@
 @media (max-width: 420px) {
   .giftset__boxes label {
     padding: 10px;
-  }
-
-  .giftset__price {
-    min-width: 0;
   }
 }
