@@ -9,19 +9,19 @@ import './GiftBox3D.css'
 
 const texUrl = (name) => asset(`assets/images/gift/3d/${name}`)
 // ảnh các mặt hộp — tải song song với three.js (tên khớp với scene.js)
-const TEXTURES = ['lid-top.jpg', 'lid-flap.jpg', 'base-bottom.jpg', 'base-long.jpg', '../hop-mat-trong.jpg']
+const TEXTURES = ['lid-top.jpg', 'base-bottom.jpg', 'base-long.jpg', '../hop-mat-trong.jpg']
 
 /**
  * Hộp quà 3D (hộp 2 · 3 · 4 lọ — layout: id hộp, xem layouts.js). Đổi hộp → dựng lại cảnh (dùng key ở chỗ gọi).
  * Khung sắp hiện thì tải three.js + ảnh các mặt hộp song song; trong lúc chờ hiện logo "Đang mở hộp quà…".
  * Máy không có WebGL → hiện `fallback` (ảnh bản thiết kế mặt hộp).
  *
- * jarColors: màu mật từng lọ theo set · openKey: đổi giá trị → mở nắp
+ * jars: từng lọ theo set { color: màu mật, bg / ink: màu nhãn, name } · openKey: đổi giá trị → mở nắp
  */
-export default function GiftBox3D({ layout = 'hop-2', fallback, jarColors = [], openKey }) {
+export default function GiftBox3D({ layout = 'hop-2', fallback, jars = [], openKey }) {
   const canvas = useRef(null)
   const api = useRef(null)
-  const colors = useRef(jarColors)
+  const jarList = useRef(jars)
   const [state, setState] = useState(() => (hasWebGL() ? 'loading' : 'off')) // loading | ready | off
   const [open, setOpen] = useState(false)
   const touch = useMediaQuery('(hover: none)')
@@ -42,7 +42,7 @@ export default function GiftBox3D({ layout = 'hop-2', fallback, jarColors = [], 
           layout,
           url: texUrl,
           logo: asset(brand.logo),
-          jarColors: colors.current,
+          jars: jarList.current,
           reducedMotion: reduced,
           onReady: (err) => alive && setState(err ? 'off' : 'ready'),
           onOpenChange: (v) => alive && setOpen(v),
@@ -67,16 +67,9 @@ export default function GiftBox3D({ layout = 'hop-2', fallback, jarColors = [], 
       api.current?.dispose()
       api.current = null
     }
-    // tạo cảnh một lần; màu mật, mở nắp cập nhật qua api bên dưới
+    // tạo cảnh một lần (đổi set thì dựng lại nhờ key ở chỗ gọi); mở nắp cập nhật qua api bên dưới
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const colorKey = jarColors.join(',')
-  useEffect(() => {
-    colors.current = jarColors
-    api.current?.setJarColors(jarColors)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colorKey])
 
   useEffect(() => {
     if (openKey !== undefined) api.current?.setOpen(true)

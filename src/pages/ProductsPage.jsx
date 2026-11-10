@@ -1,23 +1,19 @@
-import { Shell, PageHead, HoneyCard, UsageInfo, Photo } from './common.jsx'
-import Button from '../components/common/Button.jsx'
-import { honeys, giftBoxes } from '../data/catalog.js'
-import { page } from '../lib/site.js'
+import { Shell, PageHead, HoneyCard, UsageInfo } from './common.jsx'
+import GiftBand from '../components/GiftBand/GiftBand.jsx'
+import { honeys } from '../data/catalog.js'
 import Reveal from '../components/common/Reveal.jsx'
 
 /**
  * /san-pham/ — đích của mã QR trên hộp quà.
- * Người quét cần nhận ra ngay lọ mình đang cầm: cả 4 loại mật + bánh tổ trong một lưới, bấm vào là sang trang chi tiết.
+ * Người quét cần nhận ra ngay lọ mình đang cầm: cả 5 loại mật + bánh tổ trong một lưới, bấm vào là sang trang chi tiết.
  */
-/** Giá set rẻ nhất trong bảng giá (Set 2) */
-const setFrom = () => `${Math.min(...giftBoxes.map((b) => b.price)).toLocaleString('vi-VN')} ₫`
-
 export default function ProductsPage() {
   return (
     <Shell current="products">
       <PageHead
         crumbs={[['Trang chủ', ''], ['Sản phẩm']]}
         title="Mật ong MelBee"
-        sub="Bốn loại mật và bánh tổ hoa ban từ các trang trại ong vùng cao Tây Bắc · 100% mật ong nguyên chất."
+        sub="Năm loại mật và bánh tổ hoa ban từ các trang trại ong vùng cao Tây Bắc · 100% mật ong nguyên chất."
       />
 
       <div className="container">
@@ -31,19 +27,8 @@ export default function ProductsPage() {
       </div>
 
       <div className="container">
-        <Reveal as="section" className="giftband" aria-labelledby="giftband-title">
-          <Photo src={giftBoxes[0].photo} alt={`${giftBoxes[0].name} MelBee`} className="giftband__img" />
-          <div>
-            <p className="eyebrow">Hộp quà</p>
-            <h2 id="giftband-title">Hộp quà 2 · 3 · 4 lọ</h2>
-            <p className="giftband__text">
-              Hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy đồng bộ. Set 2 · 3 · 4 lọ phối sẵn các loại mật, giá trọn bộ
-              từ {setFrom()}.
-            </p>
-            <Button href={page('hop-qua/')} variant="light">
-              Xem hộp quà
-            </Button>
-          </div>
+        <Reveal>
+          <GiftBand />
         </Reveal>
       </div>
 

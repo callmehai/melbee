@@ -176,8 +176,9 @@
 
 .hcard__meta {
   display: flex;
-  justify-content: space-between;
-  gap: 8px;
+  /* dung tích một dòng, giá một dòng: 6 thẻ một hàng thì hai thứ đặt cạnh nhau bị gãy giữa chừng */
+  flex-direction: column;
+  gap: 2px;
   /* đẩy giá + "Xem chi tiết" xuống đáy thẻ: mô tả dài ngắn khác nhau vẫn thẳng hàng giữa các thẻ */
   margin-top: auto;
   padding-top: 10px;
@@ -238,45 +239,6 @@
     padding: 2px 7px;
     font-size: 11px;
     letter-spacing: 0.08em;
-  }
-}
-
-/* ---------- dải hộp quà (trang Sản phẩm) ---------- */
-.giftband {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  align-items: center;
-  gap: clamp(20px, 4vw, 56px);
-  margin-bottom: 64px;
-  padding: clamp(20px, 3vw, 36px);
-  border-radius: 6px;
-  background: var(--forest);
-  color: var(--ivory);
-}
-
-.giftband__img {
-  aspect-ratio: 4 / 3;
-}
-
-.giftband .eyebrow {
-  color: var(--honey-light);
-}
-
-.giftband h2 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(26px, 3.6vw, 36px);
-  line-height: 1.2;
-}
-
-.giftband__text {
-  margin: 12px 0 24px;
-  color: rgba(250, 247, 240, 0.82);
-}
-
-@media (max-width: 760px) {
-  .giftband {
-    grid-template-columns: 1fr;
   }
 }
 

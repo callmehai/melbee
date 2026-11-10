@@ -55,7 +55,7 @@ export const intents = [
     // giá lấy thẳng từ bảng giá trong src/data/catalog.js — đổi giá ở đó là câu trả lời tự đổi theo
     answer: () => {
       const list = honeys
-        .map((h) => `• ${h.name}\n  ${Object.entries(h.prices).map(([size, p]) => `${size} ${vnd(p)}`).join(' · ')}`)
+        .map((h) => `• ${h.name}\n  ${Object.entries(h.prices).map(([size, p]) => `${size} ${p == null ? 'giá đang cập nhật' : vnd(p)}`).join(' · ')}`)
         .join('\n')
       return `Sản phẩm MelBee:\n${list}\n\nMelBee xác nhận lại giá và phí giao khi bạn nhắn tin đặt hàng.`
     },

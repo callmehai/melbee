@@ -9,6 +9,7 @@
  * image: ảnh lọ, tính từ public/. Chưa có file → khung "Ảnh sắp ra mắt"; chép ảnh đúng tên vào là tự hiện
  *        (ảnh dọc 4:5, rộng ~1200px, nền sáng, thấy rõ nhãn).
  * prices: GIÁ BÁN từng quy cách đang bán (số, đồng) — theo bảng giá bán MelBee gửi 10/2026.
+ *   null = có bán nhưng chưa có giá → web ghi "Giá đang cập nhật".
  *   Quy cách nào không có trong đây thì web không bán (không hiện nút chọn).
  *   ⚠️ Chỉ ghi giá bán. Giá nhập là số nội bộ, KHÔNG đưa vào code (repo + web đều công khai).
  * group, short, taste: nhóm mật, tên ngắn, một dòng vị — cho thẻ ở trang Sản phẩm.
@@ -16,6 +17,7 @@
  * highlights: viết mềm lại từ mục "Công dụng" trên nhãn — web là quảng cáo, thực phẩm thường
  *   không được nói công dụng phòng/chữa bệnh (miễn dịch, kháng khuẩn, tim mạch, giải độc gan…).
  * color: màu mật (vòng màu cạnh tên) — chưa có ảnh riêng từng loại.
+ * label: màu nhãn in trên lọ { bg, ink } — theo ảnh lọ thật; hộp quà 3D vẽ nhãn bằng màu này.
  */
 
 /** Các quy cách đang bán của một sản phẩm, theo thứ tự trong bảng giá (nhỏ → lớn). */
@@ -26,7 +28,7 @@ export const sizesOf = (item) => Object.keys(item.prices || {})
  * slots: quy cách từng ô của khay carton bế sẵn trong hộp (hộp 3 lọ: ô giữa to hơn → lọ 380ml).
  * preset + price: set trong bảng giá (Set 2 · Set 3 · Set 4) — loại mật và giá cố định, khách không đổi mật từng lọ.
  * Giá set đã gồm hộp cứng + túi giấy.
- * Ảnh: bản dựng của bên thiết kế (đã cắt bỏ ghi chú số lượng sản xuất). Hộp 3D xoay được: src/pages/giftbox3d (layouts.js).
+ * Ảnh: bản dựng của bên thiết kế (đã cắt bỏ ghi chú số lượng sản xuất); photoSet: ảnh minh hoạ cả set (chưa có thì bỏ trống). Hộp 3D xoay được: src/pages/giftbox3d (layouts.js).
  */
 
 export const giftBoxes = [
@@ -36,10 +38,11 @@ export const giftBoxes = [
     set: 'Set 2',
     size: '22 × 15 × 10 cm',
     slots: ['380ml', '380ml'],
-    preset: ['khoai-rung', 'hoa-ban'],
+    // theo ảnh set bên thiết kế gửi (11/2026): lọ Hoa rừng tím + lọ Hoa ban
+    preset: ['hoa-rung', 'hoa-ban'],
     price: 465000,
     photo: 'assets/images/gift/hop-2-lo.jpg',
-    photoOpen: 'assets/images/gift/hop-2-lo-mo.jpg',
+    photoSet: 'assets/images/gift/set-2.jpg',
   },
   {
     id: 'hop-3',
@@ -50,7 +53,6 @@ export const giftBoxes = [
     preset: ['hoa-ban', 'hang-da', 'hoa-nhan'],
     price: 565000,
     photo: 'assets/images/gift/hop-3-lo.jpg',
-    photoOpen: 'assets/images/gift/hop-3-lo-mo.jpg',
   },
   {
     id: 'hop-4',
@@ -62,7 +64,7 @@ export const giftBoxes = [
     preset: ['hang-da', 'hoa-ban', 'khoai-rung', 'hoa-nhan'],
     price: 650000,
     photo: 'assets/images/gift/hop-4-lo.jpg',
-    photoOpen: 'assets/images/gift/hop-4-lo-mo.jpg',
+    photoSet: 'assets/images/gift/set-4.jpg',
   },
 ]
 
@@ -100,6 +102,7 @@ export const honeys = [
       'Pha cùng nước ấm, chanh, gừng — thức uống ấm áp cho những ngày trở gió.',
     ],
     color: '#8a4f12',
+    label: { bg: '#2f6b4c', ink: '#ecc977' },
   },
   {
     id: 'hang-da',
@@ -119,6 +122,30 @@ export const honeys = [
       'Mật đặc, vị đậm — trọn vị nhất khi thưởng thức trực tiếp từng thìa nhỏ.',
     ],
     color: '#6b3a10',
+    label: { bg: '#3c4a4e', ink: '#e9d9ae' },
+  },
+  {
+    // ✏️ loại thứ 5 (chị Thuỳ xác nhận 11/2026: 5 loại mật + bánh tổ). Chưa có trong bảng giá, chưa có nội dung nhãn:
+    //    giá 380ml suy từ Set 2 (set bán đúng giá lẻ + 100.000 ₫ hộp & túi): 465.000 − 100.000 − 210.000 (Hoa ban 380ml).
+    //    Lọ 280ml (có trong ảnh Set 4) chưa có giá. Mô tả viết tạm — có nhãn thì thay.
+    id: 'hoa-rung',
+    short: 'Hoa rừng',
+    group: 'Mật rừng',
+    taste: 'Đậm hương hoa núi, hổ phách',
+    image: 'assets/images/products/hoa-rung.jpg',
+    prices: { '280ml': null, '380ml': 155000 },
+    name: 'Mật ong Hoa rừng Tây Bắc',
+    nameEn: 'Northern Highland Forest Honey',
+    description:
+      'Ong lấy mật từ muôn loài hoa dại nở quanh năm trên núi rừng Tây Bắc. Mật màu hổ phách, vị ngọt đậm, hương hoa rừng hoà quyện và đổi chút theo từng mùa hoa.',
+    traits: ['Hổ phách', 'Ngọt đậm', 'Trăm loài hoa dại'],
+    highlights: [
+      'Mật đa hoa từ núi rừng vùng cao — mỗi mùa thu hoạch mang một sắc hương riêng.',
+      'Pha nước ấm cùng chanh, gừng hoặc dùng kèm trà nóng.',
+      'Món quà đậm chất núi rừng cho người thân, bạn bè.',
+    ],
+    color: '#7a3f12',
+    label: { bg: '#8f7ac9', ink: '#3b1630' },
   },
   {
     id: 'hoa-ban',
@@ -138,6 +165,7 @@ export const honeys = [
       'Một cốc nước mật ong ấm trước giờ ngủ cho buổi tối thư thái.',
     ],
     color: '#d9a531',
+    label: { bg: '#f3ecdc', ink: '#3a291d' },
   },
   {
     id: 'hoa-nhan',
@@ -157,6 +185,7 @@ export const honeys = [
       'Dùng pha trà, cà phê, làm bánh hay ướp các món nướng.',
     ],
     color: '#c27a1a',
+    label: { bg: '#f2e5b6', ink: '#3a291d' },
   },
   {
     // ✏️ mô tả viết tạm từ tên sản phẩm trong bảng giá — chờ MelBee gửi nội dung nhãn
@@ -185,7 +214,7 @@ export const honeys = [
   },
 ]
 
-/** Phần dùng chung cho cả 4 loại — đúng như nhãn in */
+/** Phần dùng chung cho các loại mật — đúng như nhãn in */
 export const commonInfo = {
   ingredients: '100% mật ong nguyên chất.',
   usage: [

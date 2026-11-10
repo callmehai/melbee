@@ -1,0 +1,251 @@
+/* ---------- bảng hộp quà lật (trang Sản phẩm) ---------- */
+.giftband {
+  margin-bottom: 64px;
+}
+
+/* các mặt bảng chồng lên nhau trong một ô lưới → khung cao bằng mặt cao nhất, không nhảy khi lật */
+.giftband__deck {
+  display: grid;
+  perspective: 1800px;
+}
+
+.giftband__slide {
+  grid-area: 1 / 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: clamp(20px, 4vw, 56px);
+  padding: clamp(20px, 3vw, 36px);
+  border-radius: 6px;
+  background: var(--forest);
+  color: var(--ivory);
+  visibility: hidden;
+  backface-visibility: hidden;
+  /* tâm xoay nằm sau mặt bảng nửa chiều cao: mặt cũ lăn lên nóc, mặt mới từ đáy lăn ra như khối hộp */
+  transform-origin: 50% 50% calc(var(--h, 420px) / -2);
+}
+
+.giftband__slide.is-on,
+.giftband__slide.is-off {
+  visibility: visible;
+}
+
+.giftband__slide.is-on {
+  animation: giftband-in 0.9s var(--ease) both;
+}
+
+.giftband__slide.is-off {
+  animation: giftband-out 0.9s var(--ease) both;
+  pointer-events: none;
+}
+
+@keyframes giftband-in {
+  from {
+    transform: rotateX(-90deg);
+    filter: brightness(0.55);
+  }
+}
+
+@keyframes giftband-out {
+  to {
+    transform: rotateX(90deg);
+    filter: brightness(0.55);
+  }
+}
+
+/* giảm chuyển động: chỉ mờ dần */
+.giftband.is-still .giftband__slide.is-on {
+  animation-name: giftband-fade;
+  animation-duration: 0.3s;
+}
+
+.giftband.is-still .giftband__slide.is-off {
+  animation: none;
+  visibility: hidden;
+}
+
+@keyframes giftband-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ảnh: khung 4:3 cố định, ảnh ngang hay dọc đều nằm gọn, phần thừa là chính ảnh đó làm mờ */
+.giftband__img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--cream);
+}
+
+.giftband__img::before {
+  content: '';
+  position: absolute;
+  inset: -24px;
+  z-index: -1;
+  background: var(--bg) center / cover;
+  filter: blur(22px) brightness(0.9);
+}
+
+.giftband__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.giftband .eyebrow {
+  color: var(--honey-light);
+}
+
+.giftband__title {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.8vw, 40px);
+  line-height: 1.15;
+}
+
+.giftband__jars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.giftband__jars li {
+  padding: 4px 12px;
+  border: 1px solid rgba(250, 247, 240, 0.28);
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.giftband__jars small {
+  color: rgba(250, 247, 240, 0.7);
+  font-size: 12px;
+}
+
+.giftband__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 18px 0 24px;
+}
+
+.giftband__price b {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(28px, 3.4vw, 36px);
+  line-height: 1;
+  color: var(--honey-light);
+}
+
+.giftband__price span {
+  font-size: 14px;
+  color: rgba(250, 247, 240, 0.78);
+}
+
+/* ── chọn set + vạch chạy 5 giây ── */
+.giftband__ctrl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.giftband__dots {
+  flex: 1;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 8px;
+  max-width: 420px;
+}
+
+.giftband__dots button {
+  display: grid;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 0 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.giftband__dots button[aria-pressed='true'] {
+  color: var(--brown);
+  font-weight: 500;
+}
+
+.giftband__dots i {
+  position: relative;
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.giftband__dots b {
+  position: absolute;
+  inset: 0;
+  background: var(--honey-deep);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.giftband__dots button[aria-pressed='true'] b {
+  animation: giftband-progress 5s linear forwards;
+}
+
+.giftband.is-paused .giftband__dots button[aria-pressed='true'] b {
+  animation-play-state: paused;
+}
+
+/* không tự chuyển: vạch của set đang hiện đầy sẵn */
+.giftband.is-still .giftband__dots button[aria-pressed='true'] b {
+  animation: none;
+  transform: none;
+}
+
+@keyframes giftband-progress {
+  to {
+    transform: none;
+  }
+}
+
+.giftband__pause {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--brown);
+  cursor: pointer;
+}
+
+.giftband__dots button:focus-visible,
+.giftband__pause:focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 3px;
+}
+
+/* nút tạm dừng nằm đầu hàng: bên phải dễ bị nút Zalo / trợ lý nổi che */
+.giftband__pause {
+  order: -1;
+}
+
+@media (max-width: 760px) {
+  .giftband__slide {
+    grid-template-columns: 1fr;
+    align-content: start; /* mặt ngắn hơn thì dư ở đáy, không hở giữa ảnh và chữ */
+    gap: 20px;
+  }
+}

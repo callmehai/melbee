@@ -86,8 +86,21 @@ export const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`
 /** Giá bán một quy cách (số đồng) — quy cách không bán → null. Giá lấy từ bảng giá trong src/data/catalog.js. */
 export const priceOf = (item, size) => item.prices?.[size] ?? null
 
-/** Giá thấp nhất trong các quy cách đang bán */
-export const lowestPrice = (item) => Math.min(...Object.values(item.prices || {}))
+/** Giá thấp nhất trong các quy cách đã có giá (null = chưa có giá) — chưa cỡ nào có giá → null */
+export const lowestPrice = (item) => {
+  const known = Object.values(item.prices || {}).filter((p) => p != null)
+  return known.length ? Math.min(...known) : null
+}
+
+/** Dòng giá trên thẻ: "từ 130.000 ₫"; còn cỡ chưa có giá thì ghi rõ cỡ đã có giá ("155.000 ₫ / 380ml") */
+export function cardPrice(item) {
+  const entries = Object.entries(item.prices || {})
+  const known = entries.filter(([, p]) => p != null)
+  if (!known.length) return 'Đang cập nhật'
+  const low = lowestPrice(item)
+  if (known.length < entries.length) return `${vnd(low)} / ${known.find(([, p]) => p === low)[0]}`
+  return `${entries.length > 1 ? 'từ ' : ''}${vnd(low)}`
+}
 
 /** Quy cách gọn cho thẻ: "280 · 380 · 730ml" hoặc "Hộp 500g" */
 export function sizeLabel(item) {
@@ -100,8 +113,7 @@ export const perUnit = (size) => (/^hộp/i.test(size) ? `/ ${size.toLowerCase()
 
 /** Thẻ một loại mật — cả thẻ là link sang trang chi tiết. */
 export function HoneyCard({ honey, compact = false }) {
-  const many = sizesOf(honey).length > 1
-  const price = `${many ? 'từ ' : ''}${vnd(lowestPrice(honey))}`
+  const price = cardPrice(honey)
   return (
     <a className={`hcard ${compact ? 'is-compact' : ''}`} href={page(`san-pham/${honey.id}/`)} id={honey.id}>
       <Photo src={honey.image} alt={honey.name} />
@@ -141,7 +153,7 @@ export function OrderButtons({ zaloLabel = 'Nhắn Zalo đặt mua', call = true
   )
 }
 
-/** Khối "Dùng & bảo quản" — đúng như nhãn in, chung cho cả 4 loại. */
+/** Khối "Dùng & bảo quản" — đúng như nhãn in, chung cho các loại mật. */
 export function UsageInfo({ id = 'thong-tin', title = 'Dùng & bảo quản' }) {
   return (
     <section className="usage" id={id} aria-labelledby={`${id}-title`}>

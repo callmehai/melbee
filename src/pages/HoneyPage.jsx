@@ -123,8 +123,8 @@ export default function HoneyPage({ id }) {
           </fieldset>
 
           <p className="price">
-            <b>{price ? vnd(price) : 'Liên hệ'}</b>
-            {price ? <em>{perUnit(size)}</em> : <span>Nhắn MelBee để được báo giá</span>}
+            <b>{price ? vnd(price) : 'Giá đang cập nhật'}</b>
+            {price ? <em>{perUnit(size)}</em> : <span>Nhắn MelBee để được báo giá lọ {size}</span>}
           </p>
 
           <OrderButtons />

@@ -82,7 +82,7 @@ export default function StoryPage() {
         </ul>
       </section>
 
-      <NextBand eyebrow="Sản phẩm" title="Nếm thử một mùa hoa Tây Bắc" text="Khoái rừng, Hang đá, Hoa ban, Hoa nhãn và bánh tổ hoa ban — 100% mật ong nguyên chất." href={page('san-pham/')} label="Xem sản phẩm" />
+      <NextBand eyebrow="Sản phẩm" title="Nếm thử một mùa hoa Tây Bắc" text="Khoái rừng, Hang đá, Hoa rừng, Hoa ban, Hoa nhãn và bánh tổ hoa ban — 100% mật ong nguyên chất." href={page('san-pham/')} label="Xem sản phẩm" />
     </Shell>
   )
 }
