@@ -38,7 +38,7 @@ export const giftBoxes = [
     set: 'Set 2',
     size: '22 × 15 × 10 cm',
     slots: ['380ml', '380ml'],
-    // theo ảnh set bên thiết kế gửi (11/2026): lọ Hoa rừng tím + lọ Hoa ban
+    // theo ảnh set bên thiết kế gửi 17/11/2026
     preset: ['hoa-rung', 'hoa-ban'],
     price: 465000,
     photo: 'assets/images/gift/hop-2-lo.jpg',
@@ -50,9 +50,11 @@ export const giftBoxes = [
     set: 'Set 3',
     size: '27,5 × 25 × 10 cm',
     slots: ['280ml', '380ml', '280ml'],
-    preset: ['hoa-ban', 'hang-da', 'hoa-nhan'],
+    // theo ảnh set 17/11/2026 — giá 565.000 ₫ theo bảng giá (cộng lẻ ra 560.000 ₫ nếu Hoa rừng 280ml = 130.000 ₫, chờ xác nhận)
+    preset: ['hoa-rung', 'hoa-ban', 'hoa-nhan'],
     price: 565000,
     photo: 'assets/images/gift/hop-3-lo.jpg',
+    photoSet: 'assets/images/gift/set-3.jpg',
   },
   {
     id: 'hop-4',
@@ -60,8 +62,8 @@ export const giftBoxes = [
     set: 'Set 4',
     size: '25 × 25 × 9 cm',
     slots: ['280ml', '280ml', '280ml', '280ml'],
-    // bốn loại mật khác nhau — cộng lẻ đúng bằng giá set 650.000 ₫
-    preset: ['hang-da', 'hoa-ban', 'khoai-rung', 'hoa-nhan'],
+    // bốn loại mật khác nhau, theo ảnh set 17/11/2026 — cộng lẻ + 100.000 ₫ hộp đúng bằng 650.000 ₫
+    preset: ['hoa-nhan', 'hoa-rung', 'hang-da', 'hoa-ban'],
     price: 650000,
     photo: 'assets/images/gift/hop-4-lo.jpg',
     photoSet: 'assets/images/gift/set-4.jpg',
@@ -125,17 +127,19 @@ export const honeys = [
     label: { bg: '#3c4a4e', ink: '#e9d9ae' },
   },
   {
-    // ✏️ loại thứ 5 (chị Thuỳ xác nhận 11/2026: 5 loại mật + bánh tổ). Chưa có trong bảng giá, chưa có nội dung nhãn:
-    //    giá 380ml suy từ Set 2 (set bán đúng giá lẻ + 100.000 ₫ hộp & túi): 465.000 − 100.000 − 210.000 (Hoa ban 380ml).
-    //    Lọ 280ml (có trong ảnh Set 4) chưa có giá. Mô tả viết tạm — có nhãn thì thay.
+    // ✏️ loại thứ 5 (chị Thuỳ xác nhận 11/2026: 5 loại mật + bánh tổ). Chưa có trong bảng giá, chưa có nội dung nhãn.
+    //    Giá suy từ giá set (set = giá lẻ + 100.000 ₫ hộp & túi), chờ MelBee xác nhận:
+    //    380ml: Set 2 465.000 − 100.000 − 210.000 (Hoa ban 380) = 155.000
+    //    280ml: Set 4 650.000 − 100.000 − 120.000 (Nhãn) − 145.000 (Hang đá) − 155.000 (Hoa ban) = 130.000
+    //    Mô tả viết tạm — có nhãn thì thay.
     id: 'hoa-rung',
     short: 'Hoa rừng',
     group: 'Mật rừng',
     taste: 'Đậm hương hoa núi, hổ phách',
     image: 'assets/images/products/hoa-rung.jpg',
-    prices: { '280ml': null, '380ml': 155000 },
+    prices: { '280ml': 130000, '380ml': 155000 },
     name: 'Mật ong Hoa rừng Tây Bắc',
-    nameEn: 'Northern Highland Forest Honey',
+    nameEn: 'Northwest Wild Flower Honey', // theo nhãn trong ảnh set 17/11
     description:
       'Ong lấy mật từ muôn loài hoa dại nở quanh năm trên núi rừng Tây Bắc. Mật màu hổ phách, vị ngọt đậm, hương hoa rừng hoà quyện và đổi chút theo từng mùa hoa.',
     traits: ['Hổ phách', 'Ngọt đậm', 'Trăm loài hoa dại'],

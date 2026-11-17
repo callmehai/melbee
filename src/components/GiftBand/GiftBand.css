@@ -3,14 +3,8 @@
   margin-bottom: 64px;
 }
 
-/* các mặt bảng chồng lên nhau trong một ô lưới → khung cao bằng mặt cao nhất, không nhảy khi lật */
-.giftband__deck {
-  display: grid;
-  perspective: 1800px;
-}
-
-.giftband__slide {
-  grid-area: 1 / 1;
+/* khung xanh đứng yên; chỉ ảnh lật nan và chữ đổi */
+.giftband__panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
   align-items: center;
@@ -19,48 +13,129 @@
   border-radius: 6px;
   background: var(--forest);
   color: var(--ivory);
-  visibility: hidden;
-  backface-visibility: hidden;
-  /* tâm xoay nằm sau mặt bảng nửa chiều cao: mặt cũ lăn lên nóc, mặt mới từ đáy lăn ra như khối hộp */
-  transform-origin: 50% 50% calc(var(--h, 420px) / -2);
 }
 
-.giftband__slide.is-on,
-.giftband__slide.is-off {
+/* ── ảnh: khung 4:3 (ảnh set đều 4:3) ── */
+.giftband__img {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1b2820;
+}
+
+.giftband__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* bảng lật nan: ảnh cũ nằm dưới, ảnh mới chia 8 nan dọc, mỗi nan lộ dần từ đáy lên, nan sau trễ 60ms → sóng chạy
+   trái → phải. Phẳng, không phối cảnh → ảnh không méo. Mỗi nan chứa nguyên khung ảnh (rộng n lần, dịch trái
+   k nan) với cover như ảnh tĩnh → hết hiệu ứng thay bằng <img> trùng từng điểm ảnh, không nhảy. */
+.giftband__slats {
+  position: absolute;
+  inset: 0;
+}
+
+.giftband__old {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: giftband-dim 1.2s ease-in both;
+}
+
+.giftband__slat {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--k) * 100% / var(--n));
+  /* +1px chồng mép nan kế bên: không lộ khe tóc do làm tròn */
+  width: calc(100% / var(--n) + 1px);
+  overflow: hidden;
+}
+
+.giftband__slat i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* nan rộng (khung/n + 1px) → lùi đúng k·(khung/n), bù lại 1px của mỗi nan trước; sai chỗ này ảnh lệch k px */
+  left: calc(var(--k) * (1px - 100%));
+  width: calc(var(--n) * (100% - 1px));
+  background: center / cover no-repeat;
+  /* ảnh mới đứng yên đúng chỗ, chỉ phần lộ ra kéo từ đáy lên → không có gì trôi hay nhảy */
+  clip-path: inset(100% 0 0 0);
+  animation: giftband-slat 0.8s cubic-bezier(0.65, 0, 0.25, 1) calc(var(--k) * 60ms) forwards;
+}
+
+@keyframes giftband-slat {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes giftband-dim {
+  to {
+    filter: brightness(0.55);
+  }
+}
+
+/* ── chữ: các set chồng một ô; chữ cũ mờ lên, chữ mới trồi lên từng dòng ── */
+.giftband__bodies {
+  display: grid;
+}
+
+.giftband__body {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.giftband__body.is-on,
+.giftband__body.is-off {
   visibility: visible;
 }
 
-.giftband__slide.is-on {
-  animation: giftband-in 0.9s var(--ease) both;
-}
-
-.giftband__slide.is-off {
-  animation: giftband-out 0.9s var(--ease) both;
+.giftband__body.is-off {
+  animation: giftband-out 0.35s ease-in both;
   pointer-events: none;
 }
 
-@keyframes giftband-in {
-  from {
-    transform: rotateX(-90deg);
-    filter: brightness(0.55);
-  }
+.giftband__body.is-on > * {
+  animation: giftband-rise 0.7s var(--ease) calc(0.3s + var(--d) * 70ms) both;
 }
 
 @keyframes giftband-out {
   to {
-    transform: rotateX(90deg);
-    filter: brightness(0.55);
+    opacity: 0;
+    transform: translateY(-10px);
   }
 }
 
-/* giảm chuyển động: chỉ mờ dần */
-.giftband.is-still .giftband__slide.is-on {
-  animation-name: giftband-fade;
-  animation-duration: 0.3s;
+@keyframes giftband-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
 }
 
-.giftband.is-still .giftband__slide.is-off {
+/* lần đầu hiện: chữ đứng yên, không chạy hiệu ứng */
+.giftband__bodies:not(:has(.is-off)) .giftband__body.is-on > * {
   animation: none;
+}
+
+/* giảm chuyển động: ảnh và chữ chỉ mờ chéo */
+.giftband.is-still .giftband__img img {
+  animation: giftband-fade 0.3s both;
+}
+
+.giftband.is-still .giftband__body.is-on > *,
+.giftband.is-still .giftband__body.is-off {
+  animation: none;
+}
+
+.giftband.is-still .giftband__body.is-off {
   visibility: hidden;
 }
 
@@ -68,31 +143,6 @@
   from {
     opacity: 0;
   }
-}
-
-/* ảnh: khung 4:3 cố định, ảnh ngang hay dọc đều nằm gọn, phần thừa là chính ảnh đó làm mờ */
-.giftband__img {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  border-radius: 6px;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--cream);
-}
-
-.giftband__img::before {
-  content: '';
-  position: absolute;
-  inset: -24px;
-  z-index: -1;
-  background: var(--bg) center / cover;
-  filter: blur(22px) brightness(0.9);
-}
-
-.giftband__img img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
 
 .giftband .eyebrow {
@@ -243,9 +293,9 @@
 }
 
 @media (max-width: 760px) {
-  .giftband__slide {
+  .giftband__panel {
     grid-template-columns: 1fr;
-    align-content: start; /* mặt ngắn hơn thì dư ở đáy, không hở giữa ảnh và chữ */
+    align-items: start;
     gap: 20px;
   }
 }
