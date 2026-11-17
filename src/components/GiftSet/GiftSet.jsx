@@ -17,18 +17,18 @@ const byId = (id) => honeys.find((h) => h.id === id)
 /** Lời nhắn mô tả hộp — chép sẵn để khách dán vào Zalo / Facebook. */
 function message(box) {
   return [
-    `Chào MelBee, mình muốn đặt ${box.set} · ${box.name} (${box.size}):`,
+    `Chào MelBee, mình muốn đặt ${box.set} "${box.title}" (${box.code}) · ${box.name}:`,
     ...box.preset.map((id, i) => `• ${byId(id).name} ${box.slots[i]}`),
     '• Hộp cứng + túi giấy MELBEE',
     `Giá trọn bộ: ${vnd(box.price)}`,
   ].join('\n')
 }
 
-const setAlt = (b) => `${b.set} MelBee: ${b.name} mở nắp, các lọ mật trong khay`
+const setAlt = (b) => `${b.set} MelBee "${b.title}": ${b.name} mở nắp, các lọ mật trong khay`
 /** Ảnh minh hoạ các set — xem lớn trong Lightbox, ← → chuyển giữa các set */
 const setPhotos = giftBoxes
   .filter((b) => b.photoSet)
-  .map((b) => ({ id: b.id, image: b.photoSet, alt: setAlt(b), caption: `${b.set} · ${b.name} · ảnh minh hoạ` }))
+  .map((b) => ({ id: b.id, image: b.photoSet, alt: setAlt(b), caption: `${b.set} · ${b.title} · ${b.name} · ảnh minh hoạ` }))
 
 /** Hộp 3D xoay được · ảnh minh hoạ cả set (set nào có ảnh mới hiện nút chuyển), bấm ảnh để xem lớn */
 function BoxVisual({ box }) {
@@ -119,8 +119,10 @@ export default function GiftSet() {
           {giftBoxes.map((b) => (
             <label key={b.id} className={b.id === box.id ? 'is-on' : ''}>
               <input type="radio" name="giftbox" value={b.id} checked={b.id === box.id} onChange={() => setBoxId(b.id)} />
-              <b>{b.name}</b>
-              <small>{vnd(b.price)}</small>
+              <b>{b.title}</b>
+              <small>
+                {b.name} · {vnd(b.price)}
+              </small>
             </label>
           ))}
         </fieldset>
@@ -153,7 +155,7 @@ export default function GiftSet() {
           </ul>
           <p className="giftset__total">
             <span>
-              {box.set} · {box.name}
+              {box.set} · {box.title}
             </span>
             <b>{vnd(box.price)}</b>
           </p>

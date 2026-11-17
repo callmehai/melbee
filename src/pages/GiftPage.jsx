@@ -29,7 +29,7 @@ export default function GiftPage() {
           </h2>
           <p>
             Túi giấy nâu trầm, chữ MELBEE nhũ vàng nổi, hoạ tiết hoa và ong đồng bộ với nắp hộp, quai dây vàng. Mỗi hộp
-            quà đi kèm một túi vừa vặn, đã bao gồm trong 100.000 ₫ phí hộp và túi.
+            quà đi kèm một túi vừa vặn, đã gồm trong giá set.
           </p>
         </Reveal>
       </section>

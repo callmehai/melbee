@@ -126,6 +126,7 @@ export default function HoneyPage({ id }) {
             <b>{price ? vnd(price) : 'Giá đang cập nhật'}</b>
             {price ? <em>{perUnit(size)}</em> : <span>Nhắn MelBee để được báo giá lọ {size}</span>}
           </p>
+          {honey.codes?.[size] && <p className="detail__code">Mã sản phẩm: {honey.codes[size]}</p>}
 
           <OrderButtons />
         </div>

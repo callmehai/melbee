@@ -8,8 +8,9 @@
  *
  * image: ảnh lọ, tính từ public/. Chưa có file → khung "Ảnh sắp ra mắt"; chép ảnh đúng tên vào là tự hiện
  *        (ảnh dọc 4:5, rộng ~1200px, nền sáng, thấy rõ nhãn).
- * prices: GIÁ BÁN từng quy cách đang bán (số, đồng) — theo bảng giá bán MelBee gửi 10/2026.
+ * prices: GIÁ BÁN từng quy cách đang bán (số, đồng) — theo bảng giá sản phẩm MELBEE gửi 18/11/2026.
  *   null = có bán nhưng chưa có giá → web ghi "Giá đang cập nhật".
+ * codes: mã sản phẩm từng quy cách, theo cùng bảng giá.
  *   Quy cách nào không có trong đây thì web không bán (không hiện nút chọn).
  *   ⚠️ Chỉ ghi giá bán. Giá nhập là số nội bộ, KHÔNG đưa vào code (repo + web đều công khai).
  * group, short, taste: nhóm mật, tên ngắn, một dòng vị — cho thẻ ở trang Sản phẩm.
@@ -27,6 +28,7 @@ export const sizesOf = (item) => Object.keys(item.prices || {})
  * HỘP QUÀ — trang /hop-qua/ và phần Hộp quà ở trang chủ.
  * slots: quy cách từng ô của khay carton bế sẵn trong hộp (hộp 3 lọ: ô giữa to hơn → lọ 380ml).
  * preset + price: set trong bảng giá (Set 2 · Set 3 · Set 4) — loại mật và giá cố định, khách không đổi mật từng lọ.
+ * title, code: tên và mã set theo bảng giá 18/11/2026.
  * Giá set đã gồm hộp cứng + túi giấy.
  * Ảnh: bản dựng của bên thiết kế (đã cắt bỏ ghi chú số lượng sản xuất); photoSet: ảnh minh hoạ cả set (chưa có thì bỏ trống). Hộp 3D xoay được: src/pages/giftbox3d (layouts.js).
  */
@@ -36,11 +38,13 @@ export const giftBoxes = [
     id: 'hop-2',
     name: 'Hộp 2 lọ',
     set: 'Set 2',
+    title: 'Hương hoa Tây Bắc',
+    code: 'MB-GB2-022',
     size: '22 × 15 × 10 cm',
     slots: ['380ml', '380ml'],
-    // theo ảnh set bên thiết kế gửi 17/11/2026
+    // 1 hoa rừng + 1 hoa ban 380ml
     preset: ['hoa-rung', 'hoa-ban'],
-    price: 465000,
+    price: 569000,
     photo: 'assets/images/gift/hop-2-lo.jpg',
     photoSet: 'assets/images/gift/set-2.jpg',
   },
@@ -48,11 +52,13 @@ export const giftBoxes = [
     id: 'hop-3',
     name: 'Hộp 3 lọ',
     set: 'Set 3',
+    title: 'Tam Hoa',
+    code: 'MB-GB3-023',
     size: '27,5 × 25 × 10 cm',
     slots: ['280ml', '380ml', '280ml'],
-    // theo ảnh set 17/11/2026 — giá 565.000 ₫ theo bảng giá (cộng lẻ ra 560.000 ₫ nếu Hoa rừng 280ml = 130.000 ₫, chờ xác nhận)
+    // 1 hoa ban 380ml + 1 hoa rừng 280ml + 1 hoa nhãn 280ml
     preset: ['hoa-rung', 'hoa-ban', 'hoa-nhan'],
-    price: 565000,
+    price: 619000,
     photo: 'assets/images/gift/hop-3-lo.jpg',
     photoSet: 'assets/images/gift/set-3.jpg',
   },
@@ -60,11 +66,13 @@ export const giftBoxes = [
     id: 'hop-4',
     name: 'Hộp 4 lọ',
     set: 'Set 4',
+    title: 'Mật ngọt bốn mùa',
+    code: 'MB-GB4-024',
     size: '25 × 25 × 9 cm',
     slots: ['280ml', '280ml', '280ml', '280ml'],
-    // bốn loại mật khác nhau, theo ảnh set 17/11/2026 — cộng lẻ + 100.000 ₫ hộp đúng bằng 650.000 ₫
+    // 1 nhãn + 1 ban + 1 rừng + 1 hang đá, đều 280ml
     preset: ['hoa-nhan', 'hoa-rung', 'hang-da', 'hoa-ban'],
-    price: 650000,
+    price: 819000,
     photo: 'assets/images/gift/hop-4-lo.jpg',
     photoSet: 'assets/images/gift/set-4.jpg',
   },
@@ -92,7 +100,8 @@ export const honeys = [
     group: 'Mật rừng',
     taste: 'Hương nồng hoang dã, ngọt đậm',
     image: 'assets/images/products/khoai-rung.jpg',
-    prices: { '280ml': 130000, '380ml': 155000 },
+    prices: { '280ml': 209000, '380ml': 289000, '500ml': 389000, '730ml': 549000 },
+    codes: { '280ml': 'MB-KR-009', '380ml': 'MB-KR-010', '500ml': 'MB-KR-011', '730ml': 'MB-KR-012' },
     name: 'Mật ong Khoái rừng Tây Bắc',
     nameEn: 'Pure Wild Apis Dorsata Honey',
     description:
@@ -112,7 +121,8 @@ export const honeys = [
     group: 'Mật rừng',
     taste: 'Sánh đặc, hổ phách sẫm',
     image: 'assets/images/products/hang-da.jpg',
-    prices: { '280ml': 145000, '380ml': 190000 },
+    prices: { '280ml': 269000, '380ml': 369000, '500ml': 479000, '730ml': 699000 },
+    codes: { '280ml': 'MB-HD-013', '380ml': 'MB-HD-014', '500ml': 'MB-HD-015', '730ml': 'MB-HD-016' },
     name: 'Mật ong Hang đá',
     nameEn: 'Wild Mountain Cave Honey',
     description:
@@ -127,17 +137,14 @@ export const honeys = [
     label: { bg: '#3c4a4e', ink: '#e9d9ae' },
   },
   {
-    // ✏️ loại thứ 5 (chị Thuỳ xác nhận 11/2026: 5 loại mật + bánh tổ). Chưa có trong bảng giá, chưa có nội dung nhãn.
-    //    Giá suy từ giá set (set = giá lẻ + 100.000 ₫ hộp & túi), chờ MelBee xác nhận:
-    //    380ml: Set 2 465.000 − 100.000 − 210.000 (Hoa ban 380) = 155.000
-    //    280ml: Set 4 650.000 − 100.000 − 120.000 (Nhãn) − 145.000 (Hang đá) − 155.000 (Hoa ban) = 130.000
-    //    Mô tả viết tạm — có nhãn thì thay.
+    // ✏️ loại thứ 5 (có trong bảng giá 18/11/2026). Chưa có nội dung nhãn — mô tả viết tạm, có nhãn thì thay.
     id: 'hoa-rung',
     short: 'Hoa rừng',
     group: 'Mật rừng',
     taste: 'Đậm hương hoa núi, hổ phách',
     image: 'assets/images/products/hoa-rung.jpg',
-    prices: { '280ml': 130000, '380ml': 155000 },
+    prices: { '280ml': 179000, '380ml': 249000, '500ml': 329000, '730ml': 479000 },
+    codes: { '280ml': 'MB-HR-017', '380ml': 'MB-HR-018', '500ml': 'MB-HR-019', '730ml': 'MB-HR-020' },
     name: 'Mật ong Hoa rừng Tây Bắc',
     nameEn: 'Northwest Wild Flower Honey', // theo nhãn trong ảnh set 17/11
     description:
@@ -157,7 +164,8 @@ export const honeys = [
     group: 'Mật hoa',
     taste: 'Vàng sáng, ngọt thanh mát',
     image: 'assets/images/products/hoa-ban.jpg',
-    prices: { '280ml': 155000, '380ml': 210000, '730ml': 400000 },
+    prices: { '280ml': 189000, '380ml': 259000, '500ml': 349000, '730ml': 489000 },
+    codes: { '280ml': 'MB-HB-001', '380ml': 'MB-HB-002', '500ml': 'MB-HB-003', '730ml': 'MB-HB-004' },
     name: 'Mật ong Hoa ban Tây Bắc',
     nameEn: 'Northwest Bauhinia Flower Honey',
     description:
@@ -177,7 +185,8 @@ export const honeys = [
     group: 'Mật hoa',
     taste: 'Vàng óng, thơm hương nhãn',
     image: 'assets/images/products/hoa-nhan.jpg',
-    prices: { '280ml': 120000, '500ml': 200000 },
+    prices: { '280ml': 149000, '380ml': 189000, '500ml': 269000, '730ml': 379000 },
+    codes: { '280ml': 'MB-HN-005', '380ml': 'MB-HN-006', '500ml': 'MB-HN-007', '730ml': 'MB-HN-008' },
     name: 'Mật ong Hoa nhãn',
     nameEn: 'Northwest Longan Flower Honey',
     description:
@@ -198,7 +207,8 @@ export const honeys = [
     group: 'Bánh tổ',
     taste: 'Nguyên bánh tổ, ăn cả sáp',
     image: 'assets/images/products/banh-to-hoa-ban.jpg',
-    prices: { 'Hộp 500g': 275000 },
+    prices: { 'Hộp 500g': 319000 },
+    codes: { 'Hộp 500g': 'MB-BT-021' },
     name: 'Mật ong bánh tổ hoa ban',
     nameEn: 'Bauhinia Honeycomb',
     description:

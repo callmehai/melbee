@@ -92,7 +92,7 @@ export default function GiftBand() {
             <img
               key={i}
               src={asset(sets[i].photoSet)}
-              alt={`${sets[i].set} MelBee, ${sets[i].name}`}
+              alt={`${sets[i].set} MelBee "${sets[i].title}", ${sets[i].name}`}
               decoding="async"
               onAnimationEnd={() => setPrev(null)}
             />
@@ -111,10 +111,10 @@ export default function GiftBand() {
                 inert={k !== i}
               >
                 <p className="eyebrow" style={{ "--d": 0 }}>
-                  Hộp quà · {b.set}
+                  {b.set} · {b.name}
                 </p>
                 <h2 className="giftband__title" style={{ "--d": 1 }}>
-                  {b.name}
+                  {b.title}
                 </h2>
                 <ul className="giftband__jars" style={{ "--d": 2 }}>
                   {b.preset.map((id, j) => (

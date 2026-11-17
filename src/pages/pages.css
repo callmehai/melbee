@@ -978,3 +978,11 @@
 .company__list a {
   font-weight: 400;
 }
+
+/* mã sản phẩm theo bảng giá (đổi theo dung tích đang chọn) — khách nhắn kèm mã khi đặt */
+.detail__code {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}

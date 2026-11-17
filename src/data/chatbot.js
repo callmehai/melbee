@@ -66,7 +66,7 @@ export const intents = [
     keys: ['quà', 'hộp', 'hộp quà', 'tặng', 'biếu', 'tết', 'doanh nghiệp', 'thiệp', 'gói'],
     answer: () =>
       `Hộp quà MelBee: hộp cứng nâu trầm chữ nhũ vàng, kèm túi giấy đồng bộ.\n${giftBoxes
-        .map((b) => `• ${b.set} · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}`)
+        .map((b) => `• ${b.set} "${b.title}" · ${b.name}: ${b.preset.map((id, i) => `${short(id)} ${b.slots[i]}`).join(' + ')} — ${vnd(b.price)}`)
         .join('\n')}\n\nGiá trọn bộ đã gồm hộp và túi; mỗi set có sẵn các loại mật như trên. Tại trang Hộp quà, chọn set rồi bấm "Đặt hộp quà" để gửi thông tin cho MelBee.`,
     actions: [{ label: 'Xem hộp quà', go: 'hop-qua/' }, zalo],
   },

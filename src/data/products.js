@@ -26,7 +26,7 @@ export const products = [
     detailsHref: 'san-pham/',
     image: 'assets/images/products/honey-01.jpg',
     tone: 'amber',
-    price: 'Từ 120.000 ₫', // lọ 280ml Hoa nhãn — giá rẻ nhất trong bảng giá bán (src/data/catalog.js)
+    price: 'Từ 149.000 ₫', // lọ 280ml Hoa nhãn — giá rẻ nhất trong bảng giá 18/11/2026 (src/data/catalog.js)
     size: '280 · 380 · 500 · 730ml · bánh tổ 500g',
     featured: true,
     facebookMessage: true,
