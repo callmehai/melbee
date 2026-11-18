@@ -691,30 +691,69 @@
 
 .letter__in {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  /* cột nắp hộp rộng hơn: chữ trên nắp co theo bề ngang khung, khung rộng thì chữ to, dễ đọc */
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.35fr);
   align-items: center;
   gap: clamp(28px, 5vw, 64px);
 }
 
-.letter__p {
+.letter__intro {
   margin-top: 14px;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 17.5px;
-  line-height: 1.65;
-  color: var(--brown-2);
+  max-width: 44ch;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--muted);
 }
 
-.letter__img {
-  width: 100%;
-  height: auto;
+/* nắp hộp: tỉ lệ đúng file in (đã cắt dải trắng mép phải → 1088 × 742); chữ nằm đúng khoảng trống giữa cành hoa (trên), lá (trái dưới), hũ mật (phải dưới) */
+.lid {
+  position: relative;
+  aspect-ratio: 1088 / 742;
+  margin: 0;
   border-radius: 6px;
+  background: #e9a92a var(--bg) center / cover no-repeat;
   box-shadow: 0 30px 60px -36px rgba(58, 41, 29, 0.55);
+  container-type: inline-size;
+}
+
+.lid__text {
+  position: absolute;
+  inset: 31% 19% 23% 17%;
+  margin: 0;
+  display: grid;
+  align-content: center;
+  gap: 0.9em;
+  font-family: var(--font-serif);
+  font-size: clamp(12px, 2cqw, 17px);
+  line-height: 1.5;
+  color: #2e1806;
+  /* quầng sáng mờ sau chữ: nét chữ không lẫn vào đường viền tổ ong */
+  text-shadow: 0 0 6px rgba(255, 226, 150, 0.85), 0 0 2px rgba(255, 226, 150, 0.9);
+  text-wrap: pretty;
+}
+
+.lid__text p {
+  margin: 0;
 }
 
 @media (max-width: 899px) {
   .letter__in {
     grid-template-columns: 1fr;
+  }
+}
+
+/* điện thoại: khung ngang quá thấp cho chữ đọc được → nắp dọc (cùng file in, lưới tổ ong kéo dài ở giữa),
+   chữ nằm giữa cành hoa (trên 12,6%) và lá + hũ mật (dưới 14,6%) */
+@media (max-width: 600px) {
+  .lid {
+    aspect-ratio: 1088 / 1992;
+    background-image: var(--bg-tall);
+  }
+
+  .lid__text {
+    inset: 15% 9% 16%;
+    font-size: clamp(13.5px, 4.3cqw, 16.5px);
+    line-height: 1.6;
   }
 }
 

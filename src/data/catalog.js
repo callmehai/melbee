@@ -85,6 +85,10 @@ export const giftSet = {
   bag: 'assets/images/gift/tui-giay.jpg',
   designFront: 'assets/images/gift/hop-mat-truoc.jpg',
   designInside: 'assets/images/gift/hop-mat-trong.jpg',
+  // cùng file in nhưng đã xoá chữ (vẽ lại lưới tổ ong) — trang Hộp quà đặt lời gửi lên bằng chữ thật
+  designInsideBg: 'assets/images/gift/hop-mat-trong-nen.jpg',
+  // bản dọc cho điện thoại: giữ cành hoa (trên), lá + hũ mật (dưới), kéo dài lưới tổ ong ở giữa
+  designInsideTall: 'assets/images/gift/hop-mat-trong-doc.jpg',
 }
 
 /** Lời nhắn in ở mặt trong nắp hộp set quà */

@@ -41,14 +41,18 @@ export default function GiftPage() {
             <h2 id="letter-title" className="sp-h2">
               Lời gửi từ núi rừng
             </h2>
-            {giftMessage.map((p) => (
-              <p key={p.slice(0, 24)} className="letter__p">
-                {p}
-              </p>
-            ))}
+            <p className="letter__intro">In ở mặt trong nắp mỗi hộp quà, trên nền vàng mật hoạ tiết tổ ong: mở hộp là người nhận đọc được ngay.</p>
           </Reveal>
+          {/* nắp hộp: nền là file in đã xoá chữ (chữ in sẵn trong ảnh nhỏ, nhoè), lời gửi đặt lên bằng chữ thật → nét, đọc được, đổi lời không cần sửa ảnh */}
           <Reveal effect="slide-right" delay={0.1}>
-            <img className="letter__img" src={asset(giftSet.designInside)} alt="Mặt trong nắp hộp: lời gửi in trên nền vàng mật hoạ tiết tổ ong" loading="lazy" width="1386" height="935" />
+            <figure className="lid" style={{ '--bg': `url("${asset(giftSet.designInsideBg)}")`, '--bg-tall': `url("${asset(giftSet.designInsideTall)}")` }}>
+              <blockquote className="lid__text">
+                {giftMessage.map((p) => (
+                  <p key={p.slice(0, 24)}>{p}</p>
+                ))}
+              </blockquote>
+              <figcaption className="sr-only">Mặt trong nắp hộp quà MELBEE: lời gửi in trên nền vàng mật hoạ tiết tổ ong</figcaption>
+            </figure>
           </Reveal>
         </div>
       </section>
