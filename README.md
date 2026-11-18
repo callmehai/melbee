@@ -22,7 +22,7 @@ npm run build    # bản production → thư mục dist/
 npm run preview  # xem thử bản build
 ```
 
-**Tên miền**: https://melbeetaybac.com (mua ở Namecheap, DNS trỏ về GitHub Pages: 4 bản ghi A `185.199.108–111.153` cho `@`, CNAME `www` → `callmehai.github.io`). Nhớ bật tự gia hạn — mã QR trên hộp quà trỏ về tên miền này.
+**Tên miền**: https://melbeetaybac.com (mua ở Namecheap, DNS trỏ về GitHub Pages: 4 bản ghi A `185.199.108–111.153` cho `@`, CNAME `www` → `callmehai.github.io`). Tên miền mua 1 năm (10/2026), **không bật tự gia hạn**. Mã QR trên hộp quà trỏ về tên miền này: còn dùng hộp thì phải gia hạn; dừng hẳn thì trước khi hết hạn gỡ tên miền riêng trong GitHub → Settings → Pages để link `callmehai.github.io/melbee/` vẫn chạy.
 
 **Deploy**: đã cấu hình GitHub Pages — mỗi lần `git push` lên nhánh `main`, GitHub Actions tự build
 và đăng lại (~30 giây). Muốn dùng Vercel/Netlify: import repo, build `npm run build`, output `dist`.
@@ -49,9 +49,9 @@ khai đường dẫn + tiêu đề tab trong `src/lib/router.js` và trang trong
 Điện thoại / máy tính bảng: lớp 3D nền chạy chế độ nhẹ — chỉ miếng bánh tổ; hoa cỏ, ong, sương, phấn hoa tắt
 (`touchDevices` trong `src/three/config.js`), không trôi parallax khi cuộn. Thử bản đầy đủ trên điện thoại: thêm `?three=on`.
 
-Thông tin 4 loại mật, set quà, cách dùng & bảo quản: `src/data/catalog.js` (theo nội dung nhãn in).
+Thông tin 5 loại mật + bánh tổ, 3 set quà, cách dùng & bảo quản: `src/data/catalog.js` (theo nội dung nhãn in và bảng giá MELBEE 18/11/2026).
 Ảnh từng loại: chép `public/assets/images/products/<id>.jpg` (vd `hoa-ban.jpg`) là tự thay khung "Ảnh sắp ra mắt".
-Giá: điền `prices: { '380ml': '250.000 ₫', … }` cho từng loại — chưa có thì hiện "Liên hệ".
+Giá: `prices: { '280ml': 189000, '380ml': 259000, … }` (số đồng, chỉ giá bán — không bao giờ ghi giá nhập, repo công khai); cỡ nào ghi `null` thì web hiện "Giá đang cập nhật". Mã sản phẩm: `codes`. Set quà: `giftBoxes` (`title`, `code`, `preset` = các lọ cố định, `price` trọn bộ, `photoSet` = ảnh set).
 
 ## Thay nội dung — chỉ sửa dữ liệu, không sửa component
 
