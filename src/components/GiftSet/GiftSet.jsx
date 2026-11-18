@@ -120,9 +120,8 @@ export default function GiftSet() {
             <label key={b.id} className={b.id === box.id ? 'is-on' : ''}>
               <input type="radio" name="giftbox" value={b.id} checked={b.id === box.id} onChange={() => setBoxId(b.id)} />
               <b>{b.title}</b>
-              <small>
-                {b.name} · {vnd(b.price)}
-              </small>
+              <small>{b.name}</small>
+              <small className="giftset__boxprice">{vnd(b.price)}</small>
             </label>
           ))}
         </fieldset>

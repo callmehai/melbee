@@ -44,8 +44,8 @@
 }
 
 .giftset__boxes label {
-  display: grid;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
   gap: 2px;
   padding: 12px 14px;
   border: 1px solid var(--line);
@@ -82,6 +82,18 @@
 .giftset__boxes small {
   font-size: 13px;
   color: var(--muted);
+}
+
+/* "Hộp 3 lọ" và giá mỗi thứ một dòng — ô hẹp trên điện thoại không gãy giữa "·" */
+.giftset__boxes b {
+  text-wrap: balance;
+}
+
+.giftset__boxprice {
+  margin-top: auto; /* giá nằm đáy ô → ba ô thẳng hàng dù tên set dài ngắn khác nhau */
+  padding-top: 2px;
+  white-space: nowrap;
+  color: var(--brown) !important;
 }
 
 /* ── ảnh minh hoạ cả set + nút đổi cách xem ── */
@@ -257,12 +269,16 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  gap: 12px;
   margin-top: 10px;
   padding-top: 12px;
   border-top: 1px solid var(--line);
 }
 
 .giftset__total b {
+  /* giá không bao giờ tách "₫" xuống dòng; tên set bên trái tự xuống dòng */
+  flex: none;
+  white-space: nowrap;
   font-family: var(--font-serif);
   font-weight: 400;
   font-size: 30px;
@@ -313,5 +329,11 @@
 @media (max-width: 420px) {
   .giftset__boxes label {
     padding: 10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .giftset__total b {
+    font-size: 26px;
   }
 }
