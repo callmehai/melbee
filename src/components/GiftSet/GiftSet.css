@@ -119,6 +119,9 @@
   z-index: -1;
   background: var(--bg) center / cover;
   filter: blur(22px) saturate(1.1) brightness(0.92);
+  /* lớp riêng cho phần làm mờ: thiếu dòng này Chrome để lại một dải ảnh cũ (có chữ "Phóng to") dưới chú thích
+     sau khi chuyển "Ảnh set" → "Xoay 3D" (khung dính, ảnh đã gỡ khỏi trang mà vết vẽ còn) */
+  will-change: transform;
 }
 
 .giftset__photo img {
