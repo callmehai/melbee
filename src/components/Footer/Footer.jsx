@@ -1,6 +1,6 @@
 import { Gift, Mail, MapPin, MessageCircle, Mountain, Phone } from 'lucide-react'
 import Logo from '../common/Logo.jsx'
-import { FacebookLogo, TikTokIcon, ZaloLogo } from '../common/BrandIcons.jsx'
+import { FacebookIcon, TikTokIcon, ZaloMark } from '../common/BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import { nav } from '../../data/sections.js'
 import { honeys } from '../../data/catalog.js'
@@ -57,12 +57,12 @@ export default function Footer() {
             <ul className="footer__social" aria-label="Mạng xã hội">
               <li>
                 <a href={brand.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                  <FacebookLogo size={22} />
+                  <FacebookIcon size={19} />
                 </a>
               </li>
               <li>
                 <a href={brand.zalo} target="_blank" rel="noopener noreferrer" aria-label="Zalo">
-                  <ZaloLogo size={22} />
+                  <ZaloMark size={22} />
                 </a>
               </li>
               {brand.tiktok && (

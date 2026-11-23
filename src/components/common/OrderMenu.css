@@ -72,4 +72,7 @@
   width: 38px;
   height: 38px;
   flex: none;
+  border-radius: 50%;
+  background: var(--cream); /* biểu tượng hãng một màu trong vòng kem — cùng kiểu thẻ Liên hệ */
+  color: var(--honey-deep);
 }

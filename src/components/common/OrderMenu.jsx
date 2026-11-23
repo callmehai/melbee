@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MessageCircle } from 'lucide-react'
-import { FacebookLogo, ZaloLogo } from './BrandIcons.jsx'
+import { FacebookIcon, ZaloMark } from './BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import './OrderMenu.css'
 
@@ -82,7 +82,7 @@ export default function OrderMenu({
                 }}
               >
                 <span className="order-menu__icon">
-                  <FacebookLogo size={36} />
+                  <FacebookIcon size={20} />
                 </span>
                 <span>
                   <b>Facebook Messenger</b>
@@ -101,7 +101,7 @@ export default function OrderMenu({
                 }}
               >
                 <span className="order-menu__icon">
-                  <ZaloLogo size={36} />
+                  <ZaloMark size={24} />
                 </span>
                 <span>
                   <b>Zalo</b>
