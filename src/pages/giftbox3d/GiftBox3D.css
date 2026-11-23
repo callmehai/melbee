@@ -33,6 +33,14 @@
   justify-items: center;
   gap: 14px;
   transition: opacity 0.5s var(--ease);
+  /* hộp tải nhanh thì không chớp chữ "Đang mở hộp quà…"; chỉ hiện khi chờ quá nửa giây */
+  animation: box3d-wait 0.4s 0.6s backwards;
+}
+
+@keyframes box3d-wait {
+  from {
+    opacity: 0;
+  }
 }
 
 .box3d__loading img {

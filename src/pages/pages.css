@@ -942,8 +942,8 @@
 }
 
 .channels li.is-main {
-  border-color: rgba(0, 104, 255, 0.35);
-  box-shadow: inset 0 3px 0 #0068ff;
+  border-color: rgba(200, 138, 36, 0.45);
+  box-shadow: inset 0 3px 0 var(--honey);
 }
 
 .channels h2 {

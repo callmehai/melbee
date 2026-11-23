@@ -20,7 +20,6 @@ import {
   Path,
   PerspectiveCamera,
   PlaneGeometry,
-  RingGeometry,
   PMREMGenerator,
   Scene,
   Shape,
@@ -618,11 +617,6 @@ export function createGiftBox(canvas, { layout = 'hop-2', url, jars = [], reduce
   const shadowMat = new MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, side: DoubleSide })
   const shadow = add(scene, new PlaneGeometry(W * 2, D * 2), shadowMat, 0, -H / 2 - 0.6, 0)
   shadow.rotation.x = -Math.PI / 2
-  // vòng sàn mảnh màu nhũ vàng quanh hộp — như bục trưng bày
-  const ringMat = new MeshBasicMaterial({ color: '#b98a3a', transparent: true, opacity: 0.55, depthWrite: false, side: DoubleSide })
-  const ringR = Math.hypot(W, D) * 0.52
-  const ring = add(scene, new RingGeometry(ringR, ringR + 0.09 * K, 160), ringMat, 0, -H / 2 - 0.55, 0)
-  ring.rotation.x = -Math.PI / 2
 
   // ---------- tương tác ----------
   const YAW_REST = -0.32 // góc nhìn chính diện hơi chếch như ảnh set
@@ -729,7 +723,6 @@ export function createGiftBox(canvas, { layout = 'hop-2', url, jars = [], reduce
     })
     placeCamera(open, top, lift)
     shadowMat.opacity = Math.max(0, 1 - Math.abs(pitch) * 0.7)
-    ringMat.opacity = 0.55 * shadowMat.opacity
     renderer.render(scene, camera)
     if (visible) raf = requestAnimationFrame(frame)
   }

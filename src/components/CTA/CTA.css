@@ -47,6 +47,7 @@
 
 .cta__sub {
   max-width: 520px;
+  text-wrap: balance; /* không để một chữ rơi lẻ xuống dòng cuối */
   margin: 0 auto;
   font-size: 17px;
   color: var(--brown-2);

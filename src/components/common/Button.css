@@ -147,40 +147,36 @@
   transform: translate(3px, -3px);
 }
 
-/* ── nút thương hiệu: đúng màu & logo của Facebook / Zalo để khách nhận ra ngay ── */
-.btn--facebook {
-  background: #0866ff;
-  color: #fff;
-  box-shadow: 0 12px 26px -14px rgba(8, 102, 255, 0.85);
+/* ── nút Facebook / Zalo: màu của MelBee (vàng mật, nâu), chỉ biểu tượng hãng là của hãng —
+   xanh Facebook / Zalo đặt cạnh bảng màu kem–mật–nâu trông như quảng cáo chen vào ── */
+.btn--facebook,
+.btn--zalo-solid {
+  background: var(--honey);
+  color: var(--brown);
+  box-shadow: 0 10px 24px -12px rgba(200, 138, 36, 0.8);
 }
 
-.btn--facebook::before {
-  background: #0552d1;
+.btn--facebook::before,
+.btn--zalo-solid::before {
+  background: var(--brown);
+}
+
+.btn--facebook:hover,
+.btn--zalo-solid:hover {
+  color: var(--ivory);
 }
 
 .btn--zalo {
-  background: #fff;
-  border-color: rgba(0, 104, 255, 0.28);
-  color: #0068ff;
-  box-shadow: 0 12px 26px -16px rgba(0, 72, 180, 0.45);
+  border-color: var(--brown);
+  color: var(--brown);
 }
 
 .btn--zalo::before {
-  background: #eaf2ff;
+  background: var(--brown);
 }
 
 .btn--zalo:hover {
-  border-color: rgba(0, 104, 255, 0.55);
-}
-
-.btn--zalo-solid {
-  background: #0068ff;
-  color: #fff;
-  box-shadow: 0 12px 26px -14px rgba(0, 104, 255, 0.85);
-}
-
-.btn--zalo-solid::before {
-  background: #0052cc;
+  color: var(--ivory);
 }
 
 .btn--facebook svg,

@@ -3,8 +3,8 @@
   --dot: 18px;
   position: relative;
   display: grid;
-  gap: clamp(44px, 6vw, 84px);
-  max-width: 1080px;
+  gap: clamp(28px, 3vw, 40px); /* gọn: 5 bước trước dài ~2.400px, kéo trang chủ quá dài */
+  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -78,7 +78,7 @@
 
 .step__media {
   width: 100%;
-  max-width: 380px;
+  max-width: 300px;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: var(--radius);
@@ -109,7 +109,7 @@
   display: block;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: clamp(40px, 4.2vw, 60px);
+  font-size: clamp(36px, 3.4vw, 50px);
   line-height: 1;
   color: var(--honey-deep);
   opacity: 0.75;
@@ -124,7 +124,7 @@
   margin: 10px 0 12px;
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(26px, 2.4vw, 34px);
+  font-size: clamp(24px, 2.1vw, 30px);
   line-height: 1.15;
 }
 
@@ -133,10 +133,10 @@
   color: var(--brown-2);
 }
 
-/* ── điện thoại: dòng mật chạy dọc bên trái, ảnh trên chữ dưới ──── */
+/* ── điện thoại: dòng mật chạy dọc bên trái, ảnh vuông nhỏ bên cạnh chữ (trước ảnh to trên chữ → 5 bước dài 2 màn hình) ── */
 @media (max-width: 760px) {
   .timeline {
-    gap: 48px;
+    gap: 32px;
     padding-left: 40px;
   }
 
@@ -145,8 +145,9 @@
   }
 
   .step {
-    grid-template-columns: 1fr;
-    gap: 20px;
+    grid-template-columns: 96px 1fr;
+    gap: 16px;
+    align-items: start;
   }
 
   .step__dot {
@@ -160,7 +161,20 @@
     order: 0;
     justify-self: stretch;
     max-width: none;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1;
+  }
+
+  .step__no {
+    font-size: 30px;
+  }
+
+  .step__text h3 {
+    margin: 4px 0 6px;
+    font-size: 22px;
+  }
+
+  .step__text p {
+    font-size: 15px;
   }
 
   .step.is-right .step__text {

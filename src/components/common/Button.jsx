@@ -1,9 +1,10 @@
 import { ArrowUpRight } from 'lucide-react'
-import { FacebookIcon, ZaloLogo } from './BrandIcons.jsx'
+import { FacebookIcon, ZaloMark } from './BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import './Button.css'
 
-/** Nút/đường dẫn dùng chung. variant: solid | outline | ghost | light | facebook | zalo | zalo-solid */
+/** Nút/đường dẫn dùng chung. variant: solid | outline | ghost | light | facebook | zalo | zalo-solid
+ *  (facebook / zalo / zalo-solid giữ tên cũ nhưng dùng màu MelBee — màu xanh của hãng phá bảng màu sang trọng) */
 export default function Button({ href, children, variant = 'solid', icon, external, className = '', ...rest }) {
   // chỉ link sang website khác (Zalo, Facebook…) mới mở tab mới — link trang trong web (page()) cũng là https:// nhưng cùng tên miền
   const isExternal = external ?? (/^https?:/.test(href || '') && new URL(href).origin !== window.location.origin)
@@ -24,7 +25,7 @@ export default function Button({ href, children, variant = 'solid', icon, extern
   )
 }
 
-/** Nút nhắn tin Facebook (xanh Facebook, logo thật) — link lấy từ src/config/brand.js */
+/** Nút nhắn tin Facebook (màu MelBee, biểu tượng Facebook một màu) — link lấy từ src/config/brand.js */
 export function FacebookButton({ variant = 'facebook', children = brand.cta.facebook, ...rest }) {
   return (
     <Button href={brand.facebook} variant={variant} icon={<FacebookIcon size={20} />} aria-label={`${children} (mở Facebook)`} {...rest}>
@@ -34,12 +35,12 @@ export function FacebookButton({ variant = 'facebook', children = brand.cta.face
 }
 
 /**
- * Nút nhắn tin Zalo (logo Zalo thật) — link lấy từ src/config/brand.js.
- * variant 'zalo': nền trắng · 'zalo-solid': nền xanh Zalo — nút đặt mua chính của trang sản phẩm.
+ * Nút nhắn tin Zalo (biểu tượng Zalo một màu) — link lấy từ src/config/brand.js.
+ * variant 'zalo': viền nâu · 'zalo-solid': nền vàng mật — nút đặt mua chính của trang sản phẩm.
  */
 export function ZaloButton({ variant = 'zalo', children = brand.cta.zalo, ...rest }) {
   return (
-    <Button href={brand.zalo} variant={variant} icon={<ZaloLogo size={22} bare={variant === 'zalo-solid'} />} aria-label={`${children} (mở Zalo)`} {...rest}>
+    <Button href={brand.zalo} variant={variant} icon={<ZaloMark size={22} />} aria-label={`${children} (mở Zalo)`} {...rest}>
       {children}
     </Button>
   )

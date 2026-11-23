@@ -12,7 +12,7 @@ const YEAR = new Date().getFullYear()
 
 // ba lời hứa ngắn — chỉ ghi điều MelBee thật sự làm, không hứa phí ship / chính sách chưa có
 const promises = [
-  { icon: MessageCircle, title: 'Đặt hàng qua tin nhắn', text: 'Qua Zalo hoặc Facebook, không cần tài khoản' },
+  { icon: MessageCircle, title: 'Đặt hàng qua tin nhắn', text: 'Qua Zalo hoặc Facebook, không cần tạo tài khoản trên web' },
   { icon: Mountain, title: 'Mật từ núi rừng Điện Biên', text: 'Theo từng mùa hoa vùng cao' },
   { icon: Gift, title: 'Chỉn chu để làm quà', text: 'Mật ong và hộp quà Tây Bắc' },
 ]

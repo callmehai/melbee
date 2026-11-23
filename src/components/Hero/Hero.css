@@ -196,6 +196,15 @@
     padding-bottom: 96px;
   }
 
+  .hero__eyebrow {
+    gap: 10px;
+    letter-spacing: 0.22em; /* một dòng trên điện thoại */
+  }
+
+  .hero__eyebrow::before {
+    width: 28px;
+  }
+
   .hero__shade {
     background: linear-gradient(180deg, rgba(246, 242, 232, 0.55) 0%, rgba(246, 242, 232, 0.3) 60%, rgba(246, 242, 232, 0) 100%);
   }

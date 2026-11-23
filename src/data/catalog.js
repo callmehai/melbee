@@ -250,7 +250,7 @@ export const commonInfo = {
   ],
   crystallize:
     'Mật ong tự nhiên có thể bị kết tinh nhưng không làm giảm chất lượng sản phẩm. Hãy sử dụng bình thường hoặc ngâm lọ vào nước ấm 60°C cho đến khi tan ra.',
-  storage: 'Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. KHÔNG bảo quản trong tủ lạnh.',
+  storage: 'Bảo quản nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. Không bảo quản trong tủ lạnh.',
   warning: 'Không sử dụng cho trẻ em dưới 1 tuổi.',
   shelfLife: 'NSX in trên nhãn lọ · HSD 24 tháng kể từ NSX',
   origin: 'Việt Nam',

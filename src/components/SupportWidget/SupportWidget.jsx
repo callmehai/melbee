@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MessageCircle, RotateCcw, SendHorizontal, X } from 'lucide-react'
-import { FacebookLogo, ZaloLogo } from '../common/BrandIcons.jsx'
+import { FacebookIcon, ZaloMark } from '../common/BrandIcons.jsx'
 import { brand } from '../../config/brand.js'
 import { chatbot, reply } from '../../data/chatbot.js'
 import { asset } from '../../lib/assets.js'
@@ -27,7 +27,8 @@ function Action({ a, onAsk, onGo }) {
 }
 
 /**
- * Góc phải dưới: nút Zalo + nút trợ lý tự động.
+ * Góc phải dưới: MỘT nút (trước là hai nút chồng nhau, che giá / chữ trên điện thoại) — bấm mở khung trợ lý,
+ * trong khung có sẵn Zalo / Facebook. Điện thoại: cuộn xuống thì nút lánh đi, cuộn lên / dừng ở cuối trang thì hiện lại.
  * Trợ lý KHÔNG phải AI — chọn câu trả lời soạn sẵn theo từ khoá (src/data/chatbot.js), luôn chỉ đường sang Zalo / Facebook.
  */
 export default function SupportWidget() {
@@ -39,8 +40,23 @@ export default function SupportWidget() {
   const inputRef = useRef(null)
   const toggleRef = useRef(null)
   const timer = useRef(0)
+  const [away, setAway] = useState(false)
 
   useEffect(() => () => clearTimeout(timer.current), [])
+
+  // cuộn xuống (đang đọc) → nút lánh đi để không che chữ, giá; cuộn lên hoặc tới cuối trang → hiện lại
+  useEffect(() => {
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      const atEnd = y + window.innerHeight >= document.documentElement.scrollHeight - 40
+      if (Math.abs(y - last) < 8 && !atEnd) return
+      setAway(y > last && y > 200 && !atEnd)
+      last = y
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   // tin mới → cuộn xuống cuối
   useEffect(() => {
@@ -90,7 +106,7 @@ export default function SupportWidget() {
   }
 
   return (
-    <aside className={`support ${open ? 'is-open' : ''}`} aria-label="Liên hệ nhanh">
+    <aside className={`support${open ? ' is-open' : ''}${away && !open ? ' is-away' : ''}`} aria-label="Liên hệ nhanh">
       <AnimatePresence>
         {open && (
           <motion.section
@@ -151,11 +167,11 @@ export default function SupportWidget() {
 
             <footer className="support__foot">
               <div className="support__links">
-                <a href={brand.zalo} target="_blank" rel="noopener noreferrer">
-                  <ZaloLogo size={20} /> Chat qua Zalo
+                <a className="is-main" href={brand.zalo} target="_blank" rel="noopener noreferrer">
+                  <ZaloMark size={20} /> Nhắn Zalo
                 </a>
                 <a href={brand.facebook} target="_blank" rel="noopener noreferrer">
-                  <FacebookLogo size={20} /> Facebook
+                  <FacebookIcon size={17} /> Facebook
                 </a>
               </div>
               <form
@@ -177,16 +193,12 @@ export default function SupportWidget() {
       </AnimatePresence>
 
       <div className="support__dock">
-        <a className="support__btn is-zalo" href={brand.zalo} target="_blank" rel="noopener noreferrer" aria-label="Nhắn tin qua Zalo" data-cursor="cta">
-          <ZaloLogo size={40} bare />
-          <span className="support__tip">Nhắn Zalo</span>
-        </a>
         <button
           ref={toggleRef}
           type="button"
           className={`support__btn is-chat ${open ? 'is-open' : ''}`}
           aria-expanded={open}
-          aria-label={open ? 'Đóng khung chat' : 'Mở trợ lý hỏi nhanh'}
+          aria-label={open ? 'Đóng khung chat' : 'Hỏi nhanh, nhắn Zalo / Facebook'}
           onClick={() => setOpen((o) => !o)}
           data-cursor="cta"
         >
@@ -195,7 +207,7 @@ export default function SupportWidget() {
               {open ? <X size={26} /> : <MessageCircle size={26} />}
             </motion.span>
           </AnimatePresence>
-          {!open && <span className="support__tip">Hỏi nhanh</span>}
+          {!open && <span className="support__tip">Hỏi nhanh · Zalo · Facebook</span>}
         </button>
       </div>
     </aside>

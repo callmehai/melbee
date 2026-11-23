@@ -18,8 +18,9 @@ export default function CTA() {
           {cta.subtext}
         </Reveal>
         <Reveal className="cta__buttons" delay={0.25}>
-          <FacebookButton data-bee-perch="top-right">Nhắn tin Facebook</FacebookButton>
-          <ZaloButton>Nhắn tin Zalo</ZaloButton>
+          {/* Zalo là kênh đặt hàng chính (như trang sản phẩm, liên hệ) → nút đặc, đứng trước */}
+          <ZaloButton variant="zalo-solid" data-bee-perch="top-right">Nhắn tin Zalo</ZaloButton>
+          <FacebookButton variant="outline">Nhắn tin Facebook</FacebookButton>
         </Reveal>
       </div>
     </section>

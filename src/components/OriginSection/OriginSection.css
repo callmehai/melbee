@@ -120,18 +120,23 @@
   }
 }
 
+/* điện thoại nhỏ: vẫn lưới 2×2 (một cột thì 4 mục một câu chiếm trọn một màn hình) */
 @media (max-width: 480px) {
-  .origin__highlights {
-    grid-template-columns: 1fr;
+  .origin__highlights li {
+    padding: 22px 14px 6px 0;
   }
 
-  .origin__highlights li,
-  .origin__highlights li + li {
-    padding-left: 0;
-    border-left: 0;
+  .origin__highlights li:nth-child(even) {
+    padding-left: 14px;
+    padding-right: 0;
   }
 
-  .origin__highlights li + li {
-    border-top: 1px solid var(--line);
+  .origin__highlights h3 {
+    margin: 10px 0 4px;
+    font-size: 21px;
+  }
+
+  .origin__highlights p {
+    font-size: 14px;
   }
 }

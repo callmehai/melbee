@@ -7,7 +7,7 @@
   font-size: 14.5px;
 }
 
-/* ── hai nút tròn ─────────────────────────────────────────── */
+/* ── một nút tròn (bấm mở trợ lý; trong đó có Zalo / Facebook) ── */
 .support__dock {
   display: grid;
   gap: 14px;
@@ -36,36 +36,22 @@
   box-shadow: 0 18px 32px -12px rgba(30, 28, 24, 0.6);
 }
 
-.support__btn.is-zalo {
-  background: #0068ff;
+.support__btn.is-chat {
+  background: var(--brown);
+  color: var(--honey-light);
+  border: 1px solid rgba(228, 178, 90, 0.55);
   animation-delay: 0.9s;
 }
 
-/* vòng sóng nhẹ quanh nút Zalo, vài lần rồi thôi */
-.support__btn.is-zalo::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 104, 255, 0.5);
-  animation: support-ring 2.4s var(--ease) 2s 3;
-  opacity: 0;
+/* cuộn xuống đọc → nút lánh xuống dưới mép màn hình, không che chữ / giá */
+.support {
+  transition: transform 0.45s var(--ease), opacity 0.3s;
 }
 
-/* khung chat mở: ẩn nút Zalo (trong khung đã có "Chat qua Zalo") để không đè lên khung */
-.support.is-open .support__btn.is-zalo {
+.support.is-away {
+  transform: translateY(calc(100% + 32px));
   opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px) scale(0.8);
-  transition:
-    opacity 0.2s,
-    transform 0.3s var(--ease),
-    visibility 0s 0.3s;
-}
-
-.support__btn.is-chat {
-  background: radial-gradient(circle at 35% 30%, #e9b45a, var(--honey) 55%, var(--honey-deep));
-  animation-delay: 1.05s;
+  pointer-events: none;
 }
 
 .support__btn.is-chat.is-open {
@@ -105,17 +91,6 @@
   from {
     opacity: 0;
     transform: translateY(16px) scale(0.85);
-  }
-}
-
-@keyframes support-ring {
-  0% {
-    opacity: 0.9;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.55);
   }
 }
 
@@ -331,12 +306,29 @@
   font-size: 13.5px;
 }
 
+.support__links {
+  align-items: center;
+}
+
 .support__links a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   color: var(--brown);
   text-decoration: none;
+}
+
+/* Zalo là kênh đặt hàng chính → nút mật nổi rõ trong khung */
+.support__links a.is-main {
+  padding: 8px 14px 8px 10px;
+  border-radius: 999px;
+  background: var(--honey);
+  font-weight: 500;
+}
+
+.support__links a.is-main:hover {
+  background: var(--brown);
+  color: var(--ivory);
 }
 
 .support__links a:hover {
@@ -411,8 +403,8 @@
   }
 
   .support__btn {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
   }
 
   .support__tip {
@@ -430,8 +422,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .support__btn,
-  .support__btn.is-zalo::after {
+  .support__btn {
     animation: none;
   }
 }

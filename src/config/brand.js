@@ -7,7 +7,7 @@
 export const brand = {
   name: 'Mật Ong Tây Bắc',
   shortName: 'MelBee',
-  tagline: 'Mật ngọt từ hoa, Tinh hoa từ rừng.',
+  tagline: 'Mật ngọt từ hoa, tinh hoa từ rừng.',
   about: 'Mật ong Điện Biên & quà tặng đặc sản Tây Bắc',
 
   // Logo (huy hiệu tròn cạnh chữ). Để null → dùng biểu tượng vẽ sẵn.

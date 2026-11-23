@@ -54,6 +54,16 @@ export function ZaloIcon({ size = 18, ...rest }) {
   )
 }
 
+/** Logo Zalo một màu (currentColor): viền bong bóng + chữ — dùng trong nút màu thương hiệu MelBee. */
+export function ZaloMark({ size = 18, ...rest }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...rest}>
+      <path d={ZALO_BUBBLE} fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d={ZALO_WORD} fill="currentColor" transform="translate(5.25 4.3) scale(0.5625)" />
+    </svg>
+  )
+}
+
 export function ZaloLogo({ size = 18, bare = false, ...rest }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" focusable="false" {...rest}>

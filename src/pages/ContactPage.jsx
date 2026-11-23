@@ -1,7 +1,7 @@
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { Shell, PageHead } from './common.jsx'
 import Button, { FacebookButton, ZaloButton } from '../components/common/Button.jsx'
-import { FacebookLogo, TikTokIcon, ZaloLogo } from '../components/common/BrandIcons.jsx'
+import { FacebookIcon, TikTokIcon, ZaloMark } from '../components/common/BrandIcons.jsx'
 import { brand } from '../config/brand.js'
 import { company } from '../data/catalog.js'
 import { productsSection } from '../data/sections.js'
@@ -20,14 +20,19 @@ export default function ContactPage() {
       <div className="container">
         <ul className="channels">
           <Reveal as="li" className="is-main">
-            <ZaloLogo size={40} />
+            {/* biểu tượng một màu trong vòng tròn như thẻ Điện thoại — logo xanh của hãng phá bảng màu */}
+            <span className="channels__icon" aria-hidden="true">
+              <ZaloMark size={24} />
+            </span>
             <h2>Zalo</h2>
             <p>Phản hồi nhanh nhất — tư vấn, báo giá và xác nhận đơn.</p>
             <p className="channels__id">{company.hotlineDisplay}</p>
             <ZaloButton variant="zalo-solid">Nhắn Zalo</ZaloButton>
           </Reveal>
           <Reveal as="li" delay={0.08}>
-            <FacebookLogo size={40} />
+            <span className="channels__icon" aria-hidden="true">
+              <FacebookIcon size={20} />
+            </span>
             <h2>Facebook</h2>
             <p>Nhắn tin tới fanpage MelBee — Mật ong Tây Bắc.</p>
             <p className="channels__id">facebook.com/melbeetaybac</p>

@@ -55,8 +55,9 @@
   }
 }
 
+/* trên nút: ong nhỏ lại và bay lên góc trên trái mũi chuột → không che chữ của nút (trước phóng to 1,3 lần, đè lên chữ) */
 .cursor[data-state='cta'] .cursor__scale {
-  transform: scale(1.3);
+  transform: translate(-15px, -17px) scale(0.78);
 }
 
 .cursor.is-down .cursor__scale {

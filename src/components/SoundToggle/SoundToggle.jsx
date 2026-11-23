@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { Volume2, VolumeX } from 'lucide-react'
 import { audioManager } from '../../audio/AudioManager.js'
 import { BEE_SIP_EVENT } from '../../lib/beeSip.js'
 import './SoundToggle.css'
@@ -110,6 +111,10 @@ export default function SoundToggle() {
             <circle key={a} r="0.9" cx={2.6 * Math.cos((a * Math.PI) / 180)} cy={2.6 * Math.sin((a * Math.PI) / 180)} fill="#7a4a10" />
           ))}
         </svg>
+        {/* huy hiệu loa nhỏ: chỉ bông hoa thì không ai đoán ra đây là nút âm thanh */}
+        <span className="sound-toggle__badge" aria-hidden="true">
+          {on ? <Volume2 size={10} strokeWidth={2.4} /> : <VolumeX size={10} strokeWidth={2.4} />}
+        </span>
         <span className="sr-only">Âm thanh · {LABEL[status]}</span>
       </button>
 

@@ -25,12 +25,13 @@ export const nav = [
 ]
 
 export const hero = {
-  eyebrow: 'MelBee · Mùa hoa vùng cao',
+  // 5 giây đầu phải nói được MelBee bán gì cho ai: mật ong Tây Bắc làm quà biếu → nút chính dẫn thẳng tới hộp quà
+  eyebrow: 'Quà biếu từ mùa hoa vùng cao',
   title: 'Mật Ong Tây Bắc',
   tagline: 'Mật ngọt từ hoa, tinh hoa từ rừng.',
-  subtext: 'Mật ong nguyên chất từ núi rừng Điện Biên — rõ nguồn gốc, chỉn chu từ lọ mật đến hộp quà.',
-  primaryCta: { label: 'Khám phá sản phẩm', href: 'san-pham/' },
-  secondaryCta: { label: 'Câu chuyện MelBee', href: 'cau-chuyen/' },
+  subtext: 'Mật ong nguyên chất từ núi rừng Điện Biên, trong hộp quà nâu trầm nhũ vàng — món quà chỉn chu để biếu người thân, thầy cô, đối tác.',
+  primaryCta: { label: 'Chọn hộp quà', href: 'hop-qua/' },
+  secondaryCta: { label: 'Các loại mật', href: 'san-pham/' },
   image: 'assets/images/hero/hero.jpg',
   // Video nền (tuỳ chọn) — chỉ tải sau khi trang đã hiện xong
   video: 'assets/videos/hero.mp4',
@@ -61,9 +62,9 @@ export const productsSection = {
 export const story = {
   title: 'Câu chuyện của chúng tôi',
   paragraphs: [
-    'Giữa rất nhiều sản phẩm mật ong, điều người tiêu dùng tìm kiếm không chỉ là lời khẳng định “nguyên chất”, mà là sự an tâm về nguồn gốc và hành trình tạo nên sản phẩm.',
+    'Giữa rất nhiều sản phẩm mật ong, điều người tiêu dùng cần là sự an tâm về nguồn gốc và hành trình tạo nên sản phẩm — nhiều hơn một lời khẳng định “nguyên chất”.',
     'MelBee được hình thành từ mong muốn mang mật ong từ vùng núi Điện Biên đến gần hơn với người tiêu dùng — giữ lại vị ngọt tự nhiên và cả câu chuyện về vùng đất, người nuôi ong phía sau mỗi giọt mật.',
-    'Không chỉ là thực phẩm dùng hằng ngày, MelBee mong mật ong trở thành một món quà gần gũi, mang đậm nét riêng của núi rừng Tây Bắc.',
+    'Bên cạnh bữa sáng hằng ngày, MelBee mong mật ong trở thành một món quà gần gũi, mang đậm nét riêng của núi rừng Tây Bắc.',
   ],
   image: 'assets/images/story/story.jpg',
   imageAlt: 'Người nuôi ong bên đàn ong giữa núi rừng Tây Bắc',
@@ -73,7 +74,7 @@ export const story = {
 export const origin = {
   eyebrow: 'Nguồn gốc',
   title: 'Nơi những giọt mật bắt đầu',
-  lead: ['Không chỉ là nơi có mật ong.', 'Đó là vùng đất có câu chuyện để kể.'],
+  lead: ['Mỗi mùa hoa', 'để lại một vị mật riêng.'],
   text: 'Tây Bắc sở hữu hệ thực vật phong phú cùng nhiều mùa hoa đặc trưng — nền tảng tạo nên những dòng mật mang hương vị riêng, gắn với từng vùng nguyên liệu và từng thời điểm trong năm.',
   image: 'assets/images/origin/beekeeping.jpg',
   imageAlt: 'Cầu ong đầy mật trên tay người nuôi ong',

@@ -3,12 +3,14 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Check, Copy, ZoomIn } from 'lucide-react'
 import OrderMenu from '../common/OrderMenu.jsx'
+import Button from '../common/Button.jsx'
 import SectionHeading from '../common/SectionHeading.jsx'
 import GiftBox3D from '../../pages/giftbox3d/GiftBox3D.jsx'
 import Lightbox from '../Lightbox/Lightbox.jsx'
 import { giftBoxes, giftSet, honeys } from '../../data/catalog.js'
 import { giftSection } from '../../data/giftbox.js'
 import { asset } from '../../lib/assets.js'
+import { page } from '../../lib/site.js'
 import './GiftSet.css'
 
 const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`
@@ -88,9 +90,10 @@ function BoxVisual({ box }) {
 
 /**
  * Hộp quà MelBee: chọn set 2 · 3 · 4 lọ. Mỗi set cố định loại mật và giá theo bảng giá (khách không đổi mật từng lọ).
- * Dùng ở trang chủ và trang Hộp quà.
+ * Dùng ở trang chủ và trang Hộp quà. compact (trang chủ): chỉ ngắm hộp 3D + chọn set + giá, nút sang trang Hộp quà để đặt
+ * — trước trang chủ chép nguyên trình đặt hộp của trang Hộp quà, dài và trùng.
  */
-export default function GiftSet() {
+export default function GiftSet({ compact = false }) {
   // ?set=hop-4 (từ bảng hộp quà ở trang Sản phẩm) → mở sẵn set đó
   const [boxId, setBoxId] = useState(() => {
     const want = new URLSearchParams(window.location.search).get('set')
@@ -126,7 +129,7 @@ export default function GiftSet() {
           ))}
         </fieldset>
 
-        <p className="giftset__desc">{giftSet.description}</p>
+        {!compact && <p className="giftset__desc">{giftSet.description}</p>}
 
         <div className="giftset__label">Mật trong hộp</div>
         <ul className="giftset__jars">
@@ -146,6 +149,12 @@ export default function GiftSet() {
           })}
         </ul>
 
+        {compact ? (
+          <div className="giftset__actions">
+            <Button href={page(`hop-qua/?set=${box.id}`)}>Xem và đặt {box.set.toLowerCase()}</Button>
+          </div>
+        ) : (
+        <>
         <div className="giftset__sum">
           <ul>
             <li>
@@ -168,6 +177,8 @@ export default function GiftSet() {
             {copied ? 'Đã sao chép' : 'Sao chép thông tin đơn'}
           </button>
         </div>
+        </>
+        )}
       </div>
     </div>
   )
@@ -180,7 +191,7 @@ export function GiftSection() {
       <div className="container">
         <SectionHeading id="gift-title" eyebrow={giftSection.eyebrow} title={giftSection.title} subtitle={giftSection.subtitle} />
         <div className="giftset-gap">
-          <GiftSet />
+          <GiftSet compact />
         </div>
       </div>
     </section>
