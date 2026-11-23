@@ -17,6 +17,7 @@
   font-weight: 400;
   font-size: clamp(26px, 3.6vw, 36px);
   line-height: 1.2;
+  text-wrap: balance; /* tiêu đề hai dòng không để một chữ rơi lẻ ("…từng giọt / mật") */
 }
 
 .sp-h3 {
