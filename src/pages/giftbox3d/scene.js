@@ -96,8 +96,9 @@ export function createGiftBox(canvas, { layout = 'hop-2', url, jars = [], reduce
     // nắp mở dựng đứng cao bằng chiều sâu hộp (D) → hộp càng sâu càng lùi ra và nhìn lên cao hơn, nắp không bị cắt
     // nhìn từ trên: lùi xa hơn vì nắp mở nằm ngửa phía sau hộp, xoay hộp nào cũng không bị cắt
     const dist = baseDist * (1 + o * (0.14 + 0.024 * D) * (1 - top) + top * (0.1 + 0.42 * o))
-    // góc nhìn xuống: ~17° → ~43° như ảnh set (thấy nhãn lọ, que múc mật, lời gửi); nhìn từ trên: ~83°
-    const el = (0.3 + 0.72 * o - 0.32 * up) * (1 - top) + 1.45 * top // mở nắp: ~58° — nhìn qua thành trước thấy trọn nhãn lọ
+    // góc nhìn xuống: đóng ~17° → mở ~41° (góp ý 24/11: ~58° nhìn quá cao, chỉ thấy nắp lọ — hạ xuống để thấy thành hộp,
+    // thân lọ và trọn mặt trong nắp); nhìn từ trên: ~83°
+    const el = (0.3 + 0.42 * o - 0.2 * up) * (1 - top) + 1.45 * top
     // nhấc lọ lên (up): lùi ra một chút cho lọ nổi lên vẫn nằm trọn trong khung
     camera.position.set(0, Math.sin(el) * dist * (1 + 0.12 * up), Math.cos(el) * dist * (1 + 0.12 * up))
     camera.lookAt(0, (0.5 + o * D * 0.5) * (1 - top), o * D * 0.2 * (1 - top)) // hộp đã dời lên trước khi mở (xem root.rotation) → nhìn theo cho cân khung

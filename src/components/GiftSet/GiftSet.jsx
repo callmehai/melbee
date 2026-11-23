@@ -50,6 +50,46 @@ const setPhotos = giftBoxes
   .filter((b) => b.photoSet)
   .map((b) => ({ id: b.id, image: b.photoSet, alt: setAlt(b), caption: `${b.set} · ${b.title} · ${b.name} · ảnh minh hoạ` }))
 
+/**
+ * Trang chủ (góp ý 24/11): chỉ ảnh set, không 3D. Cả 3 ảnh nằm sẵn chồng lên nhau trong khung đúng tỉ lệ ảnh (4:3,
+ * không cắt, không dải mờ) → đổi set chỉ là mờ chéo + thu nhẹ, ảnh đã tải và giải mã sẵn nên không chớp / giật.
+ * Bấm ảnh để xem lớn (Lightbox, ← → chuyển set).
+ */
+function SetPhotos({ box }) {
+  const [zoom, setZoom] = useState(null)
+  const at = setPhotos.findIndex((p) => p.id === box.id)
+  return (
+    <figure className="giftset__visual">
+      <button type="button" className="giftset__stage" onClick={() => setZoom(at)} aria-label={`Xem lớn: ${setAlt(box)}`}>
+        {setPhotos.map((p) => (
+          <img
+            key={p.id}
+            className={p.id === box.id ? 'is-on' : ''}
+            src={asset(p.image)}
+            alt=""
+            width="1448"
+            height="1086"
+            decoding="async"
+            aria-hidden={p.id !== box.id}
+          />
+        ))}
+        <span className="giftset__zoom" aria-hidden="true">
+          <ZoomIn size={16} /> Phóng to
+        </span>
+      </button>
+      <figcaption>
+        {box.set} · {box.title} · {box.name}
+      </figcaption>
+      {createPortal(
+        <AnimatePresence>
+          {zoom !== null && <Lightbox items={setPhotos} index={zoom} onChange={setZoom} onClose={() => setZoom(null)} />}
+        </AnimatePresence>,
+        document.body,
+      )}
+    </figure>
+  )
+}
+
 /** Hộp 3D xoay được · ảnh minh hoạ cả set (set nào có ảnh mới hiện nút chuyển), bấm ảnh để xem lớn */
 function BoxVisual({ box }) {
   const [picked, setView] = useState('3d')
@@ -108,7 +148,7 @@ function BoxVisual({ box }) {
 
 /**
  * Hộp quà MelBee: chọn set 2 · 3 · 4 lọ. Mỗi set cố định loại mật và giá theo bảng giá (khách không đổi mật từng lọ).
- * Dùng ở trang chủ và trang Hộp quà. compact (trang chủ): chỉ ngắm hộp 3D + chọn set + giá, nút sang trang Hộp quà để đặt
+ * Dùng ở trang chủ và trang Hộp quà. compact (trang chủ): ảnh set (không 3D) + chọn set + giá, nút sang trang Hộp quà để đặt
  * — trước trang chủ chép nguyên trình đặt hộp của trang Hộp quà, dài và trùng.
  */
 export default function GiftSet({ compact = false }) {
@@ -132,7 +172,7 @@ export default function GiftSet({ compact = false }) {
 
   return (
     <div className="giftset">
-      <BoxVisual box={box} />
+      {compact && box.photoSet ? <SetPhotos box={box} /> : <BoxVisual box={box} />}
 
       <div className="giftset__panel">
         <fieldset className="giftset__boxes">

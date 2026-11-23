@@ -111,6 +111,77 @@
   isolation: isolate;
 }
 
+/* ── trang chủ: ảnh set (3 ảnh chồng sẵn, mờ chéo khi đổi set) ── */
+.giftset__stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1448 / 1086; /* đúng tỉ lệ ảnh → không cắt, không dải mờ */
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cream);
+  cursor: zoom-in;
+  box-shadow: 0 34px 70px -44px rgba(58, 41, 29, 0.55);
+  isolation: isolate;
+}
+
+.giftset__stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.035);
+  /* ảnh vừa rời đi: nằm dưới, giữ nguyên tới khi ảnh mới hiện hẳn rồi mới tắt → không nhạt nền giữa chừng */
+  transition:
+    opacity 0.2s linear 0.9s,
+    transform 0s linear 1.1s;
+  will-change: opacity, transform;
+}
+
+/* ảnh đang chọn: nằm trên, hiện dần + thu nhẹ về cỡ thật */
+.giftset__stage img.is-on {
+  z-index: 1;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.9s var(--ease),
+    transform 1.6s var(--ease);
+}
+
+.giftset__stage .giftset__zoom {
+  z-index: 2;
+}
+
+.giftset__stage:hover .giftset__zoom {
+  background: #fff;
+}
+
+.giftset__stage:focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .giftset__stage .giftset__zoom {
+    right: 8px;
+    bottom: 8px;
+    min-height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .giftset__stage img {
+    transform: none;
+    transition: opacity 0.3s;
+  }
+}
+
 /* nền: chính ảnh đó phóng to, làm mờ — lấp phần thừa khi ảnh không vuông */
 .giftset__photo::before {
   content: '';
