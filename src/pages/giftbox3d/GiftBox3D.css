@@ -1,6 +1,10 @@
 .box3d {
   position: relative;
+  width: 100%;
   aspect-ratio: 1;
+  /* màn thấp: khung thấp lại (rộng hơn cao) để cả bảng điều khiển vẫn nằm trong màn hình */
+  max-height: calc(100svh - var(--nav-h) - 240px);
+  min-height: 320px;
   border-radius: 6px;
   overflow: hidden;
   background: radial-gradient(120% 90% at 50% 35%, #fbf6ec 0%, var(--cream) 60%, #ecdfc8 100%);
@@ -83,42 +87,143 @@
 }
 
 
-.box3d__bar {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
+.box3d__hint {
+  margin: 0;
+  font-size: 12.5px;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ── bảng điều khiển dưới khung ── */
+.box3d__ctrl {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.box3d__row {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 8px;
-  pointer-events: none;
 }
 
-.box3d__hint {
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(250, 247, 240, 0.85);
-  font-size: 12.5px;
-  color: var(--brown-2);
+.box3d__sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 6px 4px;
+  background: var(--line);
 }
 
-.box3d__btn {
+.box3d__ctrl button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 38px;
-  padding: 0 14px;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: #fff;
-  font-size: 13.5px;
+  color: var(--brown);
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  pointer-events: auto;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 
-.box3d__btn:hover {
+.box3d__ctrl button:hover {
   border-color: var(--brown-2);
+}
+
+.box3d__icon {
+  width: 44px;
+  padding: 0;
+}
+
+.box3d__ctrl .box3d__main {
+  min-width: 140px;
+  padding: 0 20px;
+  border-color: var(--brown);
+  background: var(--brown);
+  color: var(--ivory);
+}
+
+.box3d__ctrl .box3d__main:hover {
+  background: var(--brown-2);
+}
+
+.box3d__chip {
+  padding: 0 16px;
+}
+
+.box3d__ctrl .box3d__chip[aria-pressed='true'] {
+  border-color: var(--honey-deep);
+  background: var(--honey-pale);
+}
+
+.box3d__range {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) 3.2em;
+  align-items: center;
+  gap: 12px;
+  width: min(100%, 420px);
+  font-size: 13.5px;
+  color: var(--brown-2);
+}
+
+.box3d__range output {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.box3d__range input {
+  appearance: none;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.box3d__range input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--honey) var(--v), rgba(58, 41, 29, 0.14) var(--v));
+}
+
+.box3d__range input::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--honey) var(--v), rgba(58, 41, 29, 0.14) var(--v));
+}
+
+.box3d__range input::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--brown);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.box3d__range input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--brown);
+}
+
+.box3d__range input:focus-visible {
+  outline: 2px solid var(--honey);
+  outline-offset: 2px;
+}
+
+/* điện thoại: nút xuống hai hàng → bỏ vạch ngăn (nằm lẻ cuối hàng) */
+@media (max-width: 560px) {
+  .box3d__sep {
+    display: none;
+  }
 }

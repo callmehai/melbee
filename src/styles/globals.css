@@ -263,8 +263,9 @@ ol {
 }
 
 
-/* ── chuyển trang (Chrome, Edge, Safari 18+): thanh menu và nút Zalo đứng yên, nội dung trang cũ
-      mờ đi, trang mới trồi lên. Trình duyệt chưa hỗ trợ thì chuyển trang bình thường. ── */
+/* ── chuyển trang (Chrome, Edge, Safari 18+): thanh menu và nút Zalo đứng yên; trang cũ lùi ra sau, mờ nhoè;
+      trang mới trồi lên từ đáy với mép hình dãy núi Tây Bắc, phía sau là dải màu nâu mật → vàng mật
+      (học từ trang A Sỉn). Trình duyệt chưa hỗ trợ thì chuyển trang bình thường. ── */
 @view-transition {
   navigation: auto;
 }
@@ -277,13 +278,26 @@ ol {
   view-transition-name: site-support;
 }
 
-/* ngắn, gọn: trang cũ mờ đi 0,18s, trang mới hiện ngay sau đó trong 0,32s */
+::view-transition-group(root) {
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+::view-transition-image-pair(root) {
+  isolation: isolate;
+  background: linear-gradient(135deg, #2a1611, #5a3417 48%, #c88a24);
+}
+
 ::view-transition-old(root) {
-  animation: page-out 0.18s ease-out both;
+  animation: page-recede 0.8s cubic-bezier(0.22, 0.8, 0.2, 1) both;
+  transform-origin: 50% 38%;
+  mix-blend-mode: normal;
 }
 
 ::view-transition-new(root) {
-  animation: page-in 0.32s var(--ease) both;
+  animation: page-ridge 0.8s cubic-bezier(0.65, 0, 0.2, 1) both;
+  transform-origin: 50% 70%;
+  mix-blend-mode: normal;
 }
 
 /* menu đổi nền (trong suốt ở đầu trang chủ ↔ đặc ở trang con) bằng cách hoà dần, không nhảy */
@@ -291,16 +305,50 @@ ol {
   animation-duration: 0.3s;
 }
 
-@keyframes page-out {
+@keyframes page-recede {
   to {
-    opacity: 0;
+    opacity: 0.62;
+    transform: scale(1.025) translateY(-12px);
+    filter: blur(2px);
   }
 }
 
-@keyframes page-in {
+/* mép trên của trang mới là đường sống núi nhấp nhô, kéo từ đáy lên quá đỉnh màn hình */
+@keyframes page-ridge {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    clip-path: polygon(-12% 112%, 0% 97%, 14% 106%, 27% 93%, 41% 104%, 56% 90%, 72% 103%, 86% 94%, 112% 106%, 112% 115%, -12% 115%);
+    transform: translateY(20px) scale(1.015);
+    filter: brightness(0.9);
+  }
+  to {
+    clip-path: polygon(-12% -13%, 0% -28%, 14% -19%, 27% -32%, 41% -21%, 56% -35%, 72% -22%, 86% -31%, 112% -18%, 112% 115%, -12% 115%);
+    transform: none;
+    filter: brightness(1);
+  }
+}
+
+/* màn hẹp: ít đỉnh hơn, thấp hơn — không thì đỉnh núi dốc đứng như răng cưa */
+@keyframes page-ridge-narrow {
+  from {
+    clip-path: polygon(-10% 112%, 0% 104%, 22% 109%, 46% 101%, 70% 108%, 100% 102%, 110% 108%, 110% 115%, -10% 115%);
+    transform: translateY(20px) scale(1.015);
+    filter: brightness(0.9);
+  }
+  to {
+    clip-path: polygon(-10% -10%, 0% -18%, 22% -13%, 46% -21%, 70% -14%, 100% -20%, 110% -14%, 110% 115%, -10% 115%);
+    transform: none;
+    filter: brightness(1);
+  }
+}
+
+@media (max-width: 800px) {
+  ::view-transition-group(root),
+  ::view-transition-old(root) {
+    animation-duration: 0.72s;
+  }
+
+  ::view-transition-new(root) {
+    animation: page-ridge-narrow 0.72s cubic-bezier(0.65, 0, 0.2, 1) both;
   }
 }
 

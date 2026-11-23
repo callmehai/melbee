@@ -42,7 +42,7 @@ function BoxVisual({ box }) {
         <GiftBox3D
           key={box.id}
           layout={box.id}
-          jars={box.preset.map((id) => ({ color: byId(id).color, name: byId(id).short, ...byId(id).label }))}
+          jars={box.preset.map((id) => ({ color: byId(id).color, name: byId(id).short, nameEn: byId(id).nameEn, ...byId(id).label, image: asset(byId(id).image), jar: byId(id).jar }))}
           fallback={<img src={asset(box.photo)} alt={`${box.name} MelBee`} />}
         />
       ) : (

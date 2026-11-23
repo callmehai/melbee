@@ -18,7 +18,10 @@
  * highlights: viết mềm lại từ mục "Công dụng" trên nhãn — web là quảng cáo, thực phẩm thường
  *   không được nói công dụng phòng/chữa bệnh (miễn dịch, kháng khuẩn, tim mạch, giải độc gan…).
  * color: màu mật (vòng màu cạnh tên) — chưa có ảnh riêng từng loại.
- * label: màu nhãn in trên lọ { bg, ink } — theo ảnh lọ thật; hộp quà 3D vẽ nhãn bằng màu này.
+ * label: màu nhãn in trên lọ { bg, ink } — theo ảnh lọ thật.
+ * jar: cho lọ trong hộp quà 3D — label: khung nhãn [x0, y0, x1, y1] (px) trong ảnh `image`, từ góc trái tới góc
+ *   phải của lọ lục giác (3D cắt đúng nhãn thật này dán lên 3 mặt trước); honey: màu mật nhìn qua thuỷ tinh.
+ *   Đổi ảnh lọ thì đo lại khung nhãn.
  */
 
 /** Các quy cách đang bán của một sản phẩm, theo thứ tự trong bảng giá (nhỏ → lớn). */
@@ -118,6 +121,7 @@ export const honeys = [
     ],
     color: '#8a4f12',
     label: { bg: '#2f6b4c', ink: '#ecc977' },
+    jar: { label: [291, 797, 813, 1252], honey: '#c97a08' },
   },
   {
     id: 'hang-da',
@@ -139,6 +143,7 @@ export const honeys = [
     ],
     color: '#6b3a10',
     label: { bg: '#3c4a4e', ink: '#e9d9ae' },
+    jar: { label: [290, 753, 836, 1202], honey: '#cf7f06' },
   },
   {
     // ✏️ loại thứ 5 (có trong bảng giá 18/11/2026). Chưa có nội dung nhãn — mô tả viết tạm, có nhãn thì thay.
@@ -161,6 +166,7 @@ export const honeys = [
     ],
     color: '#7a3f12',
     label: { bg: '#8f7ac9', ink: '#3b1630' },
+    jar: { label: [348, 824, 792, 1166], honey: '#3d1d0c' },
   },
   {
     id: 'hoa-ban',
@@ -182,6 +188,7 @@ export const honeys = [
     ],
     color: '#d9a531',
     label: { bg: '#f3ecdc', ink: '#3a291d' },
+    jar: { label: [323, 778, 805, 1183], honey: '#cc7206' },
   },
   {
     id: 'hoa-nhan',
@@ -203,6 +210,7 @@ export const honeys = [
     ],
     color: '#c27a1a',
     label: { bg: '#f2e5b6', ink: '#3a291d' },
+    jar: { label: [296, 788, 815, 1223], honey: '#cb7606' },
   },
   {
     // ✏️ mô tả viết tạm từ tên sản phẩm trong bảng giá — chờ MelBee gửi nội dung nhãn
