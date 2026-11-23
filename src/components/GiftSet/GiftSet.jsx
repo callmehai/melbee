@@ -16,6 +16,24 @@ import './GiftSet.css'
 const vnd = (n) => `${n.toLocaleString('vi-VN')} ₫`
 const byId = (id) => honeys.find((h) => h.id === id)
 
+// ảnh sản phẩm 1086×1448; khung vuông quanh lọ: từ nắp (≈185px trên mép nhãn) tới đáy lọ, rộng hơn nhãn một chút
+const PHOTO = [1086, 1448]
+/** Ảnh thu nhỏ đúng chiếc lọ (cắt từ ảnh sản phẩm theo khung nhãn jar.label) — thay ô màu trơn trông như icon tạm. */
+function jarThumb(h) {
+  const [x0, y0, x1, y1] = h.jar?.label || []
+  if (x1 === undefined || !h.image) return null
+  const top = y0 - 200
+  const side = Math.max(x1 - x0 + 150, y1 + 60 - top) // chừa lề quanh lọ: nắp, vai lọ không bị cắt sát
+  const cx = (x0 + x1) / 2
+  const cy = (top + y1 + 40) / 2 + 4
+  const pos = (c, full) => `${(((c - side / 2) / (full - side)) * 100).toFixed(1)}%`
+  return {
+    backgroundImage: `url("${asset(h.image)}")`,
+    backgroundSize: `${((PHOTO[0] / side) * 100).toFixed(1)}% auto`,
+    backgroundPosition: `${pos(cx, PHOTO[0])} ${pos(cy, PHOTO[1])}`,
+  }
+}
+
 /** Lời nhắn mô tả hộp — chép sẵn để khách dán vào Zalo / Facebook. */
 function message(box) {
   return [
@@ -137,7 +155,11 @@ export default function GiftSet({ compact = false }) {
             const h = byId(id)
             return (
               <li key={`${box.id}-${i}`}>
-                <span className="giftset__swatch" style={{ '--c': h.color }} aria-hidden="true" />
+                {jarThumb(h) ? (
+                  <span className="giftset__thumb" style={jarThumb(h)} aria-hidden="true" />
+                ) : (
+                  <span className="giftset__swatch" style={{ '--c': h.color }} aria-hidden="true" />
+                )}
                 <div className="giftset__slot">
                   <small>
                     Lọ {i + 1} · {box.slots[i]}
