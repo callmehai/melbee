@@ -723,12 +723,14 @@
   display: grid;
   align-content: center;
   gap: 0.9em;
-  font-family: var(--font-serif);
-  font-size: clamp(12px, 2cqw, 17px);
-  line-height: 1.5;
+  /* chữ thân (Be Vietnam Pro): font tiêu đề Noto Serif Display ở cỡ 12–17px nét mảnh, cộng quầng sáng dày → trông nhoè */
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(12px, 1.9cqw, 16px);
+  line-height: 1.6;
   color: #2e1806;
-  /* quầng sáng mờ sau chữ: nét chữ không lẫn vào đường viền tổ ong */
-  text-shadow: 0 0 6px rgba(255, 226, 150, 0.85), 0 0 2px rgba(255, 226, 150, 0.9);
+  /* quầng sáng mỏng sau chữ: nét chữ không lẫn vào đường viền tổ ong mà vẫn sắc */
+  text-shadow: 0 0 3px rgba(255, 232, 170, 0.9);
   text-wrap: pretty;
 }
 
@@ -809,16 +811,27 @@
   margin-top: 24px;
 }
 
+/* biểu tượng ngang hàng tiêu đề (trước căn giữa cả khối → mô tả dài ngắn khác nhau làm các ô lệch hàng nhau) */
 .facets li {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 2px 12px;
-  align-items: center;
+  align-items: start;
+  align-content: start; /* ô thấp hơn ô bên cạnh: không giãn hàng, mô tả nằm sát tiêu đề */
 }
 
 .facets svg {
-  grid-row: span 2;
+  grid-row: 1;
+  margin-top: 1px;
   color: var(--honey-deep);
+}
+
+.facets b {
+  grid-column: 2;
+}
+
+.facets span {
+  grid-column: 2;
 }
 
 .facets b {

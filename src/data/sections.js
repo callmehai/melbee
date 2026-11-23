@@ -200,8 +200,9 @@ export const testimonialsSection = {
 }
 
 export const cta = {
-  title: ['Mang vị ngọt Tây Bắc', 'về ngôi nhà của bạn'],
-  subtext: 'Nhắn MelBee qua Zalo hoặc Facebook để được tư vấn loại mật phù hợp.',
+  // MelBee định vị quà biếu → lời kết là gửi tặng, không phải "mang về nhà"
+  title: ['Gửi một mùa hoa Tây Bắc', 'tới người bạn trân quý'],
+  subtext: 'Nhắn MelBee qua Zalo hoặc Facebook để chọn hộp quà, loại mật hợp với người nhận.',
   image: 'assets/images/hero/cta.jpg',
   art: 'landscape-sunset',
 }

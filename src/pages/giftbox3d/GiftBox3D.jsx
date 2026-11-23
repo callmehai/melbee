@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowUpFromLine, Box, PackageOpen, RotateCcw, RotateCw, ScanEye } from 'lucide-react'
+import { ArrowUpFromLine, Box, PackageOpen, RotateCcw, RotateCw, ScanEye, SlidersHorizontal } from 'lucide-react'
 import { hasWebGL } from '../../three/utils/performance.js'
 import { afterPageTransition } from '../../lib/pageTransition.js'
 import { useMediaQuery } from '../../hooks/useMediaQuery.js'
@@ -26,6 +26,7 @@ export default function GiftBox3D({ layout = 'hop-2', fallback, jars = [], openK
   const [amount, setAmount] = useState(1) // mức mở nắp 0 → 1 — vào trang là hộp đã mở (như ảnh set)
   const [lifted, setLifted] = useState(false) // lọ đang nhấc lên khỏi khay
   const [top, setTop] = useState(false) // nhìn từ trên xuống
+  const [more, setMore] = useState(false) // mở thêm: nhấc lọ, nhìn từ trên, mức mở nắp (gọn mặc định — nhiều nút trông như phần mềm)
   const open = amount >= 0.5
   const touch = useMediaQuery('(hover: none)')
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)')
@@ -119,29 +120,45 @@ export default function GiftBox3D({ layout = 'hop-2', fallback, jars = [], openK
             <button type="button" className="box3d__icon" onClick={() => api.current?.rotate(1)} aria-label="Xoay hộp sang phải">
               <RotateCw size={17} aria-hidden="true" />
             </button>
-            <span className="box3d__sep" aria-hidden="true" />
-            <button type="button" className="box3d__chip" aria-pressed={lifted} onClick={() => api.current?.setLift(!lifted)}>
-              <ArrowUpFromLine size={15} aria-hidden="true" />
-              Nhấc lọ lên
-            </button>
-            <button type="button" className="box3d__chip" aria-pressed={top} onClick={toggleTop}>
-              <ScanEye size={15} aria-hidden="true" />
-              Nhìn từ trên
+            <button
+              type="button"
+              className="box3d__icon"
+              aria-expanded={more}
+              aria-controls="box3d-more"
+              onClick={() => setMore((m) => !m)}
+              aria-label={more ? 'Ẩn tuỳ chọn xem thêm' : 'Tuỳ chọn xem thêm: nhấc lọ, nhìn từ trên, mức mở nắp'}
+              title="Xem thêm"
+            >
+              <SlidersHorizontal size={17} aria-hidden="true" />
             </button>
           </div>
-          <label className="box3d__range">
-            <span>Mở nắp</span>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              step="1"
-              value={Math.round(amount * 100)}
-              onChange={(e) => api.current?.setOpen(e.target.value / 100)}
-              style={{ '--v': `${Math.round(amount * 100)}%` }}
-            />
-            <output>{Math.round(amount * 100)}%</output>
-          </label>
+          {more && (
+            <div className="box3d__more" id="box3d-more">
+              <div className="box3d__row">
+                <button type="button" className="box3d__chip" aria-pressed={lifted} onClick={() => api.current?.setLift(!lifted)}>
+                  <ArrowUpFromLine size={15} aria-hidden="true" />
+                  Nhấc lọ lên
+                </button>
+                <button type="button" className="box3d__chip" aria-pressed={top} onClick={toggleTop}>
+                  <ScanEye size={15} aria-hidden="true" />
+                  Nhìn từ trên
+                </button>
+              </div>
+              <label className="box3d__range">
+                <span>Mở nắp</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={Math.round(amount * 100)}
+                  onChange={(e) => api.current?.setOpen(e.target.value / 100)}
+                  style={{ '--v': `${Math.round(amount * 100)}%` }}
+                />
+                <output>{Math.round(amount * 100)}%</output>
+              </label>
+            </div>
+          )}
           {/* gợi ý nằm dưới bảng nút (không đè lên hộp) */}
           <p className="box3d__hint">{touch ? 'Vuốt ngang để xoay · chạm hộp để mở / đóng nắp' : 'Kéo để xoay · bấm hộp để mở / đóng nắp'}</p>
         </div>

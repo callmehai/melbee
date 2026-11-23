@@ -37,11 +37,16 @@ export default function OrderMenu({
         ref.current?.querySelector('button')?.focus()
       }
     }
+    // cuộn trang → đóng (bảng chọn nổi trên thanh menu, cuộn mà còn mở thì đè lên menu)
+    const y0 = window.scrollY
+    const onScroll = () => Math.abs(window.scrollY - y0) > 40 && setOpen(false)
     document.addEventListener('pointerdown', onDown)
     document.addEventListener('keydown', onKey)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => {
       document.removeEventListener('pointerdown', onDown)
       document.removeEventListener('keydown', onKey)
+      window.removeEventListener('scroll', onScroll)
     }
   }, [open])
 

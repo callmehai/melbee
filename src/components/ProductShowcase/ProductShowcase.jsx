@@ -1,54 +1,35 @@
-import { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
 import SectionHeading from '../common/SectionHeading.jsx'
 import Reveal from '../common/Reveal.jsx'
-import ProductCard from '../ProductCard/ProductCard.jsx'
-import ProductModal from '../ProductModal/ProductModal.jsx'
-import { products } from '../../data/products.js'
+import { ArrowLink } from '../common/Button.jsx'
+import { HoneyCard } from '../../pages/common.jsx'
+import { honeys } from '../../data/catalog.js'
 import { productsSection } from '../../data/sections.js'
-import { hasAsset } from '../../lib/assets.js'
+import { page } from '../../lib/site.js'
 import './ProductShowcase.css'
 
-// chỉ sản phẩm đã có ảnh thật — hũ minh hoạ làm cả hàng trông như bản nháp
-const shown = products.filter((p) => hasAsset(p.image))
-
+/**
+ * Khối Sản phẩm trang chủ: đủ 5 loại mật + bánh tổ bằng đúng thẻ, đúng ảnh lọ của trang Sản phẩm.
+ * Trước đây là một thẻ lớn dùng ảnh lọ nhãn kem kiểu khác (honey-01.jpg) → khách thấy hai bộ nhãn, nhận diện lệch nhau.
+ */
 export default function ProductShowcase() {
-  const [active, setActive] = useState(null)
-  if (!shown.length) return null
-  const single = shown.length === 1
-
   return (
-    <section
-      id="san-pham"
-      data-scene="products"
-      className={`section products ${single ? 'is-single' : ''}`}
-      aria-labelledby={single ? `p-${shown[0].id}` : 'products-title'}
-    >
+    <section id="san-pham" data-scene="products" className="section products" aria-labelledby="products-title">
       <div className="container">
-        {/* một sản phẩm: bỏ tiêu đề lớn, tên sản phẩm là tiêu đề → cả hũ mật nằm trọn trong một màn hình */}
-        {!single && (
-          <div className="products__head">
-            <SectionHeading id="products-title" eyebrow={productsSection.eyebrow} title={productsSection.title} subtitle={productsSection.subtitle} />
-          </div>
-        )}
-        <ul className={`products__grid ${single ? 'is-single' : ''}`}>
-          {shown.map((p, i) => (
-            <Reveal as="li" key={p.id} delay={(i % 4) * 0.1}>
-              <ProductCard
-                product={p}
-                onOpen={setActive}
-                feature={single}
-                badge={!single && p.featured}
-                lead={single && <p className="eyebrow">{productsSection.eyebrow}</p>}
-              />
+        <div className="products__head">
+          <SectionHeading id="products-title" eyebrow={productsSection.eyebrow} title={productsSection.title} subtitle={productsSection.subtitle} />
+        </div>
+        <ul className="hgrid products__honeys" style={{ '--cols': honeys.length }}>
+          {honeys.map((h, i) => (
+            <Reveal as="li" key={h.id} delay={(i % 6) * 0.07}>
+              <HoneyCard honey={h} />
             </Reveal>
           ))}
         </ul>
-        <Reveal as="p" className="products__note">
-          {productsSection.note}
+        <Reveal className="products__foot">
+          <p className="products__note">{productsSection.note}</p>
+          <ArrowLink href={page('san-pham/')}>Xem chi tiết các loại mật</ArrowLink>
         </Reveal>
       </div>
-      <AnimatePresence>{active && <ProductModal key={active.id} product={active} onClose={() => setActive(null)} />}</AnimatePresence>
     </section>
   )
 }

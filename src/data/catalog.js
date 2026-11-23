@@ -245,7 +245,7 @@ export const commonInfo = {
   ingredients: '100% mật ong nguyên chất.',
   usage: [
     'Mỗi ngày dùng 15g – 30g, pha cùng nước ấm.',
-    'Dùng trực tiếp, ngâm với thảo dược hoặc pha với trà, cà phê, nước giải khát…',
+    'Dùng trực tiếp, ngâm với thảo dược hoặc pha cùng trà, cà phê và nước giải khát.',
     'Dùng làm nguyên liệu chế biến thực phẩm.',
   ],
   crystallize:

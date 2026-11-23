@@ -235,3 +235,24 @@
     display: none;
   }
 }
+
+/* tuỳ chọn thêm (nhấc lọ, nhìn từ trên, mức mở nắp) — ẩn mặc định, bấm nút thanh trượt mới hiện */
+.box3d__more {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: 100%;
+  animation: box3d-more 0.3s var(--ease);
+}
+
+@keyframes box3d-more {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.box3d__ctrl .box3d__icon[aria-expanded='true'] {
+  border-color: var(--brown);
+  background: var(--cream);
+}

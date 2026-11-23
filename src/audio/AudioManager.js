@@ -5,7 +5,7 @@ import { AUDIO_CONFIG, AUDIO_LAYERS, AUDIO_SCENES } from './config.js'
 const LAYERS = Object.keys(AUDIO_LAYERS)
 const clamp01 = (v) => Math.min(1, Math.max(0, v))
 
-// nhớ lựa chọn tắt tiếng trong phiên xem (tải lại trang vẫn tắt); lần sau vào trang thì nhạc lại bật
+// nhớ lựa chọn bật / tắt tiếng trong phiên xem (tải lại trang vẫn giữ); lần sau vào trang thì về mặc định (tắt)
 const PREF_KEY = 'melbee:sound'
 const readPref = () => {
   try {
@@ -330,7 +330,8 @@ class AudioManager {
   }
 
   /**
-   * Mặc định bật khi vào trang: trình duyệt cho phát ngay thì phát luôn; không thì nút hiện sẵn "Bật"
+   * Mặc định tắt (AUDIO_CONFIG.autoplay = false). Khi được phép tự phát (cấu hình bật, hoặc người xem đã bật trong phiên):
+   * trình duyệt cho phát ngay thì phát luôn; không thì nút hiện sẵn "Bật"
    * (trạng thái pending) và nhạc chạy ở lần bấm / chạm / gõ phím đầu tiên trên trang (trình duyệt không
    * tính cuộn trang là tương tác). Người xem tắt → giữ tắt tới hết phiên xem.
    */
@@ -340,7 +341,9 @@ class AudioManager {
       document.addEventListener('prerenderingchange', () => this.autoStart(), { once: true })
       return
     }
-    if (!AUDIO_CONFIG.autoplay || readPref() === 'off' || this.status !== 'off') return
+    // mặc định tắt: chỉ tự phát lại khi người xem đã chủ động bật trong phiên này (readPref 'on')
+    const want = readPref() ? readPref() === 'on' : AUDIO_CONFIG.autoplay
+    if (!want || this.status !== 'off') return
     this.setStatus('pending')
     const start = (e) => {
       // bấm vào chính nút âm thanh → để toggle() xử lý (người xem đang muốn tắt)

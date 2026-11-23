@@ -16,8 +16,9 @@ export default function StoryPage() {
         <Photo src={story.image} alt={story.imageAlt} className="split__photo" eager />
         <div>
           <p className="eyebrow">Về chúng tôi</p>
+          {/* trang đã có tiêu đề "Câu chuyện MelBee" → không lặp "Câu chuyện của chúng tôi" ngay dưới */}
           <h2 id="st-us" className="sp-h2">
-            {story.title}
+            MelBee ra đời từ đâu
           </h2>
           {story.paragraphs.map((p) => (
             <p key={p.slice(0, 24)} className="split__p">

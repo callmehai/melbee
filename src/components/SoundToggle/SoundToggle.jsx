@@ -29,7 +29,7 @@ const DROPS = 6
  * Nút nhạc nền hình bông hoa (trên thanh điều hướng). Tắt tiếng: hoa xám, cánh khép.
  * Bật: hoa nở đủ màu, chậm rãi xoay, sóng + phấn toả ra. Bấm vào hoa: con ong hút mật
  * (tắt — giọt mật bay từ hoa vào ong, hoa phai màu) hoặc nhả mật (bật — giọt mật rơi vào hoa, hoa nở).
- * Mặc định BẬT: nhạc phát ở lần bấm/chạm đầu tiên trên trang (trình duyệt chặn tự phát tiếng).
+ * Mặc định TẮT: bấm hoa mới phát (src/audio/config.js · autoplay). Đã bật trong phiên thì tải lại trang phát tiếp ở lần chạm đầu.
  */
 export default function SoundToggle() {
   const [status, setStatus] = useState(audioManager.status)

@@ -116,18 +116,6 @@
   }
 }
 
-.intro__hex {
-  position: absolute;
-  right: -28px;
-  bottom: -28px;
-  width: 120px;
-  height: 138px;
-  background: var(--honey);
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  opacity: 0.18;
-  z-index: -1;
-}
-
 @media (max-width: 860px) {
   .intro__grid {
     grid-template-columns: 1fr;
@@ -138,9 +126,3 @@
   }
 }
 
-/* điện thoại: khối lục giác trang trí lòi ra sát mép màn hình trông như lệch → ẩn */
-@media (max-width: 560px) {
-  .intro__hex {
-    display: none;
-  }
-}
