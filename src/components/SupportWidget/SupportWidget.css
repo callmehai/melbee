@@ -1,8 +1,8 @@
 /* trên lớp Three.js (40), dưới navbar / menu điện thoại (49–50) và cửa sổ sản phẩm (100) */
 .support {
   position: fixed;
-  right: 24px;
-  bottom: 24px;
+  right: 20px;
+  bottom: 20px;
   z-index: 45;
   font-size: 14.5px;
 }
@@ -18,8 +18,9 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 58px;
-  height: 58px;
+  /* nhỏ hơn bản cũ (58px): đè ít chữ hơn ở mép phải khi đứng yên đọc; cuộn xuống thì nút lánh hẳn (is-away) */
+  width: 52px;
+  height: 52px;
   border: 0;
   border-radius: 50%;
   color: #fff;
@@ -98,7 +99,7 @@
 .support__panel {
   position: absolute;
   right: 0;
-  bottom: calc(58px + 18px);
+  bottom: calc(52px + 18px);
   display: flex;
   flex-direction: column;
   width: 372px;

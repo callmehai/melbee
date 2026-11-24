@@ -6,6 +6,8 @@ import Media from '../common/Media.jsx'
 import { THREE_CONFIG } from '../../three/config.js'
 import { useThreeStatus } from '../../three/store.js'
 import { intro } from '../../data/sections.js'
+import { honeys } from '../../data/catalog.js'
+import { page } from '../../lib/site.js'
 import './Intro.css'
 
 /**
@@ -42,6 +44,7 @@ export default function Intro() {
   // có WebGL → miếng bánh tổ 3D; không có → ảnh thật / tranh minh hoạ như cũ
   const three = useThreeStatus()
   const comb = THREE_CONFIG.enabled && THREE_CONFIG.effects.honeycomb && three !== 'unavailable'
+  const award = honeys.find((h) => h.id === intro.caption?.id)?.award
 
   return (
     <section id="gioi-thieu" data-scene="honey" ref={ref} className="section intro" aria-labelledby="intro-title">
@@ -62,8 +65,14 @@ export default function Intro() {
         </div>
         <motion.div className="intro__visual" style={still ? undefined : { y }}>
           <Reveal effect="scale" duration={1.2} className="intro__frame">
-            {comb ? <CombStage /> : <Media src={intro.image} alt={intro.imageAlt} art={intro.art} />}
+            {comb ? <CombStage /> : <Media src={intro.image} alt={intro.imageAlt} art={intro.art} position="50% 70%" />}
           </Reveal>
+          {!comb && intro.caption && (
+            <Reveal as="p" className="intro__caption" delay={0.3}>
+              <a href={page(`san-pham/${intro.caption.id}/`)}>{intro.caption.text}</a>
+              {award && <span className="award">{award}</span>}
+            </Reveal>
+          )}
         </motion.div>
       </div>
     </section>

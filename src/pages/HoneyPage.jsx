@@ -1,8 +1,9 @@
 import { useId, useState } from 'react'
 import { Shell, Crumbs, Photo, HoneyCard, OrderButtons, priceOf, perUnit, vnd } from './common.jsx'
-import { honeys, sizesOf, commonInfo } from '../data/catalog.js'
+import { honeys, sizesOf, commonInfo, giftBoxes } from '../data/catalog.js'
 import { page } from '../lib/site.js'
 import Reveal from '../components/common/Reveal.jsx'
+import { asset } from '../lib/assets.js'
 
 const TABS = ['Mô tả', 'Cách dùng', 'Bảo quản'] // ngắn để vừa một hàng trên điện thoại
 
@@ -80,6 +81,51 @@ function InfoTabs({ honey }) {
   )
 }
 
+/**
+ * Định vị của MelBee là quà biếu → mỗi loại mật dẫn sang các set có loại đó (ảnh set + giá trọn bộ).
+ * Loại không nằm trong set nào (Khoái rừng, bánh tổ) vẫn có lối sang trang Hộp quà.
+ */
+function InSets({ honey }) {
+  const sets = giftBoxes.filter((b) => b.preset.includes(honey.id))
+  return (
+    <section className="container insets" aria-labelledby="insets-title">
+      <div className="insets__head">
+        <p className="eyebrow">Làm quà biếu</p>
+        <h2 id="insets-title" className="sp-h2">
+          {sets.length ? `${honey.short} có trong ${sets.length > 1 ? `${sets.length} set quà` : 'set quà'}` : 'Gửi tặng trong hộp quà MelBee'}
+        </h2>
+        <p>
+          {sets.length
+            ? 'Hộp cứng nâu trầm nhũ vàng, khay định hình, thìa gỗ lấy mật và túi giấy đồng bộ — giá trọn bộ đã gồm hộp và túi.'
+            : 'Các set quà phối sẵn mật Hoa ban, Hoa rừng, Hoa nhãn và Hang đá trong hộp cứng nâu trầm nhũ vàng. Muốn thêm loại này vào quà, nhắn MelBee để được tư vấn.'}
+        </p>
+      </div>
+      {sets.length > 0 ? (
+        <ul className="insets__list">
+          {sets.map((b, i) => (
+            <Reveal as="li" key={b.id} delay={i * 0.08}>
+              <a className="insets__card" href={page(`hop-qua/?set=${b.id}`)}>
+                <span className="insets__img">
+                  <img src={asset(b.photoSet)} alt={`${b.set} ${b.title}`} loading="lazy" decoding="async" width="1448" height="1086" />
+                </span>
+                <span className="insets__set">
+                  {b.set} · {b.name}
+                </span>
+                <b>{b.title}</b>
+                <span className="insets__price">{vnd(b.price)}</span>
+              </a>
+            </Reveal>
+          ))}
+        </ul>
+      ) : (
+        <a className="btn btn--outline" href={page('hop-qua/')}>
+          Xem các hộp quà
+        </a>
+      )}
+    </section>
+  )
+}
+
 /** /san-pham/<id>/ — một loại mật: xem có hợp không và đặt mua. */
 export default function HoneyPage({ id }) {
   const honey = honeys.find((h) => h.id === id) || honeys[0]
@@ -100,6 +146,7 @@ export default function HoneyPage({ id }) {
 
         <div className="detail__info">
           <p className="eyebrow">{honey.group}</p>
+          {honey.award && <p className="award">{honey.award}</p>}
           <h1>{honey.name}</h1>
           <p className="detail__en" lang="en">
             {honey.nameEn}
@@ -133,6 +180,8 @@ export default function HoneyPage({ id }) {
       </div>
 
       <InfoTabs honey={honey} />
+
+      <InSets honey={honey} />
 
       <section className="container others" aria-labelledby="others-title">
         <div className="others__head">

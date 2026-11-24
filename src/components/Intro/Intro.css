@@ -33,6 +33,9 @@
 
 .intro__visual {
   position: relative;
+  width: 100%;
+  max-width: 440px; /* khung vòm vừa tầm mắt, không cao quá một màn */
+  justify-self: center;
 }
 
 .intro__frame {
@@ -126,3 +129,32 @@
   }
 }
 
+
+/* chú thích dưới khung vòm: tên loại mật (link sang trang của nó) + danh hiệu */
+.intro__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 4px 12px;
+  margin-top: 18px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--brown-2);
+}
+
+.intro__caption a {
+  text-decoration: none;
+  border-bottom: 1px solid rgba(154, 101, 20, 0.35);
+}
+
+.intro__caption a:hover {
+  color: var(--honey-deep);
+}
+
+.intro__caption .award {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-style: normal;
+}

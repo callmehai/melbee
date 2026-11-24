@@ -45,10 +45,11 @@ export const intro = {
     'Đó là dấu ấn của những mùa hoa, của núi rừng và của người nuôi ong — được gìn giữ qua cả hành trình từ vùng đất tự nhiên đến từng giọt mật.',
     'Mỗi sản phẩm MelBee gửi đến bạn đều giữ trọn vị nguyên bản cùng câu chuyện phía sau.',
   ],
-  // khung này mặc định là miếng bánh tổ 3D lắc được; ảnh / tranh dưới đây chỉ hiện khi máy không có WebGL
-  image: 'assets/images/story/intro-macro.jpg',
-  imageAlt: 'Miếng bánh tổ đầy mật, mật chảy thành sợi rồi nhỏ giọt',
-  art: 'honeycomb',
+  // khung vòm: ảnh lọ dòng chủ lực (cùng ảnh trang sản phẩm) — miếng bánh tổ 3D đã tắt (src/three/config.js)
+  image: 'assets/images/products/hoa-ban.jpg',
+  imageAlt: 'Lọ mật ong Hoa ban Tây Bắc MelBee giữa hoa trắng và thân tre',
+  art: 'jar',
+  caption: { id: 'hoa-ban', text: 'Mật ong Hoa ban Tây Bắc' }, // dòng chú thích dưới khung, kèm danh hiệu của loại mật đó
 }
 
 export const productsSection = {
@@ -69,6 +70,66 @@ export const story = {
   image: 'assets/images/story/story.jpg',
   imageAlt: 'Người nuôi ong bên đàn ong giữa núi rừng Tây Bắc',
   art: 'landscape',
+}
+
+/**
+ * Hành trình MelBee — các mốc có thật, lấy từ bài đăng trên fanpage facebook.com/melbeetaybac (đọc 24/11/2026).
+ * Thêm mốc mới vào cuối mảng. date: chữ hiện trên mốc; place: nơi diễn ra (không có thì bỏ).
+ */
+export const journey = {
+  eyebrow: 'Hành trình',
+  title: ['Từ lọ mật đầu tiên', 'đến những hộp quà'],
+  milestones: [
+    {
+      date: '10 / 2026',
+      title: 'Mật ong Hoa ban Tây Bắc ra mắt',
+      text: 'Dòng mật đầu tiên — và vẫn là dòng chủ lực, đạt OCOP 3 sao — vừa kịp làm quà dịp 20/10.',
+    },
+    {
+      date: '27 / 10',
+      title: 'Gian hàng đầu tiên',
+      place: 'Sảnh Beta · Đại học FPT Hà Nội',
+      text: 'Lần đầu gặp khách ngoài đời: nếm thử mật tại chỗ, nghe câu chuyện phía sau từng lọ và chụp ảnh cùng chú ong MelBee.',
+    },
+    {
+      date: '11 / 2026',
+      title: 'Thêm ba vị mật mới',
+      text: 'Hoa nhãn ngọt đậm, Hoa rừng Tây Bắc thanh mát từ hàng trăm loài hoa dại, và Hang đá sánh đặc — số lượng giới hạn.',
+    },
+    {
+      date: '14 / 11',
+      title: 'Bánh tổ mật ong',
+      text: 'Nguyên miếng tổ ong đầy mật — sản phẩm mới được bật mí qua minigame đoán tên trên fanpage.',
+    },
+    {
+      date: '15 / 11',
+      title: 'Heritage Festival Vol.2',
+      place: 'Lotte Mall Tây Hồ, Hà Nội',
+      text: 'Một ngày ở Culture Avenue: khách nếm từng dòng mật, ngắm màu, cảm kết cấu và chọn set quà cho gia đình.',
+    },
+    {
+      date: '19 / 11',
+      title: 'Ba set quà tri ân 20/11',
+      text: 'Hương hoa Tây Bắc, Tam Hoa và Mật ngọt bốn mùa — hộp cứng nâu trầm, khay vàng in lời gửi, kèm thìa gỗ lấy mật.',
+    },
+    {
+      date: '24 / 11',
+      title: 'Website melbeetaybac.com',
+      text: 'Bảng vị các dòng mật và các set quà gom về một nơi — không lo trôi bài.',
+    },
+  ],
+}
+
+/** Ảnh gian hàng MelBee ở Heritage Festival Vol.2 (fanpage MelBee, 15/11/2026) — đã cắt bỏ khung logo. */
+export const events = {
+  eyebrow: 'MelBee ngoài đời',
+  title: 'Gặp nhau ở Lotte Mall Tây Hồ',
+  text: 'Ngày 15/11/2026, MelBee mang các dòng mật và set quà đến Heritage Festival Vol.2. Cảm ơn mọi người đã ghé nếm thử và trò chuyện cùng chúng mình.',
+  photos: [
+    { src: 'assets/images/story/su-kien-gian-hang.jpg', alt: 'Gian hàng MelBee với các lọ mật, hộp quà mở nắp và chú ong linh vật', caption: 'Gian hàng ở Culture Avenue, tầng 4' },
+    { src: 'assets/images/story/su-kien-nem-thu.jpg', alt: 'Khách nếm thử mật ong tại gian hàng MelBee', caption: 'Nếm thử từng dòng mật' },
+    { src: 'assets/images/story/su-kien-tu-van.jpg', alt: 'Thành viên MelBee gói mật cho khách tại gian hàng', caption: 'Tư vấn và gói quà tại chỗ' },
+  ],
 }
 
 export const origin = {
@@ -95,36 +156,40 @@ export const process = {
       title: 'Mùa hoa',
       text: 'Mỗi mùa hoa nở là một mùa mật mới. Hương vị của mật phụ thuộc vào loài hoa và thời điểm trong năm.',
       image: 'assets/images/process/01-mua-hoa.jpg',
-      art: 'blossom',
+      art: 'line-blossom',
     },
     {
       title: 'Đàn ong',
       text: 'Đàn ong được nuôi gần vùng hoa, tự do tìm mật trong không gian tự nhiên.',
       image: 'assets/images/process/02-dan-ong.jpg',
-      art: 'bee',
+      art: 'line-bee',
     },
     {
       title: 'Thu mật',
       text: 'Mật chỉ được thu khi đã chín trong tổ — từ những cầu ong đã được đàn ong vít nắp sáp.',
       image: 'assets/images/process/03-thu-mat.jpg',
-      art: 'frame',
+      art: 'line-frame',
     },
     {
       title: 'Lọc và bảo quản',
       text: 'Mật được lọc sạch tạp chất và bảo quản trong điều kiện phù hợp.',
       image: 'assets/images/process/04-loc.jpg',
-      art: 'drip',
+      art: 'line-drip',
     },
     {
       title: 'Đóng lọ',
       text: 'Mật được đóng lọ cẩn thận, sẵn sàng cho hành trình từ núi rừng đến tay bạn.',
       image: 'assets/images/process/05-dong-chai.jpg',
-      art: 'jar',
+      art: 'line-jar',
     },
   ],
 }
 
 export const whyUs = {
+  eyebrow: 'Điều MelBee giữ',
+  image: 'assets/images/gift/hop-mat-truoc.jpg',
+  imageAlt: 'Nắp hộp quà MelBee màu nâu trầm, chữ MELBEE và hoạ tiết hoa ép nhũ vàng',
+  imageCaption: 'Nắp hộp quà MelBee — nâu trầm, ép nhũ vàng',
   title: ['Điều gì làm nên', 'một giọt mật đáng trân trọng?'],
   // Không viết công dụng chữa bệnh / tăng miễn dịch nếu không có căn cứ.
   items: [

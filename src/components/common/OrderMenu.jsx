@@ -78,7 +78,7 @@ export default function OrderMenu({
             <p className="order-menu__hint">{hint}</p>
             {facebook && (
               <a
-                href={brand.facebook}
+                href={brand.messenger}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => {

@@ -667,10 +667,34 @@
   padding-bottom: clamp(48px, 7vw, 88px);
 }
 
+.bag__photo {
+  position: relative;
+}
+
+/* ảnh túi đã đặt sẵn trên màu nền trang → không khung, không bo; thêm bóng mềm dưới đáy túi cho đứng vững */
 .bag__photo img {
+  position: relative;
   width: 100%;
   height: auto;
-  border-radius: 6px;
+  /* mờ dần sát mép ảnh: không lộ đường viền khung ảnh (nền tách từ ảnh studio, lệch màu nền trang 1–2 mức) */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent), linear-gradient(180deg, transparent, #000 4%, #000 97%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent), linear-gradient(180deg, transparent, #000 4%, #000 97%, transparent);
+  mask-composite: intersect;
+}
+
+.bag__photo::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 8%;
+  bottom: 1%;
+  height: 7%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(58, 41, 29, 0.28), transparent);
+  filter: blur(6px);
+  mix-blend-mode: multiply; /* ảnh có nền đặc → bóng phải nằm trên ảnh, nhân màu để chỉ làm sẫm nền ngà quanh đáy túi */
+  pointer-events: none;
 }
 
 .bag__text p:not(.eyebrow) {
@@ -719,20 +743,32 @@
 
 .lid__text {
   position: absolute;
-  inset: 31% 19% 23% 17%;
+  inset: 31% 17% 24% 17%;
   margin: 0;
   display: grid;
   align-content: center;
-  gap: 0.9em;
-  /* chữ thân (Be Vietnam Pro): font tiêu đề Noto Serif Display ở cỡ 12–17px nét mảnh, cộng quầng sáng dày → trông nhoè */
-  font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: clamp(12px, 1.9cqw, 16px);
-  line-height: 1.6;
-  color: #2e1806;
+  justify-items: center;
+  gap: 0.8em;
+  /* như bản in thật: chữ có chân, căn giữa. Noto Serif Display 500 (không dùng 400: nét quá mảnh ở cỡ 13–18px) */
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: clamp(13px, 2.05cqw, 18px);
+  line-height: 1.62;
+  text-align: center;
+  color: #2b1605;
   /* quầng sáng mỏng sau chữ: nét chữ không lẫn vào đường viền tổ ong mà vẫn sắc */
-  text-shadow: 0 0 3px rgba(255, 232, 170, 0.9);
-  text-wrap: pretty;
+  text-shadow: 0 0 2px rgba(255, 236, 182, 0.95);
+  text-wrap: balance;
+}
+
+/* hoa văn nhỏ ngăn hai đoạn, như dấu ngắt trên thiệp in */
+.lid__text p + p::before {
+  content: '';
+  display: block;
+  width: 2.6em;
+  height: 1px;
+  margin: 0 auto 0.8em;
+  background: rgba(58, 30, 6, 0.45);
 }
 
 .lid__text p {
@@ -850,93 +886,6 @@
   }
 }
 
-.steps {
-  padding-top: clamp(48px, 7vw, 88px);
-  padding-bottom: clamp(24px, 4vw, 40px);
-}
-
-.steps__list {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 24px;
-  margin-top: 28px;
-}
-
-.steps__list li {
-  padding-top: 16px;
-  border-top: 2px solid var(--honey);
-}
-
-.steps__no {
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  color: var(--honey-deep);
-}
-
-.steps__list h3 {
-  margin-top: 6px;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: 22px;
-  line-height: 1.2;
-}
-
-.steps__list p {
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--brown-2);
-}
-
-@media (max-width: 1023px) {
-  .steps__list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 560px) {
-  .steps__list {
-    grid-template-columns: 1fr;
-  }
-}
-
-.values {
-  padding-top: clamp(32px, 5vw, 56px);
-}
-
-.values__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-  margin-top: 24px;
-}
-
-.values__grid li {
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  background: #fff;
-}
-
-.values__grid h3 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: 21px;
-  line-height: 1.25;
-}
-
-.values__grid p {
-  margin-top: 8px;
-  font-size: 15px;
-  color: var(--brown-2);
-}
-
-@media (max-width: 760px) {
-  .values__grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ---------- Liên hệ ---------- */
 .channels {
   display: grid;
@@ -1038,4 +987,364 @@
   font-size: 13px;
   letter-spacing: 0.02em;
   color: var(--muted);
+}
+
+/* ---------- danh hiệu (OCOP…) ---------- */
+.award {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 4px 12px 4px 10px;
+  border: 1px solid rgba(154, 101, 20, 0.4);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fbf3df, #f3e2b9);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--honey-deep);
+  white-space: nowrap;
+}
+
+.award::before {
+  content: '★';
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.hcard {
+  position: relative;
+}
+
+.detail__info .award {
+  display: flex;
+  width: fit-content;
+  margin: 10px 0 2px;
+}
+
+/* trên thẻ: nhãn nằm góc trên ảnh */
+.award--card {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin: 0;
+  padding: 3px 9px 3px 8px;
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  box-shadow: 0 6px 14px -8px rgba(58, 41, 29, 0.5);
+}
+
+/* ---------- trang chi tiết: ảnh vừa một màn, lọ nằm giữa khung ---------- */
+.detail__photo > img {
+  object-position: 50% 66%; /* lọ nằm ở nửa dưới ảnh gốc (khung nhãn ~54–82% chiều cao) */
+}
+
+@media (min-width: 900px) {
+  .detail {
+    align-items: start;
+  }
+
+  /* rộng hết cột, cao không quá phần màn còn lại dưới đường dẫn → mở trang là thấy trọn lọ (ảnh cắt bớt tre/lá phía trên) */
+  .detail__photo:not(.is-soon) {
+    position: sticky;
+    top: calc(var(--nav-h) + 16px);
+    width: 100%;
+    max-height: calc(100svh - var(--nav-h) - 110px);
+  }
+}
+
+/* ---------- trang chi tiết: có trong set quà ---------- */
+.insets {
+  padding-top: clamp(48px, 7vw, 88px);
+  padding-bottom: clamp(16px, 3vw, 32px);
+}
+
+.insets__head {
+  max-width: 640px;
+  margin-bottom: 28px;
+}
+
+.insets__head .sp-h2 {
+  margin-top: 8px;
+}
+
+.insets__head > p:last-child {
+  margin-top: 10px;
+  color: var(--brown-2);
+}
+
+.insets__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2.4vw, 28px);
+}
+
+.insets__card {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+  text-decoration: none;
+}
+
+.insets__img {
+  display: block;
+  margin-bottom: 12px;
+  aspect-ratio: 1448 / 1086;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 0 22px 44px -32px rgba(58, 41, 29, 0.6);
+}
+
+.insets__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease);
+}
+
+.insets__card:hover .insets__img img {
+  transform: scale(1.03);
+}
+
+.insets__set {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--honey-deep);
+}
+
+.insets__card b {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.insets__price {
+  font-size: 14px;
+  color: var(--brown-2);
+}
+
+@media (max-width: 760px) {
+  .insets__list {
+    grid-template-columns: 1fr;
+  }
+
+  .insets__card {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    grid-template-rows: auto auto 1fr;
+    column-gap: 14px;
+    align-items: start;
+  }
+
+  .insets__img {
+    grid-row: 1 / 4;
+    margin: 0;
+  }
+}
+
+/* ---------- Câu chuyện: hành trình (mốc có ngày tháng thật) ---------- */
+.journey {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+  padding-top: clamp(56px, 8vw, 104px);
+  padding-bottom: clamp(56px, 8vw, 104px);
+}
+
+.journey__head {
+  position: sticky;
+  top: calc(var(--nav-h) + 32px);
+}
+
+.journey__head .sp-h2 em {
+  display: block;
+  font-style: italic;
+  color: var(--honey-deep);
+}
+
+.journey__list {
+  position: relative;
+  display: grid;
+}
+
+/* sợi chỉ vàng nối các mốc */
+.journey__list::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: 112px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(200, 138, 36, 0.55) 6%, rgba(200, 138, 36, 0.55) 94%, transparent);
+}
+
+.journey__list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  column-gap: 36px;
+  padding: 0 0 34px;
+}
+
+.journey__list li::before {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 107px;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--honey);
+  border-radius: 50%;
+  background: var(--ivory);
+  box-shadow: 0 0 0 4px var(--ivory);
+}
+
+.journey__list li:last-child::before {
+  background: var(--honey);
+}
+
+.journey__date {
+  grid-row: 1 / 5;
+  padding-top: 2px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--honey-deep);
+  white-space: nowrap;
+}
+
+.journey__list h3 {
+  grid-column: 2;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(21px, 2vw, 26px);
+  line-height: 1.2;
+}
+
+.journey__place {
+  grid-column: 2;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--honey-deep);
+}
+
+.journey__list li > p:last-child {
+  grid-column: 2;
+  margin-top: 6px;
+  font-size: 15px;
+  color: var(--brown-2);
+}
+
+@media (max-width: 860px) {
+  .journey {
+    grid-template-columns: 1fr;
+  }
+
+  .journey__head {
+    position: static;
+  }
+}
+
+@media (max-width: 520px) {
+  .journey__list::before {
+    left: 5px;
+  }
+
+  .journey__list li {
+    grid-template-columns: 1fr;
+    padding-left: 30px;
+  }
+
+  .journey__list li::before {
+    left: 0;
+  }
+
+  .journey__date {
+    grid-row: auto;
+    font-size: 17px;
+  }
+
+  .journey__list h3,
+  .journey__place,
+  .journey__list li > p:last-child {
+    grid-column: 1;
+  }
+}
+
+/* ---------- Câu chuyện: ảnh gian hàng ngoài đời ---------- */
+.events {
+  padding: clamp(56px, 8vw, 104px) 0 clamp(48px, 7vw, 88px);
+  background: var(--cream);
+}
+
+.events__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px clamp(32px, 6vw, 96px);
+  align-items: end;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.events__head > p {
+  color: var(--brown-2);
+}
+
+.events__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 24px);
+}
+
+.events__grid figure {
+  margin: 0;
+}
+
+.events__grid .photo {
+  box-shadow: 0 26px 50px -34px rgba(58, 41, 29, 0.6);
+}
+
+.events__grid figcaption {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--brown-2);
+}
+
+.events__more {
+  margin-top: 24px;
+}
+
+@media (max-width: 760px) {
+  .events__head {
+    grid-template-columns: 1fr;
+  }
+
+  /* điện thoại: dải vuốt ngang, mỗi ảnh ~ 3/4 màn */
+  .events__grid {
+    display: flex;
+    gap: 12px;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 0 var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .events__grid > li {
+    flex: 0 0 74%;
+    scroll-snap-align: start;
+  }
 }

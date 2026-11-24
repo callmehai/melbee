@@ -96,22 +96,7 @@
   color: var(--brown) !important;
 }
 
-/* ── ảnh minh hoạ cả set + nút đổi cách xem ── */
-.giftset__photo {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 1; /* cùng khung với hộp 3D */
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--cream);
-  cursor: zoom-in;
-  isolation: isolate;
-}
-
-/* ── trang chủ: ảnh set (3 ảnh chồng sẵn, mờ chéo khi đổi set) ── */
+/* ── ảnh set (trang chủ + chế độ "Ảnh set" ở trang Hộp quà): 3 ảnh chồng sẵn, mờ chéo khi đổi set ── */
 .giftset__stage {
   position: relative;
   display: block;
@@ -182,27 +167,6 @@
   }
 }
 
-/* nền: chính ảnh đó phóng to, làm mờ — lấp phần thừa khi ảnh không vuông */
-.giftset__photo::before {
-  content: '';
-  position: absolute;
-  inset: -24px;
-  z-index: -1;
-  background: var(--bg) center / cover;
-  filter: blur(22px) saturate(1.1) brightness(0.92);
-  /* lớp riêng cho phần làm mờ: thiếu dòng này Chrome để lại một dải ảnh cũ (có chữ "Phóng to") dưới chú thích
-     sau khi chuyển "Ảnh set" → "Xoay 3D" (khung dính, ảnh đã gỡ khỏi trang mà vết vẽ còn) */
-  will-change: transform;
-}
-
-.giftset__photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.25));
-  animation: giftset-in 0.4s var(--ease);
-}
-
 .giftset__zoom {
   position: absolute;
   right: 12px;
@@ -217,21 +181,6 @@
   color: var(--brown);
   font-size: 13px;
   transition: background-color 0.25s;
-}
-
-.giftset__photo:hover .giftset__zoom {
-  background: #fff;
-}
-
-.giftset__photo:focus-visible {
-  outline: 2px solid var(--brown);
-  outline-offset: 3px;
-}
-
-@keyframes giftset-in {
-  from {
-    opacity: 0;
-  }
 }
 
 .giftset__views {

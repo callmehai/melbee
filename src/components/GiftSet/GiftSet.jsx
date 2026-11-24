@@ -55,11 +55,12 @@ const setPhotos = giftBoxes
  * không cắt, không dải mờ) → đổi set chỉ là mờ chéo + thu nhẹ, ảnh đã tải và giải mã sẵn nên không chớp / giật.
  * Bấm ảnh để xem lớn (Lightbox, ← → chuyển set).
  */
-function SetPhotos({ box }) {
+/** Khung ảnh set đúng tỉ lệ 4:3: cả 3 ảnh nằm sẵn, đổi set thì mờ chéo; bấm để xem lớn. */
+function SetStage({ box }) {
   const [zoom, setZoom] = useState(null)
   const at = setPhotos.findIndex((p) => p.id === box.id)
   return (
-    <figure className="giftset__visual">
+    <>
       <button type="button" className="giftset__stage" onClick={() => setZoom(at)} aria-label={`Xem lớn: ${setAlt(box)}`}>
         {setPhotos.map((p) => (
           <img
@@ -77,15 +78,24 @@ function SetPhotos({ box }) {
           <ZoomIn size={16} /> Phóng to
         </span>
       </button>
-      <figcaption>
-        {box.set} · {box.title} · {box.name}
-      </figcaption>
       {createPortal(
         <AnimatePresence>
           {zoom !== null && <Lightbox items={setPhotos} index={zoom} onChange={setZoom} onClose={() => setZoom(null)} />}
         </AnimatePresence>,
         document.body,
       )}
+    </>
+  )
+}
+
+/** Trang chủ: chỉ ảnh set (không 3D). */
+function SetPhotos({ box }) {
+  return (
+    <figure className="giftset__visual">
+      <SetStage box={box} />
+      <figcaption>
+        {box.set} · {box.title} · {box.name}
+      </figcaption>
     </figure>
   )
 }
@@ -93,7 +103,6 @@ function SetPhotos({ box }) {
 /** Hộp 3D xoay được · ảnh minh hoạ cả set (set nào có ảnh mới hiện nút chuyển), bấm ảnh để xem lớn */
 function BoxVisual({ box }) {
   const [picked, setView] = useState('3d')
-  const [zoom, setZoom] = useState(null)
   // đổi sang hộp chưa có ảnh set thì quay về 3D
   const view = box.photoSet ? picked : '3d'
   return (
@@ -106,19 +115,8 @@ function BoxVisual({ box }) {
           fallback={<img src={asset(box.photo)} alt={`${box.name} MelBee`} />}
         />
       ) : (
-        // khung vuông như hộp 3D: ảnh ngang hay dọc đều cùng cỡ, phần thừa là chính ảnh đó làm mờ
-        <button
-          type="button"
-          className="giftset__photo"
-          style={{ '--bg': `url("${asset(box.photoSet)}")` }}
-          onClick={() => setZoom(setPhotos.findIndex((p) => p.id === box.id))}
-          aria-label={`Xem lớn: ${setAlt(box)}`}
-        >
-          <img key={box.id} src={asset(box.photoSet)} alt="" />
-          <span className="giftset__zoom" aria-hidden="true">
-            <ZoomIn size={16} /> Phóng to
-          </span>
-        </button>
+        // ảnh set trong khung đúng tỉ lệ ảnh (4:3) — trước là khung vuông + nền ảnh làm mờ, trên điện thoại thành hai dải nhoè
+        <SetStage box={box} />
       )}
       {box.photoSet && (
         <div className="giftset__views" role="group" aria-label="Cách xem hộp">
@@ -135,13 +133,6 @@ function BoxVisual({ box }) {
       <figcaption>
         {box.name} · {box.size} · {view === 'set' ? 'ảnh minh hoạ' : 'bản thiết kế'}
       </figcaption>
-      {/* gắn vào body: khung ảnh dính (sticky) tạo lớp xếp riêng, để trong đó thì thanh menu đè lên */}
-      {createPortal(
-        <AnimatePresence>
-          {zoom !== null && <Lightbox items={setPhotos} index={zoom} onChange={setZoom} onClose={() => setZoom(null)} />}
-        </AnimatePresence>,
-        document.body,
-      )}
     </figure>
   )
 }

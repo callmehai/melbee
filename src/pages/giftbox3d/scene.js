@@ -95,7 +95,8 @@ export function createGiftBox(canvas, { layout = 'hop-2', url, jars = [], reduce
   const placeCamera = (o, top = 0, up = 0) => {
     // nắp mở dựng đứng cao bằng chiều sâu hộp (D) → hộp càng sâu càng lùi ra và nhìn lên cao hơn, nắp không bị cắt
     // nhìn từ trên: lùi xa hơn vì nắp mở nằm ngửa phía sau hộp, xoay hộp nào cũng không bị cắt
-    const dist = baseDist * (1 + o * (0.14 + 0.024 * D) * (1 - top) + top * (0.1 + 0.42 * o))
+    // (0.018·D: trước 0.024 — cộng thêm hệ số K đã theo cỡ hộp thì hộp sâu 25cm (set 3, 4) lùi quá xa, hộp chỉ chiếm ~1/3 khung)
+    const dist = baseDist * (1 + o * (0.14 + 0.018 * D) * (1 - top) + top * (0.1 + 0.42 * o))
     // góc nhìn xuống: đóng ~17° → mở ~41° (góp ý 24/11: ~58° nhìn quá cao, chỉ thấy nắp lọ — hạ xuống để thấy thành hộp,
     // thân lọ và trọn mặt trong nắp); nhìn từ trên: ~83°
     const el = (0.3 + 0.42 * o - 0.2 * up) * (1 - top) + 1.45 * top
@@ -660,7 +661,10 @@ export function createGiftBox(canvas, { layout = 'hop-2', url, jars = [], reduce
     yaw += dx * 0.009
     vYaw = dx * 0.009
     if (!drag.touch) {
-      pitch = Math.min(1.3, Math.max(-2.3, pitch + dy * 0.009)) // kéo lên/xuống để xem cả đáy hộp
+      // kéo lên/xuống: nắp đóng thì lật xem được cả đáy hộp; nắp đang mở thì chỉ nghiêng vừa phải — nghiêng nhiều
+      // thì nắp dựng đứng phía sau lòi ra khỏi mép khung
+      const [lo, hi] = openTarget > 0.5 ? [-0.32, 0.5] : [-2.3, 1.3]
+      pitch = Math.min(hi, Math.max(lo, pitch + dy * 0.009))
       vPitch = dy * 0.009
     }
     lastUser = performance.now()
@@ -707,6 +711,7 @@ export function createGiftBox(canvas, { layout = 'hop-2', url, jars = [], reduce
       }
       vPitch *= 0.9
       pitch += vPitch
+      if (openTarget > 0.5) pitch = Math.min(0.5, Math.max(-0.32, pitch)) // quán tính sau khi thả tay cũng không vượt giới hạn
     }
     open += (openTarget - open) * Math.min(1, dt * 5)
     lift += (liftTarget - lift) * Math.min(1, dt * 3.5)

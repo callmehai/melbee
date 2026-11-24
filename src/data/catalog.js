@@ -17,6 +17,7 @@
  *
  * highlights: viết mềm lại từ mục "Công dụng" trên nhãn — web là quảng cáo, thực phẩm thường
  *   không được nói công dụng phòng/chữa bệnh (miễn dịch, kháng khuẩn, tim mạch, giải độc gan…).
+ * award: danh hiệu đã đạt (vd. OCOP 3 sao) — hiện thành nhãn nhỏ trên thẻ và trang chi tiết; không có thì bỏ trống.
  * color: màu mật (vòng màu cạnh tên) — chưa có ảnh riêng từng loại.
  * label: màu nhãn in trên lọ { bg, ink } — theo ảnh lọ thật.
  * jar: cho lọ trong hộp quà 3D — label: khung nhãn [x0, y0, x1, y1] (px) trong ảnh `image`, từ góc trái tới góc
@@ -84,8 +85,9 @@ export const giftBoxes = [
 /** Phần chung của mọi hộp quà */
 export const giftSet = {
   description:
-    'Hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoạ tiết hoa và ong, thành hộp vân tổ ong. Bên trong lót vàng mật, khay định hình giữ chắc từng lọ; mở nắp là lời gửi từ núi rừng Tây Bắc. Đi kèm túi giấy MELBEE đồng bộ.',
-  bag: 'assets/images/gift/tui-giay.jpg',
+    'Hộp cứng màu nâu trầm, chữ MELBEE nhũ vàng cùng hoạ tiết hoa và ong, thành hộp vân tổ ong. Bên trong lót vàng mật, khay định hình giữ chắc từng lọ, kèm thìa gỗ lấy mật; mở nắp là lời gửi từ núi rừng Tây Bắc. Đi kèm túi giấy MELBEE đồng bộ.',
+  // nền xám studio của ảnh gốc (tui-giay.jpg) đã tách, đặt lên đúng màu nền trang (ngà #FAF7F0)
+  bag: 'assets/images/gift/tui-giay-nen-nga.jpg',
   designFront: 'assets/images/gift/hop-mat-truoc.jpg',
   designInside: 'assets/images/gift/hop-mat-trong.jpg',
   // cùng file in nhưng đã xoá chữ (vẽ lại lưới tổ ong) — trang Hộp quà đặt lời gửi lên bằng chữ thật
@@ -178,6 +180,7 @@ export const honeys = [
     codes: { '280ml': 'MB-HB-001', '380ml': 'MB-HB-002', '500ml': 'MB-HB-003', '730ml': 'MB-HB-004' },
     name: 'Mật ong Hoa ban Tây Bắc',
     nameEn: 'Northwest Bauhinia Flower Honey',
+    award: 'OCOP 3 sao', // dòng chủ lực, theo các bài đăng trên fanpage MelBee
     description:
       'Chắt lọc từ những vạt hoa ban trắng nở rộ khắp núi rừng Tây Bắc vào mùa xuân. Mật màu vàng sáng, vị ngọt thanh mát, hương thơm thảo mộc dịu nhẹ.',
     traits: ['Vàng sáng', 'Ngọt thanh mát', 'Hương thảo mộc dịu'],

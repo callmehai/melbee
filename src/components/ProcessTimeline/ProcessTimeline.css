@@ -186,3 +186,10 @@
     margin-left: 0;
   }
 }
+
+/* điện thoại: khung tranh chỉ ~96px → phóng tranh nét vàng lên cho nét đủ rõ (cắt bớt viền nền trống) */
+@media (max-width: 760px) {
+  .step__media .media__art {
+    transform: scale(1.3);
+  }
+}

@@ -117,6 +117,7 @@ export function HoneyCard({ honey, compact = false }) {
   return (
     <a className={`hcard ${compact ? 'is-compact' : ''}`} href={page(`san-pham/${honey.id}/`)} id={honey.id}>
       <Photo src={honey.image} alt={honey.name} />
+      {honey.award && <span className="award award--card">{honey.award}</span>}
       <h2 className="hcard__name">{honey.short}</h2>
       {!compact && (
         <>

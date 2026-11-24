@@ -14,7 +14,8 @@ export const brand = {
   logo: 'assets/icons/logo.jpg',
 
   // Kênh nhắn tin đặt hàng
-  facebook: 'https://www.facebook.com/melbeetaybac',
+  facebook: 'https://www.facebook.com/melbeetaybac', // trang fanpage (biểu tượng ở chân trang, trang Liên hệ)
+  messenger: 'https://m.me/melbeetaybac', // mở thẳng khung nhắn tin với fanpage — mọi nút "Nhắn tin Facebook"
   zalo: 'https://zalo.me/0936321902',
   tiktok: 'https://www.tiktok.com/@melbeetaybac',
 

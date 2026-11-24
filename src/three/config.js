@@ -37,7 +37,9 @@ export const THREE_CONFIG = {
     atmosphere: true, // sương + dãy núi xa
     flowers: true,
     bees: true,
-    honeycomb: true, // miếng bánh tổ 3D lắc được, mật chảy thành sợi rồi nhỏ giọt (section "Giọt mật")
+    // miếng bánh tổ 3D lắc được (section "Giọt mật") — tắt từ 24/11: trông như đồ chơi nhựa cạnh ảnh chụp thật;
+    // khung đó giờ là ảnh lọ Hoa ban (dòng chủ lực, OCOP 3 sao)
+    honeycomb: false,
     guideBee: true, // một con ong dẫn đường: cuộn tới đâu bay tới đậu lên thứ chính của phần đó (data-bee-perch)
     giftBox: false, // hộp lục giác tưởng tượng (bản cũ) — đã thay bằng hộp thật 2 lọ 380ml (src/pages/giftbox3d)
     goldenParticles: true,

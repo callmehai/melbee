@@ -28,7 +28,7 @@ export default function Button({ href, children, variant = 'solid', icon, extern
 /** Nút nhắn tin Facebook (màu MelBee, biểu tượng Facebook một màu) — link lấy từ src/config/brand.js */
 export function FacebookButton({ variant = 'facebook', children = brand.cta.facebook, ...rest }) {
   return (
-    <Button href={brand.facebook} variant={variant} icon={<FacebookIcon size={20} />} aria-label={`${children} (mở Facebook)`} {...rest}>
+    <Button href={brand.messenger} variant={variant} icon={<FacebookIcon size={20} />} aria-label={`${children} (mở Facebook)`} {...rest}>
       {children}
     </Button>
   )

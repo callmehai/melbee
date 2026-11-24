@@ -13,7 +13,7 @@ import './ProductShowcase.css'
  */
 export default function ProductShowcase() {
   return (
-    <section id="san-pham" data-scene="products" className="section products" aria-labelledby="products-title">
+    <section id="san-pham" data-scene="products" className="section section--cream products" aria-labelledby="products-title">
       <div className="container">
         <div className="products__head">
           <SectionHeading id="products-title" eyebrow={productsSection.eyebrow} title={productsSection.title} subtitle={productsSection.subtitle} />

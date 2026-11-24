@@ -105,7 +105,7 @@ export default function Navbar({ current = 'home', solid: alwaysSolid = false })
                 <a className="btn btn--zalo-solid" href={brand.zalo} target="_blank" rel="noopener noreferrer">
                   <ZaloMark size={22} /> <span>{brand.cta.zalo}</span>
                 </a>
-                <a className="btn btn--outline" href={brand.facebook} target="_blank" rel="noopener noreferrer">
+                <a className="btn btn--outline" href={brand.messenger} target="_blank" rel="noopener noreferrer">
                   <FacebookIcon size={20} /> <span>{brand.cta.facebook}</span>
                 </a>
               </div>

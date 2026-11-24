@@ -25,7 +25,8 @@
   /* Bố cục */
   --container: 1320px;
   --gutter: clamp(20px, 5vw, 56px);
-  --section-y: clamp(64px, 12vw, 168px); /* điện thoại 64px — 88px để lại khoảng trống quá dài giữa các phần */
+  /* điện thoại 64px; máy tính tối đa 112px — 168px cũ để lại dải trống ~340px giữa hai phần cùng nền (trông "chưa xong") */
+  --section-y: clamp(64px, 8vw, 112px);
   --nav-h: 78px;
   --radius: 4px;
 

@@ -14,7 +14,7 @@ import { honeys, giftBoxes } from './catalog.js'
  */
 
 const zalo = { label: 'Nhắn Zalo', href: brand.zalo }
-const facebook = { label: 'Nhắn Facebook', href: brand.facebook }
+const facebook = { label: 'Nhắn Facebook', href: brand.messenger }
 const vnd = (n) => `${n.toLocaleString('vi-VN')}\u00a0₫`
 const short = (id) => honeys.find((h) => h.id === id).short
 
@@ -74,7 +74,8 @@ export const intents = [
     id: 'ship',
     keys: ['ship', 'giao', 'vận chuyển', 'phí', 'bao lâu', 'tỉnh', 'cod', 'nhận hàng'],
     answer:
-      'Phí và thời gian giao hàng tuỳ theo địa chỉ nhận. MelBee (Hà Nội) sẽ báo cụ thể khi xác nhận đơn qua tin nhắn.',
+      // theo bài đăng Set quà 20/11 trên fanpage MelBee (19/11/2026)
+      'MelBee giao hoả tốc tại Hoà Lạc và nội thành Hà Nội. Địa chỉ khác: phí và thời gian giao tuỳ nơi nhận — MelBee báo cụ thể khi xác nhận đơn qua tin nhắn.',
     actions: [zalo, { label: 'Cách đặt hàng', ask: 'Cách đặt hàng' }],
   },
   {

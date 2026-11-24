@@ -1,4 +1,5 @@
 import { memo, useId } from 'react'
+import { LineBlossom, LineBee, LineFrameComb, LineDipper, LineJar } from './LineArt.jsx'
 import { motion } from 'framer-motion'
 
 /**
@@ -940,6 +941,12 @@ export const MapArt = memo(function MapArt({ className, label = 'Bản đồ min
 })
 
 const ARTS = {
+  // nét nhũ vàng trên nền nâu trầm (LineArt.jsx) — 5 bước Quy trình
+  'line-blossom': (p) => <LineBlossom {...p} />,
+  'line-bee': (p) => <LineBee {...p} />,
+  'line-frame': (p) => <LineFrameComb {...p} />,
+  'line-drip': (p) => <LineDipper {...p} />,
+  'line-jar': (p) => <LineJar {...p} />,
   landscape: (p) => <Landscape variant="dawn" {...p} />,
   'landscape-morning': (p) => <Landscape variant="morning" {...p} />,
   'landscape-sunset': (p) => <Landscape variant="sunset" {...p} />,

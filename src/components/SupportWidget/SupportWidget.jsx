@@ -170,7 +170,7 @@ export default function SupportWidget() {
                 <a className="is-main" href={brand.zalo} target="_blank" rel="noopener noreferrer">
                   <ZaloMark size={20} /> Nhắn Zalo
                 </a>
-                <a href={brand.facebook} target="_blank" rel="noopener noreferrer">
+                <a href={brand.messenger} target="_blank" rel="noopener noreferrer">
                   <FacebookIcon size={17} /> Facebook
                 </a>
               </div>
