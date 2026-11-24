@@ -44,9 +44,9 @@
   transform: none;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-}
+/* hover KHÔNG nhấc nút lên: nút dịch đi thì mép dưới trượt khỏi chuột → mất hover → rơi về → lại hover…
+   lớp mật tràn lên/tụt xuống liên tục, nút nháy (nhất là khi con trỏ ong vẽ lệch lên trên điểm chuột thật).
+   Phản hồi hover đã đủ bằng lớp mật tràn lên. */
 
 .btn svg {
   flex: none;

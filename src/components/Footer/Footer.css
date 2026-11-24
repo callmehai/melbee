@@ -88,7 +88,6 @@
 }
 
 .footer__social a:hover {
-  transform: translateY(-2px);
   box-shadow: 0 10px 18px -10px rgba(58, 41, 29, 0.55);
 }
 
