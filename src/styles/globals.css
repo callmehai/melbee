@@ -75,6 +75,20 @@ ol {
   border-radius: 2px;
 }
 
+/* web giới thiệu, không phải trang đọc tài liệu: kéo chuột (con trỏ ong) không bôi đen chữ thành từng mảng vàng.
+   Ô nhập vẫn chọn chữ được như thường. */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+input,
+textarea,
+[contenteditable='true'] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 ::selection {
   background: var(--honey-pale);
   color: var(--brown);
